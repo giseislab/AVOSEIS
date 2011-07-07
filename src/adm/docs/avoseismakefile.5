@@ -1,0 +1,30 @@
+.TH AVOSEISMAKEFILE 5 "$Date$"
+.SH NAME
+avoseismakefile \- AVOSEIS Makefile format
+.SH DESCRIPTION
+The avoseis makefile is an extension of the Antelope Makefiles documented 
+in antelopemakefile(5). They behave exactly the same way as Antelope makefiles,
+with the exception that they use the AVOSEISMAKE environment variable 
+instead of ANTELOPEMAKE to point to their make rules, and they install to 
+/opt/avoseis/X.X instead of /opt/antelope/X.X. 
+.SH ENVIRONMENT
+.IP AVOSEIS
+This is the AVOSEIS environment variable, exactly analogous to the ANTELOPE 
+environment variable as documented in antelopeenv(5). It indicates the 
+base directory for an AVOSEIS release. It uses the same version number as the 
+Antelope installation since the AVOSEIS code is compiled against and therefore
+dependent on specific Antelope versions. This environment variable 
+is usually set automatically, for example by sourcing the file
+/opt/avoseis/4.8/setup.csh or /opt/avoseis/4.8/setup.sh.
+.IP AVOSEISMAKE
+This is the AVOSEISMAKE environment variable, exactly analogous to the ANTELOPEMAKE
+environment variable as documented in antelopeenv(5) and antelopemakefile(5).
+.SH "SEE ALSO"
+.nf
+antelopemakefile(5)
+.fi
+.SH AUTHOR
+.nf
+Kent Lindquist
+Lindquist Consulting, Inc.
+.fi

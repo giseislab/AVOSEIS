@@ -1,0 +1,20 @@
+
+set BASE=/opt/antelope
+set VERS=$id
+
+setenv EDITOR vi
+setenv OPENWINHOME /usr/openwin
+setenv PAGER /usr/bin/less
+setenv VISUAL vi   
+
+setenv AVOSEIS      /opt/avoseis/$VERS
+setenv AVOSEISMAKE  $AVOSEIS/include/avoseismake
+setenv AVOSEISFILES /opt/avoseis/files
+
+unset BASE
+unset VERS
+
+setenv PFPATH $ANTELOPE/data/pf:$AVOSEIS/data/pf:$HOME/data/pf:.
+setenv SCHEMA_DIR $ANTELOPE/data/schemas:$AVOSEIS/data/schemas
+
+setenv SCHEMA_DEFAULT css3.0
