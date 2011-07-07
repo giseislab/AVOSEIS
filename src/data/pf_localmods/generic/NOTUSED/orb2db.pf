@@ -1,0 +1,67 @@
+#   Copyright (c) 1997 Boulder Real Time Technologies, Inc.           
+#                                                                     
+#   This software module is wholly owned by Boulder Real Time         
+#   Technologies, Inc. Any use of this software module without        
+#   express written permission from Boulder Real Time Technologies,   
+#   Inc. is prohibited.                                               
+
+max_open_files		2048	# maximum number of files to keep open
+max_gap_to_fill		4096	# maximum number of sample points to fill with a "missing" data value
+min_gap_to_fill		4096	# minimum number of sample points to fill with a "missing" data value
+
+preferred_waveform_file_range	86400	# waveform volumes should cover this range of seconds:
+					#      86400 = 1 day
+					#       3600 = 1 hour
+preferred_waveform_file_offset	    0	# waveform volumes will start and end at a range boundary + offset
+max_pkt_period			   60   # maximum # seconds per packet
+
+datatype	sd			# data format for waveform files :  
+					#	sd for steim 2 compression
+					#	s4 for 32 bit integers
+					#       as for ascii   
+					# see the css datatype field or wftypes(5) for others
+
+#max_out_of_sequence		  0	# maximum number of packets before a retransmitted packet
+max_out_of_sequence		  50	# maximum number of packets before a retransmitted packet
+max_time_waiting	       1861	# maximum number of seconds to wait for data when collecting an event  ( = (max_out_of_sequence+1) * max_pkt_period ) 
+decent_interval		        900	# interval at which to check for stagnant data in orb2db
+					# or between saving state files.
+max_window	    	      86400     # time windows larger than this number of seconds usually indicate a command line problem
+waveform_buffer_size		8192	# This is the size of buffers used per channel when the data type
+					# is something other than seed.
+chatter_limit 		      86400	# only one message per day, please
+min_problem_count   	         25	# messages only when there are at
+min_problem_time 		600	# least min_problem_count problems
+					# within min_problem_time
+pause_timeout		       3600     # maximum time (in seconds) to wait after pause for
+					# the matching continue.  This is a failsafe, in case the
+					# program issuing the original pause fails to deliver
+					# a continue for some reason.  The period should
+					# probably be less than the ringbuffer size, and
+					# definitely greater than the worst case performance
+					# of any backup or cleanup script.
+
+record_changed			no	# record records to the changed table when packet samprate, calib or tick registration changes
+record_ratechange		no	# add records to ratechange table when observed/calculated sample rate changes
+record_gap			no	# add records to gap table when waveform has a gap
+record_normal_retransmission	no	# these are out of time order packets, presumed to have been retranmitted 
+record_duplicate_retransmission	no	# these are duplicates of a previously seen packet
+record_overlapping_packets	yes	# these are packets where the time frame overlaps (but is not the same as) another packet
+record_rejected_packets		no	# these are packets which arrive so far out of time order they are dropped
+
+too_old		120:00	# fill in with a time x to discard packets 
+		#  with time less than system time - x
+too_new		24:00	# fill in with a time to discard packets 
+		#  with times greater than system time + x
+discards	archivebadtime # discards	# file in which discarded orb packet are saved, if they are saved
+
+
+path		.	# path to waveforms filesystem
+min_freespace   10	# minimum number of megabytes available to write waveforms
+frequency	1000	# number of packets to process between checking free space
+sec		10	# number of seconds to sleep between checking filesystem, when stopped for space
+# flush wf writes, this may need to be turned off
+# turned on by Mitch 20081013 
+flush_wf_writes	yes
+
+pf_revision_time 1211465421

@@ -1,0 +1,41 @@
+default	&Arr{
+	max_latency	300 # this should be at least the length of your calldown list + 30 seconds
+	recipients	&Arr{
+		gthompson@alaska.edu 0
+	}
+	sleep	1
+}
+
+diagnostic &Arr{
+	recipients	&Arr{
+	}
+}
+
+test &Arr{
+	recipients	&Arr{
+		mewest@alaska.edu	0
+	}
+}
+
+swarm &Arr{
+	recipients	&Arr{		# appends to the default
+               #seis_alarms@avo.alaska.edu 0 # Seismic Alarms ListServ Subscribers
+               #9076877747@mms.att.net 0 # Glenn Thompson cell phone
+               #9076874288@mms.att.net 200 # Mike West cell phone
+               #7865470342@mms.att.net 0 # Ophelia George cell phone
+               #9073785996@mms.att.net 200 # Helena Buurman cell phone
+               #9073477788@mms.att.net 300 # Celso Reyes cell phone
+               #9075908248@mms.att.net 500 # Duty Seismologist
+               #9076322275@msg.acsalaska.com 600 # Duty Scientist cell phone
+               #9079785458@mms.att.net 700 # Coordinating Scientist cell
+               #9073224085@mms.att.net 700 # Acting Coordinating Scientist
+               #9076322276@msg.acsalaska.com 800 # Scientist In Charge
+               #9073479711@mms.att.net 900 # Duty Remote Sensor
+               #seis_alarms@email2phone.net 300 # Voice Message to Phone
+	}
+}
+
+
+tremor	&Arr{
+}
+

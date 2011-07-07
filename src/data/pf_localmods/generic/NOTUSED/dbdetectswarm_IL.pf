@@ -1,0 +1,30 @@
+ALARMCLASS	swarm
+ALARMNAME	swarm_IL
+AUTH_SUBSET	IL_lo
+BELLWETHERS	&Arr{
+	ILI	8
+	ILS	8
+	ILW	8
+	INE	8
+	IVE	8
+	IVS	8
+	#OPT	8	# 40-50 km
+	#RED	8	# 40-50 km
+}
+MESSAGE_DIR	dbalarm/alarmaudit/message
+MESSAGE_PFDIR	dbalarm/alarmaudit/messagepf
+REMINDER_TIME	180
+TIMEWINDOW	60
+VOLC_CODE	IL
+VOLC_NAME	Iliamna
+swarmend_on	1
+escalations_on	1
+new_alarm	&Arr{
+    mean_rate	12	
+}
+pf_revision_time	1241137954
+reminders_on	1
+significant_change	&Arr{
+    mean_rate_pcchange	100
+}
+trackfile state/IL.pf

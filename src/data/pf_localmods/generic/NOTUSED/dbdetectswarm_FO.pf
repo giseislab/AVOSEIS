@@ -1,0 +1,29 @@
+:confirm b2
+ALARMCLASS	swarm
+ALARMNAME	swarm_FO
+AUTH_SUBSET	FO_lo
+BELLWETHERS	&Arr{
+	CDD	8
+#	KAPH	8	# 30-50 km
+	FOPK	8
+	FOSS	8
+	FONW	8
+	FP01	8
+}
+MESSAGE_DIR	dbalarm/alarmaudit/message
+MESSAGE_PFDIR	dbalarm/alarmaudit/messagepf
+REMINDER_TIME	180
+TIMEWINDOW	60
+VOLC_CODE	FO
+VOLC_NAME	Fourpeaked
+swarmend_on	1
+escalations_on	1
+new_alarm	&Arr{
+    mean_rate	4	
+}
+pf_revision_time	1241137954
+reminders_on	1
+significant_change	&Arr{
+    mean_rate_pcchange	100
+}
+trackfile state/FO.pf

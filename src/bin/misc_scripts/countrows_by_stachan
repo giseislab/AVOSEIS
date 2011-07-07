@@ -1,0 +1,19 @@
+#!/bin/bash
+# Glenn Thompson 2010/05/20
+# Count the number of table rows for BHZ, EHZ and SHZ stachans, and sort them
+# works only if sta is column 1, chan column 2
+if [ "$#" = "1" ]
+then
+	table=$1
+	if [ -e "$table" ] 
+	then
+		awk '{print $1"_"$2}' $table | grep [BES]HZ | sort > rawlist
+		awk ' { per[$1] += 1 } 
+		END { for (i in per)
+		print per[i], i } ' rawlist | sort -n -r 
+	else
+		echo "$table not found"
+	fi
+else
+	echo "Usage: countrows_by_stachan dbname.table"
+fi

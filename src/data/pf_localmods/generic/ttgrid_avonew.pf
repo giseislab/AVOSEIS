@@ -1,0 +1,1190 @@
+# Glenn Thompson, 2010/06/08
+# latr,lonr are from HistoricallyActiveVolcanoes.xls
+# Volcano codes are from carlsubtrig2antelope, which uses same codes as Earthworm
+# However, the following are not implemented
+# rg Regional
+# cl Cleveland
+# aa Amukta
+# bg Bogoslof
+# bc BonaChurhill
+# cm Capital
+# ca Carlisle
+# ck Chiginagek
+# do Douglas
+# dr Drum
+# fi Fisher
+# go Gordon
+# ha Hayes
+# is Isanotski
+# kg Kagamil
+# kc Kasatochi
+# ks Kiska
+# py PyrePeak
+# re Rescheshnoi
+# sa Sanford
+# se Seguam
+# sv Sheveluch
+# tp Tanada
+# vs Vsevidof
+# yu Yunaska
+
+grids &Arr{
+
+	# Little Sitkin
+        LS_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            51.95   # reference latitude    (origin of grid)
+                lonr            178.54   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.20   # Minimum value of X-axis distance grid in degrees
+                xmax             0.20   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.20   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.20   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Semisopochnoi
+        SS_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            51.93   # reference latitude    (origin of grid)
+                lonr            179.60   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.2   # Minimum value of X-axis distance grid in degrees
+                xmax             0.2   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.2   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.2   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Gareloi
+        GA_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            51.79   # reference latitude    (origin of grid)
+                lonr            -178.79   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.20   # Minimum value of X-axis distance grid in degrees
+                xmax             0.20   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.20   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.20   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Tanaga
+        TA_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            51.86   # reference latitude    (origin of grid)
+                lonr            -178.10   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.2   # Minimum value of X-axis distance grid in degrees
+                xmax             0.2   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.2   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.2   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Kanaga
+        KN_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            51.92   # reference latitude    (origin of grid)
+                lonr            -177.16   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.2  # Minimum value of X-axis distance grid in degrees
+                xmax             0.2   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.2   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.2   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Great Sitkin
+        GS_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            52.08   # reference latitude    (origin of grid)
+                lonr            -176.11   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.2   # Minimum value of X-axis distance grid in degrees
+                xmax             0.2   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.2   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.2   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Korovin
+        KO_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            52.38   # reference latitude    (origin of grid)
+                lonr            -174.15   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.2  # Minimum value of X-axis distance grid in degrees
+                xmax             0.2   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.2   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.2   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Okmok
+        OK_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            53.42   # reference latitude    (origin of grid)
+                lonr            -168.13   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.20   # Minimum value of X-axis distance grid in degrees
+                xmax             0.20   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.20   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.20   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Makushin
+        MA_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            53.89   # reference latitude    (origin of grid)
+                lonr            -166.93   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.2   # Minimum value of X-axis distance grid in degrees
+                xmax             0.2   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.2   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.2   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Akutan
+        AK_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            54.13   # reference latitude    (origin of grid)
+                lonr            -165.99   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.2   # Minimum value of X-axis distance grid in degrees
+                xmax             0.2   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.2   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.2   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+
+
+	SH_WE_reg &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            54.73   # reference latitude
+                lonr            -164.2  # reference longitude
+                nx              127      # Number of east-west grid nodes for map scans
+                ny              63      # Number of north-south grid nodes for map scans
+                xmin            -0.5    # Minimum value of X-axis distance grid in degrees
+                xmax            0.5     # Maximum value of X-axis distance grid in degrees
+                ymin            -0.25   # Minimum value of Y-axis distance grid in degrees
+                ymax            0.25    # Maximum value of Y-axis distance grid in degrees
+                strike          65
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup  # method for computing travel times
+                model           iasp91  # model for computing travel times
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+                }
+        }
+
+	# Westdahl
+        WE_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            54.52   # reference latitude    (origin of grid)
+                lonr            -164.65   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.10   # Minimum value of X-axis distance grid in degrees
+                xmax             0.10   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.10   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.10   # Maximum value of Y-axis distance grid in degrees
+                strike          65.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        #35.0
+                        40.0
+		}
+	}
+
+	# Shishaldin
+        SH_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            54.76   # reference latitude    (origin of grid)
+                lonr            -163.97   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.10   # Minimum value of X-axis distance grid in degrees
+                xmax             0.10   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.10   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.10   # Maximum value of Y-axis distance grid in degrees
+                strike          65.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+#
+        PA_DU_reg &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            55.3    # reference latitude
+                lonr            -162.2  # reference longitude
+                strike          50
+                nx              101      # Number of east-west grid nodes for map scans
+                ny              71      # Number of north-south grid nodes for map scans
+                xmin            -0.40   # Minimum value of X-axis distance grid in degrees
+                xmax            0.40    # Maximum value of X-axis distance grid in degrees
+                ymin            -0.3   # Minimum value of Y-axis distance grid in degrees
+                ymax            0.25    # Maximum value of Y-axis distance grid in degrees
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tt1dcvl  # method for computing travel times
+                model           pav_dut  # model for computing travel times
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+                }
+        }
+
+
+	# Dutton
+         DU_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            55.19  # reference latitude    (origin of grid)
+                lonr            -162.27   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.1   # Minimum value of X-axis distance grid in degrees
+                xmax             0.1   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.1   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.1   # Maximum value of Y-axis distance grid in degrees
+                strike          50.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tt1dcvl # method for computing tt
+                model           pav_dut # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Pavlof
+        PA_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            55.42   # reference latitude    (origin of grid)
+                lonr            -161.89   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.1   # Minimum value of X-axis distance grid in degrees
+                xmax             0.1   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.1   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.1   # Maximum value of Y-axis distance grid in degrees
+                strike          50.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tt1dcvl # method for computing tt
+                model           pav_dut # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+#
+	# Veniaminof
+        VE_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            56.2   # reference latitude    (origin of grid)
+                lonr            -159.39   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.2   # Minimum value of X-axis distance grid in degrees
+                xmax             0.2   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.2   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.2   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Aniakchak
+        AN_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            56.91   # reference latitude    (origin of grid)
+                lonr            -158.21   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.20   # Minimum value of X-axis distance grid in degrees
+                xmax             0.20   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.2   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.2   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Peulik
+        PL_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            57.75   # reference latitude    (origin of grid)
+                lonr            -156.37   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.2   # Minimum value of X-axis distance grid in degrees
+                xmax             0.2   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.2   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.2   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Regional Katmai area grid
+        KA_reg &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            58.375  # reference latitude
+                lonr            -155.125        # reference longitude
+                nx              127      # Number of east-west grid nodes for map scans
+                ny              63      # Number of north-south grid nodes for map scans
+                xmin            -0.5    # Minimum value of X-axis distance grid in degrees
+                xmax            0.5     # Maximum value of X-axis distance grid in degrees
+                ymin            -0.25   # Minimum value of Y-axis distance grid in degrees
+                ymax            0.25    # Maximum value of Y-axis distance grid in degrees
+                strike          50      # Strike of positive X-axis direction
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup  # method for computing travel times
+                model           iasp91  # model for computing travel times
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+                }
+        }
+
+
+	# Mageik-Martin (MG)
+        MG_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            58.18   # reference latitude    (origin of grid)
+                lonr            -155.3   # reference longitude   (origin of grid)
+                nx              25      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.05   # Minimum value of X-axis distance grid in degrees
+                xmax             0.05   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.1   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.1   # Maximum value of Y-axis distance grid in degrees
+                strike          50.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Trident
+        TR_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            58.23   # reference latitude    (origin of grid)
+                lonr            -155.1   # reference longitude   (origin of grid)
+                nx              25      # Number of X-axis distance grid nodes
+                ny              25      # Number of Y-axis distance grid nodes
+                xmin            -0.06  # Minimum value of X-axis distance grid in degrees
+                xmax             0.045   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.05   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.05   # Maximum value of Y-axis distance grid in degrees
+                strike          50.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Katmai
+        KA_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            58.28   # reference latitude    (origin of grid)
+                lonr            -154.95 # reference longitude   (origin of grid)
+                nx              31      # Number of X-axis distance grid nodes
+                ny              41      # Number of Y-axis distance grid nodes
+                xmin            -0.05  # Minimum value of X-axis distance grid in degrees
+                xmax             0.07   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.06   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.06   # Maximum value of Y-axis distance grid in degrees
+                strike          50.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Griggs
+        GR_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            58.36   # reference latitude    (origin of grid)
+                lonr            -155.1   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              37      # Number of Y-axis distance grid nodes
+                xmin            -0.1467   # Minimum value of X-axis distance grid in degrees
+                xmax             0.1   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.05   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.1   # Maximum value of Y-axis distance grid in degrees
+                strike          50.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Snowy
+        SN_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            58.33   # reference latitude    (origin of grid)
+                lonr            -154.69   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.07   # Minimum value of X-axis distance grid in degrees
+                xmax             0.07   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.07   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.07   # Maximum value of Y-axis distance grid in degrees
+                strike          50.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Fourpeaked
+        FO_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            58.77   # reference latitude    (origin of grid)
+                lonr            -153.67   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.2   # Minimum value of X-axis distance grid in degrees
+                xmax             0.2   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.2   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.2   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Augustine
+        AU_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            59.36   # reference latitude    (origin of grid)
+                lonr            -153.44   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.2   # Minimum value of X-axis distance grid in degrees
+                xmax             0.2   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.2   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.2   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Iliamna
+        IL_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            60.03   # reference latitude    (origin of grid)
+                lonr            -153.09   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.2   # Minimum value of X-axis distance grid in degrees
+                xmax             0.2   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.2   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.2   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tt1dcvl # method for computing tt
+                model           red_ili # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Redoubt
+        RD_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            60.49   # reference latitude    (origin of grid)
+                lonr            -152.74   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.20   # Minimum value of X-axis distance grid in degrees
+                xmax             0.20   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.2   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.2   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tt1dcvl # method for computing tt
+                model           red_ili # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Spurr
+	SP_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            61.3   # reference latitude    (origin of grid)
+                lonr            -152.25   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.2   # Minimum value of X-axis distance grid in degrees
+                xmax             0.2   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.2   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.2   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Wrangell
+        WR_lo &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            62.01   # reference latitude    (origin of grid)
+                lonr            -144.02   # reference longitude   (origin of grid)
+                nx              51      # Number of X-axis distance grid nodes
+                ny              51      # Number of Y-axis distance grid nodes
+                xmin            -0.20   # Minimum value of X-axis distance grid in degrees
+                xmax             0.2   # Maximum value of X-axis distance grid in degrees
+                ymin            -0.2   # Minimum value of Y-axis distance grid in degrees
+                ymax             0.2   # Maximum value of Y-axis distance grid in degrees
+                strike          90.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tttaup # method for computing tt
+                model           iasp91 # model for computing tt
+                depths &Tbl{
+                        0.0
+                        2.0
+                        4.0
+                        6.0
+                        8.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+		}
+	}
+
+	# Cook Inlet
+        CKINLT_reg &Arr{
+                mode            edp     # defines an equal-distance projection regular 3-D mesh
+                latr            59.0    # reference latitude    (origin of grid)
+                lonr          -153.5    # reference longitude   (origin of grid)
+                nx              121      # Number of X-axis distance grid nodes
+                ny              61      # Number of Y-axis distance grid nodes
+                xmax              6.0   # Minimum value of X-axis distance grid in degrees
+                xmin             -3.75   # Maximum value of X-axis distance grid in degrees
+                ymax              2.2   # Minimum value of Y-axis distance grid in degrees
+                ymin             -2.2   # Maximum value of Y-axis distance grid in degrees
+                strike          50.0    # Angle from north clockwise in degrees to the X-axis
+                compute_P       yes     # yes = Compute P travel times
+                compute_S       yes     # yes = Compute S travel times
+                method          tt1dcvl # method for computing tt
+                model           scak    # model for computing tt
+                depths &Tbl{
+                        0.0
+                        5.0
+                        10.0
+                        15.0
+                        20.0
+                        25.0
+                        30.0
+                        35.0
+                        40.0
+                        50.0
+                        60.0
+                        80.0
+                        100.0
+                        150.0
+                        200.0
+                }
+        }
+
+	# South-Central Alaska
+	#SC_AK_reg &Arr{
+	#	mode 		edp 	# defines an equal-distance projection regular 3-D mesh 
+	#	type 		1d	# defines travel times based upon a 1-D structure model
+	#	ndist		1000	# number of distance nodes in 1-D grid
+	#	latr		59	# reference latitude   
+	#	lonr		-150	# reference longitude
+	#	nx		101	# Number of east-west grid nodes for map scans
+	#	ny		61	# Number of north-south grid nodes for map scans
+	#	xmin		-5	# Minimum value of X-axis distance grid in degrees
+	#	xmax		5	# Maximum value of X-axis distance grid in degrees
+	#	ymin		-4	# Minimum value of Y-axis distance grid in degrees
+	#	ymax		5	# Maximum value of Y-axis distance grid in degrees
+	#	compute_P	yes	# yes = Compute P travel times
+	#	compute_S	yes	# yes = Compute S travel times
+	#	method		tttaup	# method for computing travel times
+	#	model		iasp91	# model for computing travel times
+	#	depths &Tbl{
+	#		5.0
+	#		10.0
+	#		15.0
+	#		20.0
+	#		25.0
+	#		30.0
+	#		35.0
+	#		40.0
+	#		50.0
+	#		60.0
+	#		70.0
+	#		80.0
+	#		90.0
+	#		100.0
+	#		120.0
+	#		140.0
+	#		160.0
+	#		180.0
+	#		200.0
+	#	}
+	#}
+
+	# Central Aleutians
+	C_ALEUT_reg &Arr{
+		mode 		edp 	# defines an equal-distance projection regular 3-D mesh 
+		#type 		1d	# defines travel times based upon a 1-D structure model
+		#ndist		1000	# number of distance nodes in 1-D grid
+		latr		52	# reference latitude   
+		lonr		-179	# reference longitude
+		nx		121	# Number of east-west grid nodes for map scans
+		ny		41	# Number of north-south grid nodes for map scans
+		xmin		-6	# Minimum value of X-axis distance grid in degrees
+		xmax		6	# Maximum value of X-axis distance grid in degrees
+		ymin		-2	# Minimum value of Y-axis distance grid in degrees
+		ymax		2	# Maximum value of Y-axis distance grid in degrees
+		compute_P	yes	# yes = Compute P travel times
+		compute_S	yes	# yes = Compute S travel times
+		method		tttaup	# method for computing travel times
+		model		iasp91	# model for computing travel times
+		depths &Tbl{
+			5.0
+			10.0
+			15.0
+			20.0
+			25.0
+			30.0
+			35.0
+			40.0
+			50.0
+			60.0
+			70.0
+			80.0
+			90.0
+			100.0
+			120.0
+			140.0
+			160.0
+			180.0
+			200.0
+			220.0
+		}
+	}
+
+	# Eastern Aleutians
+	E_ALEUT_reg &Arr{
+		mode 		edp 	# defines an equal-distance projection regular 3-D mesh 
+		#type 		1d	# defines travel times based upon a 1-D structure model
+		#ndist		1000	# number of distance nodes in 1-D grid
+		latr		54.5	# reference latitude   
+		lonr		-164	# reference longitude
+		strike		60	# Angle in degrees clockwise from north for X-axis positive direction
+		nx		81	# Number of east-west grid nodes for map scans
+		ny		61	# Number of north-south grid nodes for map scans
+		xmin		-4	# Minimum value of X-axis distance grid in degrees
+		xmax		4	# Maximum value of X-axis distance grid in degrees
+		ymin		-3.	# Minimum value of Y-axis distance grid in degrees
+		ymax		3.	# Maximum value of Y-axis distance grid in degrees
+		compute_P	yes	# yes = Compute P travel times
+		compute_S	yes	# yes = Compute S travel times
+		method		tttaup	# method for computing travel times
+		model		iasp91	# model for computing travel times
+		depths &Tbl{
+			5.0
+			10.0
+			15.0
+			20.0
+			25.0
+			30.0
+			35.0
+			40.0
+			50.0
+			60.0
+			70.0
+			80.0
+			90.0
+			100.0
+			120.0
+			140.0
+			160.0
+			180.0
+			200.0
+			220.0
+		}
+	}
+
+
+}
+pf_revision_time 1151130346
+
+
+

@@ -1,0 +1,202 @@
+: # use perl
+eval 'exec $ANTELOPE/bin/perl -S $0 "$@"'
+if 0;
+
+use lib "$ENV{ANTELOPE}/data/perl" ;
+use Datascope;
+use Getopt::Std;
+
+
+sub get_names {
+
+	# SET TIMES
+	my $pickdir, $databaseName, $databaseLog ;
+	$startEpoch = str2epoch($startMonth.'/01/'.$startYear);
+	$minimumEpoch =  str2epoch('09/01/1989');
+	$AHMaxEpoch =  str2epoch('03/01/2002');
+
+	if ($startEpoch<$minimumEpoch) {
+		die('There are no hypocenters prior to September 1989.');
+	} elsif ($startEpoch> now() ) {
+		die('You cannot translate picks from the future.');
+	} elsif ($startEpoch < $AHMaxEpoch) {
+		$pickDir = '/Seis/Kiska4/picks/'.$startYear.'/'.$startYear.'_'.$startMonth.'/AH';
+	} else {
+		$pickDir = '/Seis/Kiska4/picks/'.$startYear.'/'.$startYear.'_'.$startMonth.'/SAC';
+	}
+	$databaseName = '/Seis/Kiska4/picks/'.$startYear.'/database/db'.$startYear.'_'.$startMonth;
+	$databaseLog = '/Seis/Kiska4/picks/'.$startYear.'/database/log_db'.$startYear.'_'.$startMonth;
+	if ($opt_v) {
+		print "\nPick file directory: $pickDir\n";
+		print "New database name:   $databaseName\n";
+	}
+
+	# GET LIST OF PICKFILES
+	my @pickFileList;
+	opendir(PICKDIR,"$pickDir") || die "can't opendir $pickDir: $!";
+	while (my $pickFileName = readdir(PICKDIR)) {
+		# Test file for suitability here (begins with 6 digits, ends with 'p')
+		if ( $pickFileName =~ m/\d{6}\S+p/ ) {
+			push(@pickFileList,$pickDir.'/'.$pickFileName);
+		}
+	}
+	closedir(PICKDIR);
+	return($databaseName,$databaseLog,$pickDir,@pickFileList);
+}
+
+
+sub run_avo2db {
+
+	# REMOVE OLD DATABASE
+	my @oldDatabase = glob("$databaseName $databaseName.*");
+	unlink(@oldDatabase);
+	unlink($databaseLog);
+
+	# WRITE NEW DATABASE
+	my $batchSize = 150;		# ~250 limit on command size for Sun
+	my @files = sort { lc($a) cmp lc($b) } @pickFileList;
+	if ($opt_v) {
+		print "Progress: ";
+	}
+	while ( $#files > -1 ) {
+		if ( $#files > $batchSize ) {
+			@subFiles  = @files[0 .. $batchSize];
+			@files = @files[ ($batchSize+1) .. $#files];
+		} else {
+			@subFiles = @files;
+			@files = ();
+
+		}
+
+		# EXECUTE 
+		$command = "avo2db @subFiles $databaseName ";
+		#print "\n\n\n$command\n\n";
+		#system($command);
+    		$output = `$command  2>&1`;
+		open(LOG,">>$databaseLog");
+		print LOG "$command\n";
+		print LOG "$output\n\n";
+		close(LOG);
+
+		# PROGRESS BAR
+		$percentDone = int( 100*($#pickFileList-$#files)/($#pickFileList+1) );
+		#print "  $percentDone  $#subFiles out of $#pickFileList ...\n";
+        	if ($opt_v) {
+			print "$percentDone\% ";
+		}		
+	}
+	if ($opt_v) {
+		print "\n";
+	}
+}
+
+
+sub check_database {
+	@db = dbopen($databaseName,'r');
+	@db = dblookup(@db,"","origin","","");
+	@db = dbsort(@db,'time');
+	my $nRecords = dbquery(@db,"dbRECORD_COUNT");
+	my $pickFileListLength = $#pickFileList;
+
+	# GET FIRST ORIGIN TIME
+	$db[3] = 1;
+	$firstOrigin = dbgetv(@db,"time");
+	$db[3] = $nRecords-1;
+	$lastOrigin = dbgetv(@db,"time");
+	$firstOriginString = strdate($firstOrigin);
+	$lastOriginString = strdate($lastOrigin);
+	$databaseNameShort = 'db'.$startYear.'_'.$startMonth;
+	dbclose(@db);
+	if ($opt_v) {
+		print "Finished. Translated $nRecords of $pickFileListLength pick files from $firstOriginString to $lastOriginString\n\n";
+	}
+}
+
+
+
+
+
+
+##############################################
+
+$Usage = "
+Usage: buildavodb [-v] YYYY MM 
+
+This script converts a month of AVO pick files into Antelope database tables where YYYY and MM are the year and month, respectively. The bulk of the work is done by AVO2DB, which must be in the path in order to work. BUILDAVODB is really a wrapper script which hardwires the directory locations for in and out data and allows an entire month to be processed at once, regardless of size.
+
+OPTIONS
+-v verbose output
+
+CAVEATS
+There is currently no parameter file for this program. Most parameters are hardwired. While this matches the static structure of the pickfile directories, it does not allow for more generalized use. This code actually sends pickfiles to avo2db in batches of a few hundred. This is done to avoid exceeding the command line buffer size. It works fine but there is no actual testing of the command line length for compliance.
+
+AUTHOR
+Michael West
+April 2009
+\n\n";
+
+
+# GET OPTIONS
+$opt_v = 0;
+if ( ! &getopts('v') ) {
+        die ( "$Usage" );
+}
+
+
+
+# CHECK ARGUMENTS
+my $numARGV = $#ARGV;
+if ( ( $numARGV == 1 ) || ( $numARGV == 3 ) ){
+	$startYear = shift(@ARGV);
+	$startMonth = shift(@ARGV);
+	if ( length($startMonth) == 1 ) {
+		$startMonth = '0'.$startMonth;
+	}
+	if ( ($startYear<1900) || ($startYear>2400) ) {
+		die('Invalid year input');
+	}
+	if ( ($startMonth<1) || ($startMonth>12) ) {
+		die('Invalid month input');
+	}
+} else {
+	die ( "$Usage" );
+}
+if ( $numARGV == 3 ) {
+	$endYear = shift(@ARGV);
+	$endMonth = shift(@ARGV);
+	if ( length($endMonth) == 1 ) {
+		$endMonth = '0'.$endMonth;
+	}
+	if ( ($endYear<1900) || ($endYear>2400) ) {
+		die('Invalid end year input');
+	}
+	if ( ($endMonth<1) || ($endMonth>12) ) {
+		die('Invalid end month input');
+	}
+}
+
+
+
+# CONVERT ONE MONTH
+if ( $numARGV == 1 ) {
+	($databaseName,$databaseLog,$pickDir,@pickFileList) = &get_names();
+	&run_avo2db();
+	&check_database();
+}
+
+
+# CONVERT SEVERAL MONTHS
+# internal time convention is the month number since January 1981
+if ( $numARGV == 3 ) {
+	$startMonthNum = 12 * ($startYear-1980) + ($startMonth-1);
+	$endMonthNum = 12 * ($endYear-1980) + $endMonth;
+	foreach ($n=$startMonthNum; $n<$endMonthNum; $n++) {
+		$thisYear = 1980 + int($n/12);
+		$thisMonth = 1 + ($n % 12);
+		$cmd = "buildavodb -v $thisYear $thisMonth";
+		#print "$cmd\n";
+		system("$cmd");
+	}
+}
+
+

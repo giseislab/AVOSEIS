@@ -1,0 +1,366 @@
+detection_reject_expressions	&Tbl{
+    
+    
+    snr < 3.0
+    sta == "DWPF"
+    sta == "HNR"
+    sta == "RAO"
+    sta == "EFGH" && chan == "BHE"
+}
+grid_params	&Arr{
+    centr_aleut	&Arr{
+        P_channel_sifter	..Z|..Z_00
+        P_deltim	0.1
+        P_det_tmin	10
+        S_channel_sifter	..[NE12]|..[NE12]_00
+        S_deltim	0.2
+        algorithm	centr_aleut_deep
+        associate_S	yes
+        closest_stations	40
+        cluster_twin	3.0
+        drop_if_on_edge	yes
+        dwt_tbl	&Tbl{
+            0.0     2.0
+            2.0     1.0
+            10.0    0.0
+        }
+        dwts_dist_far	4.0
+        dwts_dist_near	2.0
+        dwts_wt_far	0.0
+        dwts_wt_near	1.0
+        nondefining_association_P_maxresid	5.0
+        nondefining_association_S_maxresid	5.0
+        nsta_thresh	&Tbl{
+            
+            
+            2.0     4
+            4.0     6
+            6.0     8
+            10.0   10
+            180.0  20
+        }
+        nxd	11
+        nyd	11
+        phase_sifter	r
+        relocate	rundbgenloc
+        reprocess_S	yes
+        sta_defining_pxmax	100.0
+        sta_defining_pxmin	0.0
+        sta_defining_pymax	100.0
+        sta_defining_pymin	0.0
+        try_S	no
+        use_dwt	yes
+        use_dwts	yes
+        use_only_relocation	yes
+    }
+    east_aleut_deep	&Arr{
+        P_channel_sifter	..Z|..Z_00
+        P_deltim	0.1
+        P_det_tmin	10
+        S_channel_sifter	..[NE12]|..[NE12]_00
+        S_deltim	0.2
+        algorithm	east_aleut_deep
+        associate_S	yes
+        closest_stations	40
+        cluster_twin	3.0
+        drop_if_on_edge	yes
+        dwt_tbl	&Tbl{
+            0.0     2.0
+            2.0     1.0
+            10.0    0.0
+        }
+        dwts_dist_far	4.0
+        dwts_dist_near	2.0
+        dwts_wt_far	0.0
+        dwts_wt_near	1.0
+        nondefining_association_P_maxresid	5.0
+        nondefining_association_S_maxresid	5.0
+        nsta_thresh	&Tbl{
+            
+            
+            2.0     4
+            4.0     6
+            6.0     8
+            10.0   10
+            180.0  20
+        }
+        nxd	11
+        nyd	11
+        phase_sifter	r
+        relocate	rundbgenloc
+        reprocess_S	yes
+        sta_defining_pxmax	100.0
+        sta_defining_pxmin	0.0
+        sta_defining_pymax	100.0
+        sta_defining_pymin	0.0
+        try_S	no
+        use_dwt	yes
+        use_dwts	yes
+        use_only_relocation	yes
+    }
+    east_aleut_shal	&Arr{
+        P_channel_sifter	..Z|..Z_00
+        P_deltim	0.1
+        P_det_tmin	10
+        S_channel_sifter	..[NE12]|..[NE12]_00
+        S_deltim	0.2
+        algorithm	ak_shal
+        associate_S	yes
+        closest_stations	40
+        cluster_twin	3.0
+        drop_if_on_edge	yes
+        dwt_tbl	&Tbl{
+            0.0     2.0
+            2.0     1.0
+            10.0    0.0
+        }
+        dwts_dist_far	4.0
+        dwts_dist_near	2.0
+        dwts_wt_far	0.0
+        dwts_wt_near	1.0
+        nondefining_association_P_maxresid	5.0
+        nondefining_association_S_maxresid	5.0
+        nsta_thresh	&Tbl{
+            
+            
+            2.0     4
+            4.0     6
+            6.0     8
+            10.0   10
+            180.0  20
+        }
+        nxd	11
+        nyd	11
+        phase_sifter	r
+        relocate	rundbgenloc
+        reprocess_S	yes
+        sta_defining_pxmax	100.0
+        sta_defining_pxmin	0.0
+        sta_defining_pymax	100.0
+        sta_defining_pymin	0.0
+        try_S	no
+        use_dwt	yes
+        use_dwts	yes
+        use_only_relocation	yes
+    }
+    north_ak	&Arr{
+        P_channel_sifter	..Z|..Z_00
+        P_deltim	0.1
+        P_det_tmin	10
+        S_channel_sifter	..[NE12]|..[NE12]_00
+        S_deltim	0.2
+        algorithm	ak_shal
+        associate_S	yes
+        closest_stations	40
+        cluster_twin	3.0
+        drop_if_on_edge	yes
+        dwt_tbl	&Tbl{
+            0.0     2.0
+            2.0     1.0
+            10.0    0.0
+        }
+        dwts_dist_far	4.0
+        dwts_dist_near	2.0
+        dwts_wt_far	0.0
+        dwts_wt_near	1.0
+        nondefining_association_P_maxresid	5.0
+        nondefining_association_S_maxresid	5.0
+        nsta_thresh	&Tbl{
+            
+            
+            2.0     4
+            4.0     6
+            6.0     8
+            10.0   10
+            180.0  20
+        }
+        nxd	11
+        nyd	11
+        phase_sifter	r
+        relocate	rundbgenloc
+        reprocess_S	yes
+        sta_defining_pxmax	100.0
+        sta_defining_pxmin	0.0
+        sta_defining_pymax	100.0
+        sta_defining_pymin	0.0
+        try_S	no
+        use_dwt	yes
+        use_dwts	yes
+        use_only_relocation	yes
+    }
+    scak_deep	&Arr{
+        P_channel_sifter	..Z|..Z_00
+        P_deltim	0.1
+        P_det_tmin	10
+        S_channel_sifter	..[NE12]|..[NE12]_00
+        S_deltim	0.2
+        algorithm	scak_deep
+        associate_S	yes
+        closest_stations	40
+        cluster_twin	3.0
+        drop_if_on_edge	yes
+        dwt_tbl	&Tbl{
+            0.0     2.0
+            2.0     1.0
+            10.0    0.0
+        }
+        dwts_dist_far	4.0
+        dwts_dist_near	2.0
+        dwts_wt_far	0.0
+        dwts_wt_near	1.0
+        nondefining_association_P_maxresid	5.0
+        nondefining_association_S_maxresid	5.0
+        nsta_thresh	&Tbl{
+            
+            
+            2.0     4
+            4.0     6
+            6.0     8
+            10.0   10
+            180.0  20
+        }
+        nxd	11
+        nyd	11
+        phase_sifter	r
+        relocate	rundbgenloc
+        reprocess_S	yes
+        sta_defining_pxmax	100.0
+        sta_defining_pxmin	0.0
+        sta_defining_pymax	100.0
+        sta_defining_pymin	0.0
+        try_S	no
+        use_dwt	yes
+        use_dwts	yes
+        use_only_relocation	yes
+    }
+    scak_shal	&Arr{
+        P_channel_sifter	..Z|..Z_00
+        P_deltim	0.1
+        P_det_tmin	10
+        S_channel_sifter	..[NE12]|..[NE12]_00
+        S_deltim	0.2
+        algorithm	ak_shal
+        associate_S	yes
+        closest_stations	40
+        cluster_twin	3.0
+        drop_if_on_edge	yes
+        dwt_tbl	&Tbl{
+            0.0     2.0
+            2.0     1.0
+            10.0    0.0
+        }
+        dwts_dist_far	4.0
+        dwts_dist_near	2.0
+        dwts_wt_far	0.0
+        dwts_wt_near	1.0
+        nondefining_association_P_maxresid	5.0
+        nondefining_association_S_maxresid	5.0
+        nsta_thresh	&Tbl{
+            
+            
+            2.0     4
+            4.0     6
+            6.0     8
+            10.0   10
+            180.0  20
+        }
+        nxd	11
+        nyd	11
+        phase_sifter	r
+        relocate	rundbgenloc
+        reprocess_S	yes
+        sta_defining_pxmax	100.0
+        sta_defining_pxmin	0.0
+        sta_defining_pymax	100.0
+        sta_defining_pymin	0.0
+        try_S	no
+        use_dwt	yes
+        use_dwts	yes
+        use_only_relocation	yes
+    }
+    seak	&Arr{
+        P_channel_sifter	..Z|..Z_00
+        P_deltim	0.1
+        P_det_tmin	10
+        S_channel_sifter	..[NE12]|..[NE12]_00
+        S_deltim	0.2
+        algorithm	ak_shal
+        associate_S	yes
+        closest_stations	40
+        cluster_twin	3.0
+        drop_if_on_edge	yes
+        dwt_tbl	&Tbl{
+            0.0     2.0
+            2.0     1.0
+            10.0    0.0
+        }
+        dwts_dist_far	4.0
+        dwts_dist_near	2.0
+        dwts_wt_far	0.0
+        dwts_wt_near	1.0
+        nondefining_association_P_maxresid	5.0
+        nondefining_association_S_maxresid	5.0
+        nsta_thresh	&Tbl{
+            
+            
+            2.0     4
+            4.0     6
+            6.0     8
+            10.0   10
+            180.0  20
+        }
+        nxd	11
+        nyd	11
+        phase_sifter	r
+        relocate	rundbgenloc
+        reprocess_S	yes
+        sta_defining_pxmax	100.0
+        sta_defining_pxmin	0.0
+        sta_defining_pymax	100.0
+        sta_defining_pymin	0.0
+        try_S	no
+        use_dwt	yes
+        use_dwts	yes
+        use_only_relocation	yes
+    }
+    tele_uni	&Arr{
+        P_channel_sifter	..Z|..Z_00
+        P_deltim	0.1
+        P_det_tmin	10
+        S_channel_sifter	..[NE12]|..[NE12]_00
+        S_deltim	0.2
+        algorithm	teleseismic
+        associate_S	yes
+        cluster_twin	5.0
+        drop_if_on_edge	no
+        dwt_tbl	&Tbl{
+            0.0    2.0
+            2.0    1.0
+            10.0    0.5
+            90.0    0.1
+        }
+        dwts_dist_far	4.0
+        dwts_dist_near	2.0
+        dwts_wt_far	0.0
+        dwts_wt_near	1.0
+        nondefining_association_P_maxresid	5.0
+        nondefining_association_S_maxresid	5.0
+        nsta_thresh	12
+        phase_sifter	r
+        relocate	rundbgenloc
+        reprocess_S	yes
+        sta_defining_pxmax	100.0
+        sta_defining_pxmin	0.0
+        sta_defining_pymax	100.0
+        sta_defining_pymin	0.0
+        try_S	no
+        use_dwt	no
+        use_dwts	yes
+        use_only_relocation	yes
+    }
+}
+pf_revision_time	1214342895
+process_ncycle	30
+process_tcycle	0.0
+process_time_window	600.0
+process_timeout	300

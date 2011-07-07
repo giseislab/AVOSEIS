@@ -1,0 +1,22 @@
+ALARMCLASS	swarm
+ALARMNAME	swarm_AK
+AUTH_SUBSET	AK_lo
+MESSAGE_DIR	dbalarm/alarmaudit/message
+MESSAGE_PFDIR	dbalarm/alarmaudit/messagepf
+REMINDER_TIME	1440
+TIMEWINDOW	120
+VOLC_CODE	AK
+VOLC_NAME	Akutan
+swarmend_on	1
+escalations_on	1
+new_alarm	&Arr{
+    mean_rate	5
+    median_rate	12    
+}
+pf_revision_time	1241137954
+reminders_on	1
+significant_change	&Arr{
+    mean_rate_pcchange	100
+    median_rate_pcchange	100
+}
+trackfile state/AK.pf

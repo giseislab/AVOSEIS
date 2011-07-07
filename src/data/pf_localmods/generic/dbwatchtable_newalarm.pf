@@ -1,0 +1,6 @@
+command_list	&Tbl{
+    dbalarmdispatch -v -p pf/dbalarmdispatch -t TIME ALARMID ALARMDB
+}
+last_record_only	0
+pf_revision_time	1241552909
+sleep_period	120

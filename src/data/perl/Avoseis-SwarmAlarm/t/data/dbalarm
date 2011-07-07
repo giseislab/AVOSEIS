@@ -1,0 +1,5 @@
+#  Datascope Database Descriptor File
+#schema rt1.0:alarms
+schema css3.0
+dbpath /iwrun/sum/run/dbmaster/{master_stations}:/avort/oprun/dbseg/{quakes}
+dblocks local 

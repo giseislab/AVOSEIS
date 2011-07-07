@@ -1,0 +1,14 @@
+min_ml	0.1
+max_ml	1.9
+cum_ml	2.1
+mean_ml	0.8
+mean_rate	24
+median_rate	32
+events_declared	14
+events_located	12
+timewindow_start	1240268400
+timewindow_end	1240270200
+swarm_start	1240257600
+swarm_end	
+message_type	reminder
+

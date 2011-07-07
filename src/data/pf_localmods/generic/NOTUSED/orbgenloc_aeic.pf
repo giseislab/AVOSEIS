@@ -1,0 +1,158 @@
+RT_db_record_skip_limit	33
+RT_failure_subdir	failures_ttlvz
+RT_logfile_directory	logs/orbgenloc_logs
+RT_maximum_distance	10.0
+RT_minimum_distance	0.0
+RT_working_db	db/rt_db
+arrival_residual_weight_method	huber
+center_depth	10.0
+center_latitude	40.8634
+center_longitude	-108.4823
+damp_adjust_factor	5.0
+deltax_convergence_size	0.1
+depth_ceiling	0.0
+depth_floor	19.0
+depth_range	0.0
+fix_depth	false
+fix_latitude	false
+fix_longitude	false
+fix_origin_time	false
+generalized_inverse	marquardt
+gridsearch_norm	weighted_rms
+initial_depth	5.0
+initial_latitude	37.9293
+initial_location_method	manual
+initial_longitude	58.1125
+initial_origin_time	712788670.0
+latitude_range	5.0
+longitude_range	5.0
+max_error_scale	1000.0
+max_relative_damp	1.0
+maximum_hypocenter_adjustments	50
+min_error_scale	20.0
+min_relative_damp	0.000005
+min_step_length_scale	0.01
+ndepths	1
+nlat	50
+nlon	50
+pf_revision_time	1282086272
+phases	&Arr{
+    P	&Arr{
+        default_slowness_uncertainty	0.01
+        default_time_uncertainty	0.1
+        time_distance_weight_function	&Tbl{
+            0.0	1.0
+            1.0	1.0
+            5.0	0.1
+            92.0	0.0
+            360.0	0.0
+        }
+        time_station_corrections	&Tbl{
+        }
+        travel_time_calculator	ttlvz
+        ux_distance_weight_function	&Tbl{
+            0.0     1.0
+            10.0    1.0
+            90.0    0.7
+            92.0    0.0
+            360.0   0.0
+        }
+        ux_station_corrections	&Tbl{
+        }
+        uy_distance_weight_function	&Tbl{
+            0.0     1.0
+            10.0     1.0
+            90.0    0.7
+            92.0    0.0
+            360.0   0.0
+        }
+        uy_station_corrections	&Tbl{
+        }
+        velocity_model	&Tbl{
+            5.8     0.0
+            8.0     40.0
+        }
+    }
+    S	&Arr{
+        default_slowness_uncertainty	0.005
+        default_time_uncertainty	0.2
+        time_distance_weight_function	&Tbl{
+            0.0	1.0
+            1.0	1.0
+            5.0	0.1
+            92.0	0.0
+            360.0	0.0
+        }
+        time_station_corrections	&Tbl{
+        }
+        travel_time_calculator	ttlvz
+        ux_distance_weight_function	&Tbl{
+            0.0     1.0
+            10.0     1.0
+            90.0    0.7
+            92.0    0.0
+            360.0   0.0
+        }
+        ux_station_corrections	&Tbl{
+        }
+        uy_distance_weight_function	&Tbl{
+            0.0     1.0
+            10.0     1.0
+            90.0    0.7
+            92.0    0.0
+            360.0   0.0
+        }
+        uy_station_corrections	&Tbl{
+        }
+        velocity_model	&Tbl{
+            3.36    0.0
+            4.5     40.0
+        }
+    }
+}
+recenter	false
+relative_rms_convergence_value	0.001
+seismic_arrays	&Tbl{
+}
+seismic_stations	&Tbl{
+    BLUE     40.9923 -108.5420    2.0980
+    CALA     40.1134 -108.5359    2.3450
+    CALI     40.3653 -108.5670    2.0850
+    CSD      40.4364 -108.2792    1.9310
+    DOUG     40.5703 -108.6887    2.1530
+    DRY      40.6995 -108.5367    2.0590
+    FWGP     40.9642 -108.7681    2.0770
+    GRAN     41.1084 -108.6420    2.1640
+    HELL     41.0470 -108.5767    2.1530
+    HIAW     41.0148 -108.7345    2.1050
+    JNMT     40.4592 -108.0203    2.2310
+    JWM      40.5717 -108.6039    2.0770
+    KINN     41.1801 -108.5926    2.2920
+    LANG     40.8731 -108.2906    2.2580
+    LIME     40.8714 -108.7859    2.3710
+    LOOK     40.8634 -108.4823    2.4150
+    LSC      40.5328 -108.4414    1.8020
+    MAYB     40.4828 -108.1928    1.8880
+    NDH      40.3706 -108.1364    1.9570
+    PINR     40.3634 -108.3684    2.0970
+    PMR      41.0842 -108.8209    2.1640
+    POW      40.9353 -108.4212    2.1690
+    RRE      41.1687 -108.7323    2.3530
+    RRW      41.1389 -108.8589    2.3200
+    SMR      40.7217 -108.3028    1.9000
+    SUTT     40.5787 -108.2859    1.8520
+    SWB      40.6542 -108.3806    1.8150
+    TANK     40.4053 -108.7370    2.4410
+    TWIN     40.7556 -108.3845    1.8830
+    VMCK     41.0789 -108.7098    2.1360
+    VMSC     40.9284 -108.6484    2.0060
+    YSCF     40.4289 -108.4301    1.9660
+    ZENO     40.6028 -108.8245    2.3020
+}
+singular_value_cutoff	0.0001
+slowness_distance_weighting	false
+slowness_residual_weight_method	none
+slowness_weight_scale_factor	1.0
+step_length_scale_factor	0.5
+time_distance_weighting	false
+velocity_model_name	simple

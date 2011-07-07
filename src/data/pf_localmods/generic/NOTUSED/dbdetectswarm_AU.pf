@@ -1,0 +1,31 @@
+ALARMCLASS	swarm
+ALARMNAME	swarm_AU
+AUTH_SUBSET	AU_lo
+BELLWETHERS	&Arr{
+    AUE 8	
+    AUH	8
+    AUI	8
+    AUP	8
+    AUR	8
+    AUW	8
+    AUNW	8
+    AUSE	8
+    AUL	8
+}
+MESSAGE_DIR	dbalarm/alarmaudit/message
+MESSAGE_PFDIR	dbalarm/alarmaudit/messagepf
+REMINDER_TIME	180
+TIMEWINDOW	60
+VOLC_CODE	AU
+VOLC_NAME	Augustine
+swarmend_on	1
+escalations_on	1
+new_alarm	&Arr{
+    mean_rate	6	
+}
+pf_revision_time	1241137954
+reminders_on	1
+significant_change	&Arr{
+    mean_rate_pcchange	100
+}
+trackfile state/AU.pf

@@ -1,0 +1,22 @@
+ALARMCLASS	swarm
+ALARMNAME	swarm_KN
+AUTH_SUBSET	KN_lo
+BELLWETHERS	&Arr{
+}
+MESSAGE_DIR	dbalarm/alarmaudit/message
+MESSAGE_PFDIR	dbalarm/alarmaudit/messagepf
+REMINDER_TIME	180
+TIMEWINDOW	60
+VOLC_CODE	KN
+VOLC_NAME	Kanaga
+swarmend_on	1
+escalations_on	1
+new_alarm	&Arr{
+    mean_rate	4	
+}
+pf_revision_time	1241137954
+reminders_on	1
+significant_change	&Arr{
+    mean_rate_pcchange	100
+}
+trackfile state/KN.pf

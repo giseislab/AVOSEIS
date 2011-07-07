@@ -1,0 +1,16 @@
+# This parameter file drives the dbsplit program
+
+#subset_expression       time<_2002:323:00:00:00_ # the subset expression can be embedded here, 
+                        # or specified on the command line.
+
+# This is the list of tables and views from which dbsplit will derive
+# the "selected" records which are to be copied/moved.
+# If an element of the list is not a standard table name, then
+# dbsplit expects to find a method of generating the view using dbprocess.
+# The actual subset expression is substituted at run time wherever
+# the dbprocess line is "<SUBSET>".  Base tables are subsetted directly
+# with the command line expression.
+views   &Tbl{           
+detection    
+}
+

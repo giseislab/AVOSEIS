@@ -1,0 +1,47 @@
+
+valid_ip_addresses      &Tbl{
+# ip-address        mask
+127.0.0.1       255.255.255.255                 # local host
+137.229.32.139  255.255.255.255 # raven public
+10.156.33.19    255.255.255.255 # raven private data collection subnet
+137.229.32.0    255.255.255.0 readonly  # giseis.alaska.edu network
+137.229.32.107  255.255.255.255 readonly # chinook public
+10.156.33.0     255.255.255.0 readonly # private data collection subnet
+}
+
+minimum_packet_size     400    # used to size the packet index
+maximum_packet_size     8192   # 
+ringsize                512M     # total size of the file which holds the packets
+                               #      (suffix can be G, M or k)
+initial_stash_size      1M     # initial size of stash file
+
+prefix                  orb/raven6565   # where orbserver private files are kept
+
+maximum_srcid           2000   # used to size the source index file, 
+                               #   fixed in size after creation.
+
+concurrency             5      # probably not necessary
+
+time_index_spacing      1      # an index of pktid versus time is kept 
+                               #   with this many seconds between entries
+minimum_time_index_range    3600    # minimum range (in seconds) 
+                                    #   in the pktid by time index.
+maximum_time_index_range   36000    # maximum range (in seconds) 
+                                    #   in the pktid by time index.
+
+statistics_interval            # if specified, bytes and packets
+                               # read and written are printed 
+                               # at intervals specified here
+statistics_file logs/orb6565_statistics # file in which to write transfer and connections info
+
+log_packets	&Arr{ # log all reaped packets sent to these ip addresses
+#127.0.0.1	      #  uncomment to get everything to localhost (for example)
+}
+
+reject_message	&Literal{
+You don't have permission to access this orbserver.
+Please contact someone@somedomain to gain access.
+}
+# $Id: orbserver.pf,v 1.23 2006/11/30 15:54:14 danq Exp $ 
+
+pf_revision_time 1164958119

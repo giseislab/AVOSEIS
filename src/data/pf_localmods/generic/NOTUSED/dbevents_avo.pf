@@ -1,0 +1,280 @@
+# GEOMETRY
+# --------
+geometry		+0+0			# Position on screen of dbevents
+maxmapwidth		900			# maximum width of map (in pixels)
+maxmapheight		1100
+textwidth		60			# width of text display (in characters)
+dbpickgeom		440x1175+1477+0		# geometry of main dbpick display window
+dbpicktypeingeom 	100x20-0-0 		# geometry of dbpick typein window
+
+# GENERAL DBEVENTS PARAMATERS
+# ---------------------------
+automap	1	# 1 = automatically select map
+		# 0 = do not automatically select map
+external_catalog_authors &Arr{	# A table describing authors and letter codes
+				# for external associated origins
+	QED	Q		# QED origins
+	PDE	P		# PDE origins
+	REB	R		# REB origins
+}
+
+legendon	1	# display a map legend (0 = off, 1 = on)
+local_catalog_authors &Arr{	# A table describing authors and letter codes
+				# for locally generated origins
+	UC:danny	d
+}
+meas_table	wfrms2
+meas_type	peak
+pf_revision_time	1144792270
+
+symbol_colors &Tbl{     # event symbol color vs age definitions
+                        # age   unselected_color   selected_color
+	1h	red \#ffa0a0
+	12h	orange orange
+	1d	yellow yellow
+	2d	white white
+	0	\#808080 \#d0d0d0
+}
+update_interval	10s	# default database update interval
+update_intervals &Tbl{	# database update intervals menu
+	1s
+	5s
+	10s
+	1m
+	10m
+	30m
+	1h
+}
+
+# DBPICK PARAMETERS
+# -----------------
+startdbpick	1	# 1 = start dbpick at program startup
+			# 0 = do not start dbpick at program startup
+twin	180		# default dbpick display time window
+waittorestart	270 	# seconds to wait when restarting dbpick
+scsift	*:BHZ		# default dbpick station-channel sifter
+additional	swa	# additional command to send to dbpick (show waveform amplitude?)
+channels	25	# default number of dbpick channels to display
+phases P,S
+filter 	10
+
+########################################################################################
+# AEIC EXTENSIONS
+#
+# All code added by AEIC is disabled by omitting use_aeic_extensions, or setting it to 0
+# So this is a master switch for disabling webmaps, announcements, qdds etc
+# Additional parameters also need to be set to allow those features to work
+# 0 = turn off all AEIC extensions to dbevents
+# 1 = turn on AEIC extensions
+use_aeic_extensions	1
+
+# ANNOUNCE EVENTS
+# ---------------
+# 
+# Events can only be announced if the announce_event is set to 1
+# use_aeic_extensions must also be set to 1 
+announce_enabled	1
+#
+# usemysrn_mag
+# 0 = announce all events above magthresh
+# 1 = only announce events within mysrn and above magthresh
+usemysrn_mag	1
+#
+# mysrn: my seismic region number
+# if usemysrc_mag == 1 then this will be used to announce only events from mysrn
+mysrn	1		# local seismic region number (SRN)
+#
+# only play sound for M>mag_thresh
+mag_thresh	2
+#
+# path to the audioplayer software to use	
+#audioplayer	eocmacrun/bin/qtplay # MAC
+audioplayer	/usr/bin/audioplay		
+#
+# soundpath: this is the path to all the sound files
+soundpath	/usr/local/aeic/4.11/data/sounds
+#
+# soundfile: this sound is played at the start of each announcement
+soundfile	machgun.au 
+#
+# dbwav: the second thing that will be played
+dbwav	imac.wav
+
+		
+# FONT
+# ----
+#
+# font to use for event list (use_aeic_extensions must also be 1)
+list_font	-adobe-courier-bold-r-normal--14-100-100-100-m-90-iso8859-1
+
+# MAGNITUDES
+# ----------
+#
+# defines preference order of magnitude displayed (decreasing preference)
+# only used if use_aeic_extensions = 0
+magnitude_preference_order	&Tbl{
+    ml
+    ms
+    mb
+}
+
+# NEAREST PLACES
+# --------------
+#
+# The database from which to get a table of places to work out distances from for plotting in the origins window (bottom right)
+# Only works if use_aeic_extensions == 1
+placedb	/Seis/databases/places/dbevents_places
+#
+# Places have to be within neardist (km?) to appear in origins window
+neardist	200
+#
+# nplacemax: the maximum number of places that can be displayed in the list
+nplacemax	5
+#
+# place to always include in the list
+always_include	Fairbanks
+
+
+# DOWNSTREAM DELETES
+# ------------------
+#
+# Downstream deletes (for QDDS, EOC & Shakemap) are only activated if the delete_script parameter is set to the appropriate script
+# review_event_enabled must also be set to 1
+delete_options	-d
+delete_pf	/usr/local/aeic/4.11/data/pf/delete_event.pf
+delete_script	/usr/local/aeic/4.11/bin/delete_event
+downstream_deletes	0
+#
+# if test mode is defined as 1, nothing is deleted
+#test_mode		1
+
+# REVIEW EVENTS
+# -------------
+#
+# Events can only be reviewed if review_event_enabled is set to 1
+# use_aeic_extensions must also be set to 1
+review_event_enabled	1
+
+# SHAKEMAPS
+# -------------
+#
+# Shakemap link on button-3 menu only shown if shakemapsdir is defined & shakemapgif exists
+# If shakemaps_script is defined, it will attempt to find a relevant gif file from the Shakemap website
+# If a script isn't being used, some other process must copy the gif files into shakemapsdir or there will
+# never be a gif to display! 
+# use_aeic_extensions must also be set to 1
+shakemapsdir	/usr/local/mosaic/AEIC/internal/shakemaps
+# size and position of xv image window that displays webmap
+shakemaps_geometry	612x740+0+0  
+shakemaps_script	/usr/local/aeic/4.11/bin/parseShakemapArchive
+
+
+# STATION COLORS
+# --------------
+station_colors	&Tbl{
+    1.0	red \#ffa0a0
+    0.5	orange orange
+    0.25	yellow yellow
+    0.1	\#00d000 green
+    0	blue \#a0a0ff
+}
+
+# WEBMAPS
+# -------
+#
+# webmaps are only enabled if either webmapsdb or webmapsdir is set
+#
+# database that contains the webmap table as 
+# made by dbrecenteqs. must have same 
+# evids as database feeding dbevents
+webmapsdb	/iwrun/sum/run/dbrecenteqs/dbrec1
+#
+# directory to look at if there is no webmapsdb or if evid not found in webmapsdb
+# this will only work if that dbrecenteqs is running on this database
+webmapsdir	/usr/local/mosaic/AEIC/internal/webmaps
+#
+# size and position of xv image window that displays webmap
+webmaps_geometry	400x400+0+0  
+########################################################################################################
+
+maps &Arr{		# map definitions
+    all_alaska &Arr{
+	file /avort/oprun/maps/alaska_big.gif
+	format gif
+	proj	edp
+	latc    61
+	lonc    -151
+	xdelmin -18
+	xdelmax 18
+	ydelmin -9
+	ydelmax 9 
+	symsize 14 
+	priority 2
+	latminbb 52
+	latmaxbb 70
+	lonminbb -169
+	lonmaxbb -133
+    }
+	global_merc &Arr{					# This is a typical mercator projection map (merc)
+		file ANTELOPE/data/maps/images/global.gif	# map filename
+		format gif					# map format
+		proj merc					# map projection
+		latmin -78.0					# latitude at bottom edge
+		latmax 78.0					# latitude at top edge
+		lonmin -180.0					# longitude at left edge        	priority 2
+
+		lonmax 180.0					# longitude at right edge
+		symsize	8					# event symbol size (in pixels)
+		latminbb -90.0					# approximate minimum latitude (for determining bounding region)
+		latmaxbb 90.0					# approximate maximum latitude (for determining bounding region)
+		lonminbb -180.0					# approximate minimum longitude (for determining bounding region)
+		lonmaxbb 180.0					# approximate maximum longitude (for determining bounding region)
+		priority 0					# display priority
+	}
+	global_zoom &Arr{					# This is a typical dynamic zoom edp map
+		file zoom					# to indicate zoom map
+		latc 0.0					# initial center latitude
+		lonc 0.0					# initial center longitude
+		xdelmin -180.0					# initial X (east-west) distance at left edge
+		xdelmax 180.0					# initial X (east-west) distance at right edge
+		ydelmin -180.0					# initial Y (north-south) distance at bottom edge
+		ydelmax 180.0					# initial Y (north-south) distance at top edge
+		width 800					# map width in pixels
+		height 800					# map height in pixels
+		symsize	8					# event symbol size (in pixels)
+		latminbb -90.0					# approximate minimum latitude (for determining bounding region)
+		latmaxbb 90.0					# approximate maximum latitude (for determining bounding region)
+		lonminbb -180.0					# approximate minimum longitude (for determining bounding region)
+		lonmaxbb 180.0					# approximate maximum longitude (for determining bounding region)
+		priority 1					# display priority
+	}
+	spurr_redoubt_illiamna &Arr{
+        	file /avort/oprun/maps/spurr_redoubt_illiamna.gif
+        	format gif
+        	proj edp
+        	latc 60.9
+        	lonc -152.5
+        	xdelmin         -0.754520727437085
+        	ydelmin         -1.09139380258719
+        	xdelmax         0.704189995224467
+        	ydelmax         1.10808248220362
+        	symsize 8
+        	priority 3
+	}
+	alaska_10 &Arr{
+        	file ANTELOPE/data/maps/images/alaska_10.gif
+        	format gif
+        	proj edp
+        	latc 60.000
+        	lonc -150.000
+        	xdelmin -5.000
+        	xdelmax 5.000
+        	ydelmin -5.000
+        	ydelmax 5.000
+       		symsize 10
+        	priority 2
+
+}
+
+}
+

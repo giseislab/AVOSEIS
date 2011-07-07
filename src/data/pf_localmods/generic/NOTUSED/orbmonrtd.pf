@@ -1,0 +1,43 @@
+
+# *** To use the dump option, ImageMagick must be installed ***
+dump	getgif $window $period $name	
+
+
+sources &Tbl{
+AV_RSO_EHZ  :	1800.000 -700 700 1500 62 filter BW .8 4 20 4
+AV_REF_EHZ  :	1800.000 -700 700 1500 62 filter BW .8 4 20 4
+AV_RDN_EHZ  : 	1800.000 -700 700 1500 62 filter BW .8 4 20 4
+AV_RED_EHZ  : 	1800.000 -700 700 1500 62 filter BW .8 4 20 4
+AV_RDJH_EHZ : 	1800.000 -125 125 1500 62 filter BW .8 4 20 4
+AV_RDWB_BHZ : 	1800.000 -125 125 1500 62 filter BW .8 4 20 4
+AV_DFR_EHZ  : 	1800.000 -125 125 1500 62 filter BW .8 4 20 4
+AV_NCT_EHZ  : 	1800.000 -20   20 1500 62 filter BW .8 4 20 4
+AV_RDE_EHZ  : 	1800.000 -400 400 1500 62 filter BW .8 4 20 4
+AV_RDT_EHZ  : 	1800.000 -125 125 1500 62 filter BW .8 4 20 4
+AV_BGL_EHZ  :	1800.000 -125 125 1500 62 filter BW .8 4 20 4
+AV_CRP_EHZ  :	1800.000 -125 125 1500 62 filter BW .8 4 20 4
+AV_ILW_EHZ  :	1800.000 -500 500 1500 62 filter BW .8 4 20 4
+}
+
+detections &Arr{
+BW_3.0_4_20_4 00ff00 0.05
+BW_0.5_4_3_4 ffa0a0 0.1
+}
+
+arrivals &Arr{
+P ff0000
+P1 ff0000
+P2 00a000
+P3 0000ff
+S ff0000
+D1 ffa0a0
+D2 00a000
+D3 8080ff
+S1 ff0000
+S2 00a000
+S3 0000ff
+}
+
+# $Id: orbmonrtd.pf,v 1.6 2005/07/14 14:38:23 danq Exp $ 
+
+pf_revision_time 1121408494

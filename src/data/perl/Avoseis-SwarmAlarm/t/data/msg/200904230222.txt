@@ -1,0 +1,5 @@
+Evts: 26 (25 located)
+Mean Rate: 48/hr
+Rate: NA
+Mags: -0.3/0.3/1.1 (of 24)
+Cum Ml: 3.7

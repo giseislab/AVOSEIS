@@ -1,0 +1,104 @@
+arrival_residual_weight_method	none
+arrival_table	&Tbl{
+    14337 AML P 793267678.25705 -1.000 d -1.00 -1.00 n -1.00 -1.00 n
+    14344 AML S 793267696.35994 0.637 d -1.00 -1.00 n -1.00 -1.00 n
+    14338 EKS2 P 793267686.52500 0.205 d -1.00 -1.00 n -1.00 -1.00 n
+    14349 EKS2 S 793267709.80916 0.252 d -1.00 -1.00 n -1.00 -1.00 n
+    14339 UCH P 793267688.25804 -1.000 d -1.00 -1.00 n -1.00 -1.00 n
+    14350 UCH S 793267713.95679 1.290 d -1.00 -1.00 n -1.00 -1.00 n
+    14340 AAK P 793267691.52051 0.149 d -1.00 -1.00 n -1.00 -1.00 n
+    14351 AAK S 793267719.11153 2.082 d -1.00 -1.00 n -1.00 -1.00 n
+    14342 KZA P 793267694.80195 0.121 d -1.00 -1.00 n -1.00 -1.00 n
+    14353 KZA S 793267726.20449 1.206 d -1.00 -1.00 n -1.00 -1.00 n
+    14343 KBK P 793267696.31520 0.090 d -1.00 -1.00 n -1.00 -1.00 n
+    14354 KBK S 793267728.08480 0.430 d -1.00 -1.00 n -1.00 -1.00 n
+    14345 CHM P 793267696.64488 0.107 d -1.00 -1.00 n -1.00 -1.00 n
+    14355 CHM S 793267728.94137 0.692 d -1.00 -1.00 n -1.00 -1.00 n
+    14346 USP P 793267697.59614 0.121 d -1.00 -1.00 n -1.00 -1.00 n
+    14356 USP S 793267730.40815 0.252 d -1.00 -1.00 n -1.00 -1.00 n
+    14347 TKM2 P 793267702.74517 0.077 d -1.00 -1.00 n -1.00 -1.00 n
+    14357 TKM2 S 793267740.18817 0.586 d -1.00 -1.00 n -1.00 -1.00 n
+    14348 ULHL P 793267704.85287 0.671 d -1.00 -1.00 n -1.00 -1.00 n
+    14358 ULHL S 793267748.20922 4.908 d -1.00 -1.00 n -1.00 -1.00 n
+    14352 TLG P 793267719.27442 0.517 d -1.00 -1.00 n -1.00 -1.00 n
+    14360 TLG S 793267770.35128 1.742 d -1.00 -1.00 n -1.00 -1.00 n
+    14359 NIL P 793267767.48769 0.287 d -1.00 -1.00 n -1.00 -1.00 n
+    14365 NIL S 793267851.36022 2.974 d -1.00 -1.00 n -1.00 -1.00 n
+    14361 KUR P 793267802.25414 0.484 d -1.00 -1.00 n -1.00 -1.00 n
+    14367 KUR S 793267925.32234 3.409 d -1.00 -1.00 n -1.00 -1.00 n
+    14363 BRVK P 793267822.92781 0.268 d -1.00 -1.00 n -1.00 -1.00 n
+    14370 BRVK S 793267962.40285 2.757 d -1.00 -1.00 n -1.00 -1.00 n
+    14362 ZRN P 793267822.20598 0.818 d -1.00 -1.00 n -1.00 -1.00 n
+    14368 ZRN S 793267938.02988 -1.000 d -1.00 -1.00 n -1.00 -1.00 n
+    14364 AKT P 793267845.36933 0.309 d -1.00 -1.00 n -1.00 -1.00 n
+    14373 AKT S 793267990.83460 2.735 d -1.00 -1.00 n -1.00 -1.00 n
+    14366 ARU P 793267899.68275 1.034 d -1.00 -1.00 n -1.00 -1.00 n
+    14379 ARU S 793268109.42351 7.343 d -1.00 -1.00 n -1.00 -1.00 n
+    14369 KIV P 793267949.57577 0.251 d -1.00 -1.00 n -1.00 -1.00 n
+    14371 TLY P 793267966.86533 0.249 d -1.00 -1.00 n -1.00 -1.00 n
+    14372 ULN P 793267981.52870 0.110 d -1.00 -1.00 n -1.00 -1.00 n
+    14374 ANTO P 793268023.13192 0.833 d -1.00 -1.00 n -1.00 -1.00 n
+    14376 LVZ P 793268052.36636 0.186 d -1.00 -1.00 n -1.00 -1.00 n
+    14378 YAK P 793268103.34047 0.184 d -1.00 -1.00 n -1.00 -1.00 n
+    14391 YAK S 793268465.11822 -1.000 d -1.00 -1.00 n -1.00 -1.00 n
+    14392 YAK S 793268481.85890 -1.000 d -1.00 -1.00 n -1.00 -1.00 n
+    14380 KONO P 793268125.33685 0.171 d -1.00 -1.00 n -1.00 -1.00 n
+    14381 GRFO P 793268130.75102 0.170 d -1.00 -1.00 n -1.00 -1.00 n
+    14383 KBS P 793268142.12425 0.414 d -1.00 -1.00 n -1.00 -1.00 n
+    14385 ESK P 793268184.95776 0.405 d -1.00 -1.00 n -1.00 -1.00 n
+    14388 COL P 793268321.45304 0.263 d -1.00 -1.00 n -1.00 -1.00 n
+    14389 WRAB P 793268400.23354 0.512 d -1.00 -1.00 n -1.00 -1.00 n
+}
+author	UC:danq
+bad_clocks	&Tbl{
+}
+center_depth	10.0
+center_latitude	38.2057
+center_longitude	-88.1706
+clock_error_cutoff	0.1
+confidence	0.683
+damp_adjust_factor	5.0
+deltax_convergence_size	0.1
+depth_ceiling	0.0
+depth_floor	100.0
+depth_range	5.0
+ellipse_type	chi_square
+fix_depth	n
+fix_latitude	0
+fix_longitude	0
+fix_origin_time	0
+generalized_inverse	marquardt
+gridsearch_norm	raw
+initial_depth	50
+initial_latitude	42.1311
+initial_location_method	nearest_station
+initial_longitude	73.6941
+latitude_range	5.0
+longitude_range	5.0
+max_error_scale	1000.0
+max_relative_damp	1.0
+maximum_azimuth	360.0
+maximum_distance	2.0
+maximum_hypocenter_adjustments	40
+maximum_iterations	40
+min_error_scale	1.0
+min_relative_damp	0.000005
+min_step_length_scale	0.01
+minimum_azimuth	0.0
+minimum_distance	0.1
+ndepths	3
+nlat	20
+nlon	20
+number_points_azimuth	36
+number_points_r	19
+output_file	location_output
+pf_revision_time	1282086271
+recenter	1
+relative_rms_convergence_value	0.01
+singular_value_cutoff	0.0001
+slowness_distance_weighting	0
+slowness_residual_weight_method	none
+slowness_weight_scale_factor	1.0
+step_length_scale_factor	0.5
+time_distance_weighting	0
+travel_time_model	taup/iasp91

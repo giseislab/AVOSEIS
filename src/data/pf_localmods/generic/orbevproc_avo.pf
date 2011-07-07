@@ -1,0 +1,61 @@
+#    This is the orbevproc parameter file
+
+#max_events_to_thread	4	# maximum number of events to process concurrently
+max_events_to_thread	5	# maximum number of events to process concurrently
+
+#    This is the list of processing modules to be run
+
+event_processes &Tbl{
+	#perl_file	perl_class		parameters
+	Magnitude.pm
+	Mlrichter.pm	Mlrichter		mlrichter_params
+}
+
+#    These are parameter templates for each of the processing modules
+
+mlrichter_params &Arr{
+	channels &Tbl{
+#	snet_expr chan_expr      noise_twin signal_twin   snr_thresh    maxclip
+#     	   sta_expr          filter    noise_toffset signal_toffset minclip
+     	.* .*    BHZ.* 	auto     10.0 10.0 f2.0     5.0 2.0
+     	.* .*    [ES]HZ autosp   10.0 10.0 f2.0     5.0 3.0	-2048	2047
+	}
+	reject &Tbl{
+#	snet_expr sta_expr
+	AV	AUW
+	AV	AUL
+	AV	CESW	
+	AV	CKN	
+	AK	CUT	
+	AK	HUR
+	AK	GLB
+	AK	KNK
+	AV	GAKI	
+	AV	GSTR	
+	AV	KOKV	
+	AV	KONE	
+	AV	KOWE	
+	AT	MID	
+	AV	MNAT
+	AV	MSOM
+	AV	NCG
+	AK	NNL
+	AV	PS4A
+	IM	.*
+	ATTU	.*
+	}
+	update_time		10.0
+#	maximum_wait_time	30.0
+	maximum_wait_time	300.0
+	maximum_bad_fraction	0.2
+	auth_accept		.*
+        station_number_minimum 	3
+#        station_percentage_minimum 0.0
+        uncertainty_maximum   	1.0
+	output_magtype		ml
+	output_auth		orbml
+	output_stamag		yes
+	output_wfmeas		no
+}
+
+pf_revision_time 1178244388

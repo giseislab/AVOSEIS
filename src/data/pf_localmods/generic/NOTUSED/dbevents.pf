@@ -1,0 +1,133 @@
+#defines preference order of magnitude displayed (decreasing preference)
+magnitude_preference_order &Tbl{
+	ml
+	ms
+	mb
+}
+maxmapwidth	800		# maximum width of map (in pixels)
+maxmapheight	800		# maximum height of map (in pixels)
+dbpickgeom	480x662-0+62	# geometry of main dbpick display window
+dbpicktypeingeom	100x20-0-0	# geometry of dbpick typein window
+scsift		*:*		# default dbpick station-channel sifter
+channels	33		# default number of dbpick channels to display
+phases		P,S		# default predicted phases to display
+additional	swa		# default additional dbpick commands
+twin		60		# default dbpick display time window
+filter		11		# default dbpick filter index
+textwidth	50		# width of text display (in characters)
+geometry	+0+0		# placement geometry of main window
+waittorestart	10		# seconds to wait when restarting dbpick
+
+startdbpick	0		# 1 = start dbpick at program startup
+				# 0 = do not start dbpick at program startup
+automap		1		# 1 = automatically select map
+				# 0 = do not automatically select map
+legendon	1		# 1 = display map legend
+				# 0 = do not display map legend
+stamode		0		# 1 = station plot mode on
+				# 0 = station plot mode off
+warpdbpick	0		# 1 = warp dbpick window to other display
+				# 0 = don't warp dbpick window to other display
+
+external_catalog_authors &Arr{	# A table describing authors and letter codes
+				# for external associated origins
+	QED	Q		# QED origins
+	PDE	P		# PDE origins
+	REB	R		# REB origins
+}
+
+local_catalog_authors &Arr{	# A table describing authors and letter codes
+				# for locally generated origins
+	UC:danny	d        	priority 2
+
+}
+
+
+update_intervals &Tbl{	# database update intervals menu
+	1s
+	5s
+	10s
+	1m
+	10m
+	30m
+	1h
+}
+
+update_interval	10s	# default database update interval
+
+symbol_colors &Tbl{	# event symbol color vs age definitions
+			# age   unselected_color   selected_color
+	1h	red \#ffa0a0
+	6h	orange orange
+	1d	yellow yellow
+	4d	00d000 green
+	7d	blue a0a0ff
+	0	808080 d0d0d0
+}
+
+maps &Arr{		# map definitions
+	global_merc &Arr{					# This is a typical mercator projection map (merc)
+		file ANTELOPE/data/maps/images/global.gif	# map filename
+		format gif					# map format
+		proj merc					# map projection
+		latmin -78.0					# latitude at bottom edge
+		latmax 78.0					# latitude at top edge
+		lonmin -180.0					# longitude at left edge        	priority 2
+
+		lonmax 180.0					# longitude at right edge
+		symsize	8					# event symbol size (in pixels)
+		latminbb -90.0					# approximate minimum latitude (for determining bounding region)
+		latmaxbb 90.0					# approximate maximum latitude (for determining bounding region)
+		lonminbb -180.0					# approximate minimum longitude (for determining bounding region)
+		lonmaxbb 180.0					# approximate maximum longitude (for determining bounding region)
+		priority 0					# display priority
+	}
+	global_zoom &Arr{					# This is a typical dynamic zoom edp map
+		file zoom					# to indicate zoom map
+		latc 0.0					# initial center latitude
+		lonc 0.0					# initial center longitude
+		xdelmin -180.0					# initial X (east-west) distance at left edge
+		xdelmax 180.0					# initial X (east-west) distance at right edge
+		ydelmin -180.0					# initial Y (north-south) distance at bottom edge
+		ydelmax 180.0					# initial Y (north-south) distance at top edge
+		width 800					# map width in pixels
+		height 800					# map height in pixels
+		symsize	8					# event symbol size (in pixels)
+		latminbb -90.0					# approximate minimum latitude (for determining bounding region)
+		latmaxbb 90.0					# approximate maximum latitude (for determining bounding region)
+		lonminbb -180.0					# approximate minimum longitude (for determining bounding region)
+		lonmaxbb 180.0					# approximate maximum longitude (for determining bounding region)
+		priority 1					# display priority
+	}
+	spurr_redoubt_illiamna &Arr{
+        	file /avort/oprun/maps/spurr_redoubt_illiamna.gif
+        	format gif
+        	proj edp
+        	latc 60.9
+        	lonc -152.5
+        	xdelmin         -0.754520727437085
+        	ydelmin         -1.09139380258719
+        	xdelmax         0.704189995224467
+        	ydelmax         1.10808248220362
+        	symsize 8
+        	priority 3
+	}
+	alaska_10 &Arr{
+        	file ANTELOPE/data/maps/images/alaska_10.gif
+        	format gif
+        	proj edp
+        	latc 60.000
+        	lonc -150.000
+        	xdelmin -5.000
+        	xdelmax 5.000
+        	ydelmin -5.000
+        	ydelmax 5.000
+       		symsize 10
+        	priority 2
+
+}
+
+
+}
+
+pf_revision_time 1180058495

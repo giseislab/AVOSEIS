@@ -1,0 +1,72 @@
+# alarm class - type of alarm
+ALARMCLASS	swarm
+
+# an identifier for this particular combination of stations/bellwethers/timewindow/timeout parameters
+ALARMNAME	rapid_onset_RD
+
+# Directory where the email message files will be written
+MESSAGE_DIR	alarmdb/alarmaudit/message
+
+# Directory where the message parameter files will be written
+MESSAGE_PFDIR	alarmdb/alarmaudit/messagepf
+
+# Name of the volcano
+VOLC_NAME	Redoubt
+
+# Code for the volcano
+VOLC_CODE	RD		# Not used
+
+# string used to subset auth field for "located" events	
+AUTH_SUBSET	local_RD
+
+# Timewindow of data to check (minutes)
+TIMEWINDOW	30
+
+# Reminder time - reminders will be sent this frequently about an ongoing swarm
+REMINDER_TIME	180
+
+# Control whether messages are sent for reminders and escalations
+reminders_on	1	# 0 (off) or 1 (on)
+escalations_on	1	# 0 (off) or 1 (on)
+
+# Control what kind of messages go to cellphones
+cellphones_on	1	# 0 = none, 1 = only new swarm alarms, 2 = include escalations also, 3 = include reminders also	
+
+# List of stations used for counting events and ensuring the events are recorded at Redoubt
+BELLWETHERS &Arr{
+	RSO	8
+	RED	8
+	REF	8
+	RDN	8
+	DFR	8
+	NCT	8
+	RDJH	8
+	RDWB	8	
+}
+
+# new alarm threshold
+new_alarm &Arr{
+	# mean_rate - minimum mean hourly event rate
+	mean_rate 20
+	# median_rate - minimum median hourly event rate (optional)
+#	median_rate 25
+	# mean_ml - minimim mean Ml (optional)
+#	mean_ml	1.0
+	# cum_ml - minimum cumulative magnitude
+#	cum_ml 1.2
+}
+
+# significant change threshold
+significant_change &Arr{
+	# mean_rate_pcchange - minimum percentage change in mean hourly event rate to declare a significant change
+	mean_rate_pcchange 25
+	# median_rate_pcchange - minimum percentage change in median hourly event rate to declare a significant change (optional)
+#	median_rate_pcchange 25
+	# mean_ml_change - minimim change mean Ml to declare a significant change (optional)
+#	mean_ml_change	0.2
+	# cum_ml_change - minimum change in cumulative magnitude to declare a significant change (optional)
+#	cum_ml_change 0.2
+}
+
+
+pf_revision_time 1271190068

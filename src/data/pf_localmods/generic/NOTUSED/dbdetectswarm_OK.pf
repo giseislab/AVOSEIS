@@ -1,0 +1,35 @@
+ALARMCLASS	swarm
+ALARMNAME	swarm_OK
+AUTH_SUBSET	OK_lo
+BELLWETHERS	&Arr{
+    OKCE	8
+    #OKCF 8	
+    OKSO	8
+    OKWR	8
+    OKCD	8
+    OKTU	8
+    OKWE	8
+    OKER	8
+    OKAK	8  
+    OKRE	8
+    OKFG	8
+    OKSP	8
+    OKID	8
+}
+MESSAGE_DIR	dbalarm/alarmaudit/message
+MESSAGE_PFDIR	dbalarm/alarmaudit/messagepf
+REMINDER_TIME	180
+TIMEWINDOW	60
+VOLC_CODE	OK
+VOLC_NAME	Okmok
+swarmend_on	1
+escalations_on	1
+new_alarm	&Arr{
+    mean_rate	6	
+}
+pf_revision_time	1241137954
+reminders_on	1
+significant_change	&Arr{
+    mean_rate_pcchange	100
+}
+trackfile state/OK.pf

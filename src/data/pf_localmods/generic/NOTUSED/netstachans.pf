@@ -1,0 +1,2331 @@
+
+Wrangell &Tbl{
+	WACK &Arr{
+		lat	61.9863
+		lon	-144.3284
+		dist	16.3
+	}
+	WANC &Arr{
+		lat	62.0032
+		lon	-144.0699
+		dist	2.7
+	}
+	WASW &Arr{
+		lat	61.9282
+		lon	-144.1724
+		dist	12.1
+	}
+	WAZA &Arr{
+		lat	62.0751
+		lon	-144.1522
+		dist	10.0
+	}
+}
+
+Spurr &Tbl{
+	BGL &Arr{
+		lat	61.2669
+		lon	-152.3890
+		dist	8.3
+	}
+	BKG &Arr{
+		lat	61.0702
+		lon	-152.2626
+		dist	25.6
+	}
+	CGL &Arr{
+		lat	61.3077
+		lon	-152.0067
+		dist	13.0
+	}
+	CKL &Arr{
+		lat	61.1964
+		lon	-152.3378
+		dist	12.5
+	}
+	CKN &Arr{
+		lat	61.2240
+		lon	-152.1815
+		dist	9.2
+	}
+	CKT &Arr{
+		lat	61.2008
+		lon	-152.2062
+		dist	11.3
+	}
+	CP2 &Arr{
+		lat	61.2642
+		lon	-152.2418
+		dist	4.0
+	}
+	CRP &Arr{
+		lat	61.2670
+		lon	-152.1555
+		dist	6.2
+	}
+	NCG &Arr{
+		lat	61.4037
+		lon	-152.1567
+		dist	12.6
+	}
+	SPU &Arr{
+		lat	61.1817
+		lon	-152.0543
+		dist	16.8
+	}
+	STLK &Arr{
+		lat	61.4988
+		lon	-151.8327
+		dist	31.4
+	}
+	SPNW &Arr{
+		lat	61.3471
+		lon	-152.6039
+		dist	19.6
+	}
+	SPWE &Arr{
+		lat	61.2734
+		lon	-152.5591
+		dist	16.8
+	}
+	SPBG &Arr{
+		lat	61.2597
+		lon	-152.3699
+		dist	7.8
+	}
+	SPCG &Arr{
+		lat	61.2919
+		lon	-152.0205
+		dist	12.3
+	}
+	SPCR &Arr{
+		lat	61.2009
+		lon	-152.2068
+		dist	11.3
+	}
+}
+
+Redoubt &Tbl{
+	BGR &Arr{
+		lat	60.7575
+		lon	-152.4177
+		dist	34.6
+	}
+	DFR &Arr{
+		lat	60.5919
+		lon	-152.6860
+		dist	11.7
+	}
+	ILI &Arr{
+		lat	60.0813
+		lon	-152.9584
+		dist	47.1
+	}
+	NCT &Arr{
+		lat	60.5631
+		lon	-152.9293
+		dist	13.2
+	}
+	RDN &Arr{
+		lat	60.5230
+		lon	-152.7379
+		dist	3.7
+	}
+	RDT &Arr{
+		lat	60.5732
+		lon	-152.4052
+		dist	20.5
+	}
+	RED &Arr{
+		lat	60.4199
+		lon	-152.7718
+		dist	8.0
+	}
+	REF &Arr{
+		lat	60.4892
+		lon	-152.6917
+		dist	2.6
+	}
+	RSO &Arr{
+		lat	60.4622
+		lon	-152.7538
+		dist	3.2
+	}
+	RDDR &Arr{
+		lat	60.5849
+		lon	-152.5863
+		dist	13.5
+	}
+	RDJH &Arr{
+		lat	60.5911
+		lon	-152.8036
+		dist	11.8
+	}
+	RDWB &Arr{
+		lat	60.4881
+		lon	-152.8402
+		dist	5.5
+	}
+}
+
+Iliamna &Tbl{
+	ILI &Arr{
+		lat	60.0813
+		lon	-152.9584
+		dist	9.3
+	}
+	ILS &Arr{
+		lat	59.9576
+		lon	-153.0681
+		dist	8.2
+	}
+	ILW &Arr{
+		lat	60.0598
+		lon	-153.1370
+		dist	4.2
+	}
+	INE &Arr{
+		lat	60.0608
+		lon	-153.0625
+		dist	3.8
+	}
+	IVE &Arr{
+		lat	60.0169
+		lon	-153.0163
+		dist	4.4
+	}
+	IVS &Arr{
+		lat	60.0092
+		lon	-153.0808
+		dist	2.4
+	}
+	OPT &Arr{
+		lat	59.6532
+		lon	-153.2299
+		dist	42.7
+	}
+	RED &Arr{
+		lat	60.4199
+		lon	-152.7718
+		dist	46.8
+	}
+}
+
+Augustine &Tbl{
+	AUE &Arr{
+		lat	59.3718
+		lon	-153.3751
+		dist	3.9
+	}
+	AUH &Arr{
+		lat	59.3639
+		lon	-153.4432
+		dist	0.5
+	}
+	AUI &Arr{
+		lat	59.3352
+		lon	-153.4277
+		dist	2.8
+	}
+	AUP &Arr{
+		lat	59.3634
+		lon	-153.4202
+		dist	1.2
+	}
+	AUW &Arr{
+		lat	59.3701
+		lon	-153.4708
+		dist	2.1
+	}
+	CDD &Arr{
+		lat	58.9296
+		lon	-153.6426
+		dist	49.3
+	}
+	OPT &Arr{
+		lat	59.6532
+		lon	-153.2299
+		dist	34.7
+	}
+	AUNW &Arr{
+		lat	59.3782
+		lon	-153.4768
+		dist	2.9
+	}
+	AUSE &Arr{
+		lat	59.3414
+		lon	-153.3975
+		dist	3.2
+	}
+	AUL &Arr{
+		lat	59.3823
+		lon	-153.4357
+		dist	2.5
+	}
+}
+
+Douglas &Tbl{
+	CDD &Arr{
+		lat	58.9296
+		lon	-153.6426
+		dist	9.7
+	}
+	FOPK &Arr{
+		lat	58.7580
+		lon	-153.4739
+		dist	12.0
+	}
+	FOSS &Arr{
+		lat	58.7994
+		lon	-153.6945
+		dist	11.2
+	}
+	FONW &Arr{
+		lat	58.8348
+		lon	-153.9184
+		dist	22.0
+	}
+}
+
+Fourpeaked &Tbl{
+	CDD &Arr{
+		lat	58.9296
+		lon	-153.6426
+		dist	17.8
+	}
+	KAPH &Arr{
+		lat	58.5968
+		lon	-154.3468
+		dist	43.6
+	}
+	FOPK &Arr{
+		lat	58.7580
+		lon	-153.4739
+		dist	11.4
+	}
+	FOSS &Arr{
+		lat	58.7994
+		lon	-153.6945
+		dist	3.6
+	}
+	FONW &Arr{
+		lat	58.8348
+		lon	-153.9184
+		dist	16.0
+	}
+}
+
+Kukak &Tbl{
+	KAHC &Arr{
+		lat	58.6490
+		lon	-155.0060
+		dist	43.6
+	}
+	KAHG &Arr{
+		lat	58.4940
+		lon	-154.5463
+		dist	11.9
+	}
+	KAIC &Arr{
+		lat	58.4850
+		lon	-155.0458
+		dist	40.1
+	}
+	KAPH &Arr{
+		lat	58.5968
+		lon	-154.3468
+		dist	16.4
+	}
+	KARR &Arr{
+		lat	58.4978
+		lon	-154.7033
+		dist	20.7
+	}
+	KAWH &Arr{
+		lat	58.3837
+		lon	-154.7992
+		dist	26.6
+	}
+	KCG &Arr{
+		lat	58.3076
+		lon	-155.1114
+		dist	46.6
+	}
+	FONW &Arr{
+		lat	58.8348
+		lon	-153.9184
+		dist	49.9
+	}
+	KAKN &Arr{
+		lat	58.2970
+		lon	-155.0611
+		dist	44.3
+	}
+}
+
+Snowy &Tbl{
+	ACH &Arr{
+		lat	58.2107
+		lon	-155.3260
+		dist	39.5
+	}
+	ANCK &Arr{
+		lat	58.1988
+		lon	-155.4940
+		dist	49.3
+	}
+	CAHL &Arr{
+		lat	58.0525
+		lon	-155.3015
+		dist	47.3
+	}
+	KABR &Arr{
+		lat	58.1312
+		lon	-154.9692
+		dist	27.5
+	}
+	KAHC &Arr{
+		lat	58.6490
+		lon	-155.0060
+		dist	40.0
+	}
+	KAHG &Arr{
+		lat	58.4940
+		lon	-154.5463
+		dist	20.1
+	}
+	KAIC &Arr{
+		lat	58.4850
+		lon	-155.0458
+		dist	27.0
+	}
+	KAPH &Arr{
+		lat	58.5968
+		lon	-154.3468
+		dist	35.8
+	}
+	KARR &Arr{
+		lat	58.4978
+		lon	-154.7033
+		dist	18.7
+	}
+	KAWH &Arr{
+		lat	58.3837
+		lon	-154.7992
+		dist	8.7
+	}
+	KBM &Arr{
+		lat	58.2750
+		lon	-155.2017
+		dist	30.5
+	}
+	KCE &Arr{
+		lat	58.2433
+		lon	-155.1833
+		dist	30.4
+	}
+	KCG &Arr{
+		lat	58.3076
+		lon	-155.1114
+		dist	24.8
+	}
+	KVT &Arr{
+		lat	58.3817
+		lon	-155.2950
+		dist	35.8
+	}
+	MGLS &Arr{
+		lat	58.1343
+		lon	-155.1608
+		dist	35.2
+	}
+	KABU &Arr{
+		lat	58.2709
+		lon	-155.2822
+		dist	35.3
+	}
+	KAKN &Arr{
+		lat	58.2970
+		lon	-155.0611
+		dist	22.0
+	}
+}
+
+Katmai &Tbl{
+	ACH &Arr{
+		lat	58.2107
+		lon	-155.3260
+		dist	23.3
+	}
+	ANCK &Arr{
+		lat	58.1988
+		lon	-155.4940
+		dist	33.1
+	}
+	CAHL &Arr{
+		lat	58.0525
+		lon	-155.3015
+		dist	32.7
+	}
+	KABR &Arr{
+		lat	58.1312
+		lon	-154.9692
+		dist	16.6
+	}
+	KAHC &Arr{
+		lat	58.6490
+		lon	-155.0060
+		dist	41.2
+	}
+	KAHG &Arr{
+		lat	58.4940
+		lon	-154.5463
+		dist	33.5
+	}
+	KAIC &Arr{
+		lat	58.4850
+		lon	-155.0458
+		dist	23.5
+	}
+	KAPH &Arr{
+		lat	58.5968
+		lon	-154.3468
+		dist	49.8
+	}
+	KARR &Arr{
+		lat	58.4978
+		lon	-154.7033
+		dist	28.2
+	}
+	KAWH &Arr{
+		lat	58.3837
+		lon	-154.7992
+		dist	14.5
+	}
+	KBM &Arr{
+		lat	58.2750
+		lon	-155.2017
+		dist	14.7
+	}
+	KCE &Arr{
+		lat	58.2433
+		lon	-155.1833
+		dist	14.3
+	}
+	KCG &Arr{
+		lat	58.3076
+		lon	-155.1114
+		dist	9.9
+	}
+	KEL &Arr{
+		lat	58.4400
+		lon	-155.7407
+		dist	49.5
+	}
+	KJL &Arr{
+		lat	58.0540
+		lon	-155.5732
+		dist	44.4
+	}
+	KVT &Arr{
+		lat	58.3817
+		lon	-155.2950
+		dist	23.1
+	}
+	MGLS &Arr{
+		lat	58.1343
+		lon	-155.1608
+		dist	20.4
+	}
+	KABU &Arr{
+		lat	58.2709
+		lon	-155.2822
+		dist	19.5
+	}
+	KAKN &Arr{
+		lat	58.2970
+		lon	-155.0611
+		dist	6.8
+	}
+}
+
+Griggs &Tbl{
+	ACH &Arr{
+		lat	58.2107
+		lon	-155.3260
+		dist	21.2
+	}
+	ANCK &Arr{
+		lat	58.1988
+		lon	-155.4940
+		dist	29.2
+	}
+	CAHL &Arr{
+		lat	58.0525
+		lon	-155.3015
+		dist	36.2
+	}
+	CNTC &Arr{
+		lat	58.2645
+		lon	-155.8837
+		dist	47.0
+	}
+	KABR &Arr{
+		lat	58.1312
+		lon	-154.9692
+		dist	26.6
+	}
+	KAHC &Arr{
+		lat	58.6490
+		lon	-155.0060
+		dist	32.6
+	}
+	KAHG &Arr{
+		lat	58.4940
+		lon	-154.5463
+		dist	35.6
+	}
+	KAIC &Arr{
+		lat	58.4850
+		lon	-155.0458
+		dist	14.3
+	}
+	KARR &Arr{
+		lat	58.4978
+		lon	-154.7033
+		dist	27.7
+	}
+	KAWH &Arr{
+		lat	58.3837
+		lon	-154.7992
+		dist	17.8
+	}
+	KBM &Arr{
+		lat	58.2750
+		lon	-155.2017
+		dist	11.2
+	}
+	KCE &Arr{
+		lat	58.2433
+		lon	-155.1833
+		dist	13.9
+	}
+	KCG &Arr{
+		lat	58.3076
+		lon	-155.1114
+		dist	5.9
+	}
+	KEL &Arr{
+		lat	58.4400
+		lon	-155.7407
+		dist	38.4
+	}
+	KJL &Arr{
+		lat	58.0540
+		lon	-155.5732
+		dist	43.9
+	}
+	KVT &Arr{
+		lat	58.3817
+		lon	-155.2950
+		dist	11.6
+	}
+	MGLS &Arr{
+		lat	58.1343
+		lon	-155.1608
+		dist	25.4
+	}
+	KABU &Arr{
+		lat	58.2709
+		lon	-155.2822
+		dist	14.6
+	}
+	KAKN &Arr{
+		lat	58.2970
+		lon	-155.0611
+		dist	7.4
+	}
+}
+
+Trident &Tbl{
+	ACH &Arr{
+		lat	58.2107
+		lon	-155.3260
+		dist	13.4
+	}
+	ANCK &Arr{
+		lat	58.1988
+		lon	-155.4940
+		dist	23.4
+	}
+	CAHL &Arr{
+		lat	58.0525
+		lon	-155.3015
+		dist	23.0
+	}
+	CNTC &Arr{
+		lat	58.2645
+		lon	-155.8837
+		dist	46.1
+	}
+	KABR &Arr{
+		lat	58.1312
+		lon	-154.9692
+		dist	13.4
+	}
+	KAHC &Arr{
+		lat	58.6490
+		lon	-155.0060
+		dist	47.0
+	}
+	KAHG &Arr{
+		lat	58.4940
+		lon	-154.5463
+		dist	43.7
+	}
+	KAIC &Arr{
+		lat	58.4850
+		lon	-155.0458
+		dist	28.6
+	}
+	KARR &Arr{
+		lat	58.4978
+		lon	-154.7033
+		dist	37.8
+	}
+	KAWH &Arr{
+		lat	58.3837
+		lon	-154.7992
+		dist	24.5
+	}
+	KBM &Arr{
+		lat	58.2750
+		lon	-155.2017
+		dist	7.8
+	}
+	KCE &Arr{
+		lat	58.2433
+		lon	-155.1833
+		dist	5.1
+	}
+	KCG &Arr{
+		lat	58.3076
+		lon	-155.1114
+		dist	8.7
+	}
+	KEL &Arr{
+		lat	58.4400
+		lon	-155.7407
+		dist	44.1
+	}
+	KJL &Arr{
+		lat	58.0540
+		lon	-155.5732
+		dist	34.0
+	}
+	KVT &Arr{
+		lat	58.3817
+		lon	-155.2950
+		dist	20.4
+	}
+	MGLS &Arr{
+		lat	58.1343
+		lon	-155.1608
+		dist	11.2
+	}
+	KABU &Arr{
+		lat	58.2709
+		lon	-155.2822
+		dist	11.6
+	}
+	KAKN &Arr{
+		lat	58.2970
+		lon	-155.0611
+		dist	7.8
+	}
+}
+
+Novarupta &Tbl{
+	ACH &Arr{
+		lat	58.2107
+		lon	-155.3260
+		dist	11.8
+	}
+	ANCK &Arr{
+		lat	58.1988
+		lon	-155.4940
+		dist	21.1
+	}
+	CAHL &Arr{
+		lat	58.0525
+		lon	-155.3015
+		dist	25.6
+	}
+	CNTC &Arr{
+		lat	58.2645
+		lon	-155.8837
+		dist	42.4
+	}
+	KABR &Arr{
+		lat	58.1312
+		lon	-154.9692
+		dist	19.1
+	}
+	KAHC &Arr{
+		lat	58.6490
+		lon	-155.0060
+		dist	43.1
+	}
+	KAHG &Arr{
+		lat	58.4940
+		lon	-154.5463
+		dist	43.6
+	}
+	KAIC &Arr{
+		lat	58.4850
+		lon	-155.0458
+		dist	24.8
+	}
+	KARR &Arr{
+		lat	58.4978
+		lon	-154.7033
+		dist	36.8
+	}
+	KAWH &Arr{
+		lat	58.3837
+		lon	-154.7992
+		dist	24.6
+	}
+	KBM &Arr{
+		lat	58.2750
+		lon	-155.2017
+		dist	2.5
+	}
+	KCE &Arr{
+		lat	58.2433
+		lon	-155.1833
+		dist	3.3
+	}
+	KCG &Arr{
+		lat	58.3076
+		lon	-155.1114
+		dist	5.1
+	}
+	KEL &Arr{
+		lat	58.4400
+		lon	-155.7407
+		dist	38.8
+	}
+	KJL &Arr{
+		lat	58.0540
+		lon	-155.5732
+		dist	34.2
+	}
+	KVT &Arr{
+		lat	58.3817
+		lon	-155.2950
+		dist	14.7
+	}
+	MGLS &Arr{
+		lat	58.1343
+		lon	-155.1608
+		dist	15.1
+	}
+	KABU &Arr{
+		lat	58.2709
+		lon	-155.2822
+		dist	7.2
+	}
+	KAKN &Arr{
+		lat	58.2970
+		lon	-155.0611
+		dist	6.5
+	}
+}
+
+Mageik &Tbl{
+	ACH &Arr{
+		lat	58.2107
+		lon	-155.3260
+		dist	5.0
+	}
+	ANCK &Arr{
+		lat	58.1988
+		lon	-155.4940
+		dist	14.3
+	}
+	CAHL &Arr{
+		lat	58.0525
+		lon	-155.3015
+		dist	15.6
+	}
+	CNTC &Arr{
+		lat	58.2645
+		lon	-155.8837
+		dist	38.1
+	}
+	KABR &Arr{
+		lat	58.1312
+		lon	-154.9692
+		dist	17.7
+	}
+	KAIC &Arr{
+		lat	58.4850
+		lon	-155.0458
+		dist	34.9
+	}
+	KARR &Arr{
+		lat	58.4978
+		lon	-154.7033
+		dist	46.8
+	}
+	KAWH &Arr{
+		lat	58.3837
+		lon	-154.7992
+		dist	34.1
+	}
+	KBM &Arr{
+		lat	58.2750
+		lon	-155.2017
+		dist	9.9
+	}
+	KCE &Arr{
+		lat	58.2433
+		lon	-155.1833
+		dist	7.1
+	}
+	KCG &Arr{
+		lat	58.3076
+		lon	-155.1114
+		dist	15.4
+	}
+	KEL &Arr{
+		lat	58.4400
+		lon	-155.7407
+		dist	40.0
+	}
+	KJL &Arr{
+		lat	58.0540
+		lon	-155.5732
+		dist	24.3
+	}
+	KVT &Arr{
+		lat	58.3817
+		lon	-155.2950
+		dist	21.5
+	}
+	MGLS &Arr{
+		lat	58.1343
+		lon	-155.1608
+		dist	8.1
+	}
+	KABU &Arr{
+		lat	58.2709
+		lon	-155.2822
+		dist	9.2
+	}
+	KAKN &Arr{
+		lat	58.2970
+		lon	-155.0611
+		dist	16.3
+	}
+}
+
+Martin &Tbl{
+	ACH &Arr{
+		lat	58.2107
+		lon	-155.3260
+		dist	5.0
+	}
+	ANCK &Arr{
+		lat	58.1988
+		lon	-155.4940
+		dist	8.5
+	}
+	CAHL &Arr{
+		lat	58.0525
+		lon	-155.3015
+		dist	13.5
+	}
+	CNTC &Arr{
+		lat	58.2645
+		lon	-155.8837
+		dist	32.5
+	}
+	KABR &Arr{
+		lat	58.1312
+		lon	-154.9692
+		dist	23.4
+	}
+	KAIC &Arr{
+		lat	58.4850
+		lon	-155.0458
+		dist	39.6
+	}
+	KAWH &Arr{
+		lat	58.3837
+		lon	-154.7992
+		dist	40.5
+	}
+	KBM &Arr{
+		lat	58.2750
+		lon	-155.2017
+		dist	14.9
+	}
+	KCE &Arr{
+		lat	58.2433
+		lon	-155.1833
+		dist	13.2
+	}
+	KCG &Arr{
+		lat	58.3076
+		lon	-155.1114
+		dist	21.1
+	}
+	KEL &Arr{
+		lat	58.4400
+		lon	-155.7407
+		dist	37.4
+	}
+	KJL &Arr{
+		lat	58.0540
+		lon	-155.5732
+		dist	18.0
+	}
+	KVT &Arr{
+		lat	58.3817
+		lon	-155.2950
+		dist	23.9
+	}
+	MGLS &Arr{
+		lat	58.1343
+		lon	-155.1608
+		dist	12.4
+	}
+	KABU &Arr{
+		lat	58.2709
+		lon	-155.2822
+		dist	12.1
+	}
+	KAKN &Arr{
+		lat	58.2970
+		lon	-155.0611
+		dist	22.5
+	}
+}
+
+Peulik &Tbl{
+	PLBL &Arr{
+		lat	57.6998
+		lon	-156.8189
+		dist	27.3
+	}
+	PLK1 &Arr{
+		lat	57.8019
+		lon	-156.6072
+		dist	15.2
+	}
+	PLK2 &Arr{
+		lat	57.7642
+		lon	-156.3243
+		dist	3.1
+	}
+	PLK3 &Arr{
+		lat	57.6887
+		lon	-156.2674
+		dist	9.2
+	}
+	PLK4 &Arr{
+		lat	57.6321
+		lon	-156.3577
+		dist	13.1
+	}
+	PLK5 &Arr{
+		lat	57.9977
+		lon	-156.8777
+		dist	40.8
+	}
+	PLWL &Arr{
+		lat	58.0449
+		lon	-156.3413
+		dist	32.9
+	}
+}
+
+Ukinrek &Tbl{
+	PLBL &Arr{
+		lat	57.6998
+		lon	-156.8189
+		dist	23.4
+	}
+	PLK1 &Arr{
+		lat	57.8019
+		lon	-156.6072
+		dist	6.6
+	}
+	PLK2 &Arr{
+		lat	57.7642
+		lon	-156.3243
+		dist	13.2
+	}
+	PLK3 &Arr{
+		lat	57.6887
+		lon	-156.2674
+		dist	21.3
+	}
+	PLK4 &Arr{
+		lat	57.6321
+		lon	-156.3577
+		dist	23.8
+	}
+	PLK5 &Arr{
+		lat	57.9977
+		lon	-156.8777
+		dist	28.7
+	}
+	PLWL &Arr{
+		lat	58.0449
+		lon	-156.3413
+		dist	25.9
+	}
+}
+
+Chiginagak &Tbl{
+}
+
+Aniakchak &Tbl{
+	ANNE &Arr{
+		lat	56.9127
+		lon	-158.0589
+		dist	9.2
+	}
+	ANNW &Arr{
+		lat	56.9664
+		lon	-158.2149
+		dist	6.3
+	}
+	ANON &Arr{
+		lat	56.9198
+		lon	-158.1716
+		dist	2.6
+	}
+	ANPB &Arr{
+		lat	56.8024
+		lon	-158.2808
+		dist	12.7
+	}
+	ANPK &Arr{
+		lat	56.8417
+		lon	-158.1262
+		dist	9.2
+	}
+	AZAC &Arr{
+		lat	56.8954
+		lon	-158.2307
+		dist	2.1
+	}
+	BPBC &Arr{
+		lat	56.5897
+		lon	-158.4526
+		dist	38.6
+	}
+}
+
+Veniaminof &Tbl{
+	VNHG &Arr{
+		lat	56.2211
+		lon	-159.1642
+		dist	14.2
+	}
+	VNKR &Arr{
+		lat	56.0312
+		lon	-159.3678
+		dist	18.8
+	}
+	VNSG &Arr{
+		lat	56.1258
+		lon	-159.0854
+		dist	20.6
+	}
+	VNSS &Arr{
+		lat	56.2267
+		lon	-159.4548
+		dist	5.0
+	}
+	VNFG &Arr{
+		lat	56.2857
+		lon	-159.5511
+		dist	13.8
+	}
+	VNNF &Arr{
+		lat	56.2837
+		lon	-159.3160
+		dist	10.4
+	}
+	VNSW &Arr{
+		lat	56.0720
+		lon	-159.5585
+		dist	17.7
+	}
+	VNWF &Arr{
+		lat	56.1517
+		lon	-159.5622
+		dist	11.9
+	}
+}
+
+Kupreanof &Tbl{
+	VNHG &Arr{
+		lat	56.2211
+		lon	-159.1642
+		dist	45.4
+	}
+	VNKR &Arr{
+		lat	56.0312
+		lon	-159.3678
+		dist	26.4
+	}
+	VNSG &Arr{
+		lat	56.1258
+		lon	-159.0854
+		dist	45.6
+	}
+	VNSS &Arr{
+		lat	56.2267
+		lon	-159.4548
+		dist	31.9
+	}
+	VNFG &Arr{
+		lat	56.2857
+		lon	-159.5511
+		dist	34.1
+	}
+	VNNF &Arr{
+		lat	56.2837
+		lon	-159.3160
+		dist	42.3
+	}
+	VNSW &Arr{
+		lat	56.0720
+		lon	-159.5585
+		dist	16.0
+	}
+	VNWF &Arr{
+		lat	56.1517
+		lon	-159.5622
+		dist	21.2
+	}
+}
+
+Pavlof &Tbl{
+	BLHA &Arr{
+		lat	55.7038
+		lon	-162.0651
+		dist	33.5
+	}
+	DOL &Arr{
+		lat	55.1493
+		lon	-161.8614
+		dist	30.2
+	}
+	DT1 &Arr{
+		lat	55.1071
+		lon	-162.2781
+		dist	42.7
+	}
+	DTN &Arr{
+		lat	55.1457
+		lon	-162.2570
+		dist	38.4
+	}
+	HAG &Arr{
+		lat	55.3178
+		lon	-161.9025
+		dist	11.4
+	}
+	PN7A &Arr{
+		lat	55.4337
+		lon	-161.9952
+		dist	6.8
+	}
+	PS1A &Arr{
+		lat	55.4220
+		lon	-161.7404
+		dist	9.5
+	}
+	PV6 &Arr{
+		lat	55.4536
+		lon	-161.9850
+		dist	7.1
+	}
+	PVV &Arr{
+		lat	55.3740
+		lon	-161.7899
+		dist	8.1
+	}
+	PS4A &Arr{
+		lat	55.3469
+		lon	-161.8539
+		dist	8.5
+	}
+}
+
+Emmons_Lake &Tbl{
+	BLDY &Arr{
+		lat	55.1945
+		lon	-162.7836
+		dist	48.1
+	}
+	BLHA &Arr{
+		lat	55.7038
+		lon	-162.0651
+		dist	40.5
+	}
+	DOL &Arr{
+		lat	55.1493
+		lon	-161.8614
+		dist	25.0
+	}
+	DRR3 &Arr{
+		lat	54.9669
+		lon	-162.2611
+		dist	43.3
+	}
+	DT1 &Arr{
+		lat	55.1071
+		lon	-162.2781
+		dist	29.1
+	}
+	DTN &Arr{
+		lat	55.1457
+		lon	-162.2570
+		dist	24.7
+	}
+	HAG &Arr{
+		lat	55.3178
+		lon	-161.9025
+		dist	10.9
+	}
+	PN7A &Arr{
+		lat	55.4337
+		lon	-161.9952
+		dist	11.5
+	}
+	PS1A &Arr{
+		lat	55.4220
+		lon	-161.7404
+		dist	22.8
+	}
+	PV6 &Arr{
+		lat	55.4536
+		lon	-161.9850
+		dist	13.7
+	}
+	PVV &Arr{
+		lat	55.3740
+		lon	-161.7899
+		dist	18.1
+	}
+	PS4A &Arr{
+		lat	55.3469
+		lon	-161.8539
+		dist	13.7
+	}
+}
+
+Dutton &Tbl{
+	BLDY &Arr{
+		lat	55.1945
+		lon	-162.7836
+		dist	32.6
+	}
+	DOL &Arr{
+		lat	55.1493
+		lon	-161.8614
+		dist	26.4
+	}
+	DRR3 &Arr{
+		lat	54.9669
+		lon	-162.2611
+		dist	24.8
+	}
+	DT1 &Arr{
+		lat	55.1071
+		lon	-162.2781
+		dist	9.2
+	}
+	DTN &Arr{
+		lat	55.1457
+		lon	-162.2570
+		dist	5.0
+	}
+	HAG &Arr{
+		lat	55.3178
+		lon	-161.9025
+		dist	27.3
+	}
+	PN7A &Arr{
+		lat	55.4337
+		lon	-161.9952
+		dist	32.2
+	}
+	PS1A &Arr{
+		lat	55.4220
+		lon	-161.7404
+		dist	42.3
+	}
+	PV6 &Arr{
+		lat	55.4536
+		lon	-161.9850
+		dist	34.5
+	}
+	PVV &Arr{
+		lat	55.3740
+		lon	-161.7899
+		dist	36.7
+	}
+	PS4A &Arr{
+		lat	55.3469
+		lon	-161.8539
+		dist	31.6
+	}
+}
+
+Amak &Tbl{
+	BLDY &Arr{
+		lat	55.1945
+		lon	-162.7836
+		dist	34.2
+	}
+}
+
+Shishaldin &Tbl{
+	BRPK &Arr{
+		lat	54.6455
+		lon	-163.7408
+		dist	19.5
+	}
+	ISNN &Arr{
+		lat	54.8323
+		lon	-163.7784
+		dist	14.7
+	}
+	SSLN &Arr{
+		lat	54.8118
+		lon	-163.9959
+		dist	6.0
+	}
+	SSLS &Arr{
+		lat	54.7120
+		lon	-163.9988
+		dist	5.7
+	}
+	SSLW &Arr{
+		lat	54.7718
+		lon	-164.1214
+		dist	9.8
+	}
+	WESN &Arr{
+		lat	54.5724
+		lon	-164.5784
+		dist	44.4
+	}
+	WTUG &Arr{
+		lat	54.8475
+		lon	-164.3853
+		dist	28.4
+	}
+	ISLZ &Arr{
+		lat	54.7260
+		lon	-163.7110
+		dist	17.1
+	}
+	FALS &Arr{
+		lat	54.8573
+		lon	-163.4155
+		dist	37.2
+	}
+	SSBA &Arr{
+		lat	54.7727
+		lon	-164.1245
+		dist	10.0
+	}
+}
+
+Fisher &Tbl{
+	BRPK &Arr{
+		lat	54.6455
+		lon	-163.7408
+		dist	39.3
+	}
+	ISNN &Arr{
+		lat	54.8323
+		lon	-163.7784
+		dist	40.9
+	}
+	SSLN &Arr{
+		lat	54.8118
+		lon	-163.9959
+		dist	27.7
+	}
+	SSLS &Arr{
+		lat	54.7120
+		lon	-163.9988
+		dist	23.1
+	}
+	SSLW &Arr{
+		lat	54.7718
+		lon	-164.1214
+		dist	18.6
+	}
+	WESE &Arr{
+		lat	54.4732
+		lon	-164.5840
+		dist	26.6
+	}
+	WESN &Arr{
+		lat	54.5724
+		lon	-164.5784
+		dist	18.3
+	}
+	WTUG &Arr{
+		lat	54.8475
+		lon	-164.3853
+		dist	19.9
+	}
+	ISLZ &Arr{
+		lat	54.7260
+		lon	-163.7110
+		dist	41.6
+	}
+	WEBT &Arr{
+		lat	54.5911
+		lon	-164.7530
+		dist	27.4
+	}
+	WECS &Arr{
+		lat	54.5309
+		lon	-164.7776
+		dist	31.6
+	}
+	WESP &Arr{
+		lat	54.4935
+		lon	-164.7213
+		dist	31.0
+	}
+	SSBA &Arr{
+		lat	54.7727
+		lon	-164.1245
+		dist	18.5
+	}
+}
+
+Westdahl &Tbl{
+	SSLS &Arr{
+		lat	54.7120
+		lon	-163.9988
+		dist	47.1
+	}
+	SSLW &Arr{
+		lat	54.7718
+		lon	-164.1214
+		dist	44.1
+	}
+	WESE &Arr{
+		lat	54.4732
+		lon	-164.5840
+		dist	6.7
+	}
+	WESN &Arr{
+		lat	54.5724
+		lon	-164.5784
+		dist	7.4
+	}
+	WTUG &Arr{
+		lat	54.8475
+		lon	-164.3853
+		dist	40.2
+	}
+	WEBT &Arr{
+		lat	54.5911
+		lon	-164.7530
+		dist	10.3
+	}
+	WECS &Arr{
+		lat	54.5309
+		lon	-164.7776
+		dist	8.3
+	}
+	WESP &Arr{
+		lat	54.4935
+		lon	-164.7213
+		dist	5.5
+	}
+	SSBA &Arr{
+		lat	54.7727
+		lon	-164.1245
+		dist	44.0
+	}
+}
+
+Gilbert &Tbl{
+	AHB &Arr{
+		lat	54.1153
+		lon	-165.8157
+		dist	18.1
+	}
+	AKS &Arr{
+		lat	54.1104
+		lon	-165.6967
+		dist	15.7
+	}
+	AKV &Arr{
+		lat	54.1262
+		lon	-165.9627
+		dist	24.1
+	}
+	HSB &Arr{
+		lat	54.1868
+		lon	-165.9124
+		dist	17.9
+	}
+	LVA &Arr{
+		lat	54.1609
+		lon	-166.0337
+		dist	26.3
+	}
+	ZRO &Arr{
+		lat	54.0916
+		lon	-165.9780
+		dist	27.2
+	}
+	AKUT &Arr{
+		lat	54.1352
+		lon	-165.7719
+		dist	14.7
+	}
+	AKBB &Arr{
+		lat	54.0984
+		lon	-165.9318
+		dist	24.5
+	}
+	AKGG &Arr{
+		lat	54.1988
+		lon	-165.9916
+		dist	22.3
+	}
+	AKLV &Arr{
+		lat	54.1627
+		lon	-165.9556
+		dist	21.6
+	}
+	AKMO &Arr{
+		lat	54.0912
+		lon	-166.0106
+		dist	28.9
+	}
+	AKRB &Arr{
+		lat	54.1301
+		lon	-166.0688
+		dist	29.8
+	}
+}
+
+Akutan &Tbl{
+	AHB &Arr{
+		lat	54.1153
+		lon	-165.8157
+		dist	11.5
+	}
+	AKS &Arr{
+		lat	54.1104
+		lon	-165.6967
+		dist	19.3
+	}
+	AKV &Arr{
+		lat	54.1262
+		lon	-165.9627
+		dist	1.8
+	}
+	HSB &Arr{
+		lat	54.1868
+		lon	-165.9124
+		dist	8.1
+	}
+	LVA &Arr{
+		lat	54.1609
+		lon	-166.0337
+		dist	4.5
+	}
+	MTBL &Arr{
+		lat	53.9689
+		lon	-166.6793
+		dist	48.5
+	}
+	ZRO &Arr{
+		lat	54.0916
+		lon	-165.9780
+		dist	4.3
+	}
+	AKUT &Arr{
+		lat	54.1352
+		lon	-165.7719
+		dist	14.2
+	}
+	AKBB &Arr{
+		lat	54.0984
+		lon	-165.9318
+		dist	5.2
+	}
+	AKGG &Arr{
+		lat	54.1988
+		lon	-165.9916
+		dist	7.7
+	}
+	AKLV &Arr{
+		lat	54.1627
+		lon	-165.9556
+		dist	4.3
+	}
+	AKMO &Arr{
+		lat	54.0912
+		lon	-166.0106
+		dist	4.5
+	}
+	AKRB &Arr{
+		lat	54.1301
+		lon	-166.0688
+		dist	5.1
+	}
+	UNV &Arr{
+		lat	53.8465
+		lon	-166.5020
+		dist	46.0
+	}
+}
+
+Makushin &Tbl{
+	MCIR &Arr{
+		lat	53.9514
+		lon	-166.8922
+		dist	7.3
+	}
+	MGOD &Arr{
+		lat	53.7947
+		lon	-166.8760
+		dist	11.2
+	}
+	MNAT &Arr{
+		lat	53.8838
+		lon	-166.6836
+		dist	16.2
+	}
+	MSOM &Arr{
+		lat	53.8163
+		lon	-166.9364
+		dist	8.2
+	}
+	MSW &Arr{
+		lat	53.9155
+		lon	-166.7864
+		dist	9.8
+	}
+	MTBL &Arr{
+		lat	53.9689
+		lon	-166.6793
+		dist	18.6
+	}
+	MREP &Arr{
+		lat	53.8105
+		lon	-166.7456
+		dist	15.0
+	}
+	UNV &Arr{
+		lat	53.8465
+		lon	-166.5020
+		dist	28.5
+	}
+}
+
+Bogoslof &Tbl{
+	OKRE &Arr{
+		lat	53.5202
+		lon	-168.1641
+		dist	46.5
+	}
+}
+
+Okmok &Tbl{
+	OKCF &Arr{
+		lat	53.3958
+		lon	-168.1362
+		dist	2.7
+	}
+	OKER &Arr{
+		lat	53.4546
+		lon	-168.0493
+		dist	6.6
+	}
+	OKID &Arr{
+		lat	53.4774
+		lon	-167.8162
+		dist	21.8
+	}
+	OKRE &Arr{
+		lat	53.5202
+		lon	-168.1641
+		dist	11.4
+	}
+	OKSP &Arr{
+		lat	53.2526
+		lon	-168.2905
+		dist	21.5
+	}
+	OKTU &Arr{
+		lat	53.3839
+		lon	-168.0411
+		dist	7.1
+	}
+	OKWE &Arr{
+		lat	53.4721
+		lon	-168.2398
+		dist	9.3
+	}
+	OKWR &Arr{
+		lat	53.4347
+		lon	-168.2056
+		dist	5.3
+	}
+	OKAK &Arr{
+		lat	53.4123
+		lon	-168.3580
+		dist	15.2
+	}
+	OKCE &Arr{
+		lat	53.4270
+		lon	-168.1643
+		dist	2.4
+	}
+	OKFG &Arr{
+		lat	53.4117
+		lon	-167.9095
+		dist	14.7
+	}
+	OKSO &Arr{
+		lat	53.3575
+		lon	-168.1599
+		dist	7.2
+	}
+}
+
+Recheshnoi &Tbl{
+	OKCF &Arr{
+		lat	53.3958
+		lon	-168.1362
+		dist	38.4
+	}
+	OKER &Arr{
+		lat	53.4546
+		lon	-168.0493
+		dist	47.1
+	}
+	OKRE &Arr{
+		lat	53.5202
+		lon	-168.1641
+		dist	48.2
+	}
+	OKSP &Arr{
+		lat	53.2526
+		lon	-168.2905
+		dist	20.2
+	}
+	OKTU &Arr{
+		lat	53.3839
+		lon	-168.0411
+		dist	42.2
+	}
+	OKWE &Arr{
+		lat	53.4721
+		lon	-168.2398
+		dist	41.0
+	}
+	OKWR &Arr{
+		lat	53.4347
+		lon	-168.2056
+		dist	38.7
+	}
+	OKAK &Arr{
+		lat	53.4123
+		lon	-168.3580
+		dist	31.6
+	}
+	NIKH &Arr{
+		lat	52.9731
+		lon	-168.8530
+		dist	28.7
+	}
+	OKCE &Arr{
+		lat	53.4270
+		lon	-168.1643
+		dist	39.7
+	}
+	OKSO &Arr{
+		lat	53.3575
+		lon	-168.1599
+		dist	34.3
+	}
+}
+
+Vsevidof &Tbl{
+	OKCF &Arr{
+		lat	53.3958
+		lon	-168.1362
+		dist	47.3
+	}
+	OKSP &Arr{
+		lat	53.2526
+		lon	-168.2905
+		dist	29.9
+	}
+	OKWE &Arr{
+		lat	53.4721
+		lon	-168.2398
+		dist	48.4
+	}
+	OKWR &Arr{
+		lat	53.4347
+		lon	-168.2056
+		dist	46.8
+	}
+	OKAK &Arr{
+		lat	53.4123
+		lon	-168.3580
+		dist	38.4
+	}
+	NIKH &Arr{
+		lat	52.9731
+		lon	-168.8530
+		dist	20.6
+	}
+	OKCE &Arr{
+		lat	53.4270
+		lon	-168.1643
+		dist	48.1
+	}
+	OKSO &Arr{
+		lat	53.3575
+		lon	-168.1599
+		dist	43.5
+	}
+}
+
+Kagamil &Tbl{
+}
+
+Cleveland &Tbl{
+}
+
+Carlisle &Tbl{
+}
+
+Yunaska &Tbl{
+}
+
+Amukta &Tbl{
+}
+
+Seguam &Tbl{
+}
+
+Korovin &Tbl{
+	KOFP &Arr{
+		lat	52.2751
+		lon	-174.0972
+		dist	12.2
+	}
+	KOKV &Arr{
+		lat	52.3614
+		lon	-174.1653
+		dist	2.3
+	}
+	KOKL &Arr{
+		lat	52.3232
+		lon	-174.2002
+		dist	7.2
+	}
+	KONE &Arr{
+		lat	52.3936
+		lon	-174.1193
+		dist	2.6
+	}
+	KONW &Arr{
+		lat	52.3965
+		lon	-174.2105
+		dist	4.5
+	}
+	KOSE &Arr{
+		lat	52.3458
+		lon	-174.0485
+		dist	7.9
+	}
+	KOWE &Arr{
+		lat	52.3657
+		lon	-174.2507
+		dist	7.0
+	}
+	ATKA &Arr{
+		lat	52.2027
+		lon	-174.1955
+		dist	20.0
+	}
+}
+
+Kliuchef &Tbl{
+	KOFP &Arr{
+		lat	52.2751
+		lon	-174.0972
+		dist	12.7
+	}
+	KOKV &Arr{
+		lat	52.3614
+		lon	-174.1653
+		dist	2.1
+	}
+	KOKL &Arr{
+		lat	52.3232
+		lon	-174.2002
+		dist	6.6
+	}
+	KONE &Arr{
+		lat	52.3936
+		lon	-174.1193
+		dist	3.8
+	}
+	KONW &Arr{
+		lat	52.3965
+		lon	-174.2105
+		dist	3.3
+	}
+	KOSE &Arr{
+		lat	52.3458
+		lon	-174.0485
+		dist	9.1
+	}
+	KOWE &Arr{
+		lat	52.3657
+		lon	-174.2507
+		dist	5.7
+	}
+	ATKA &Arr{
+		lat	52.2027
+		lon	-174.1955
+		dist	19.8
+	}
+}
+
+Kasatochi &Tbl{
+	GSCK &Arr{
+		lat	52.0119
+		lon	-176.1620
+		dist	47.9
+	}
+	GSIG &Arr{
+		lat	51.9864
+		lon	-175.9250
+		dist	35.0
+	}
+	GSMY &Arr{
+		lat	52.0432
+		lon	-176.0563
+		dist	39.9
+	}
+	GSSP &Arr{
+		lat	52.0928
+		lon	-176.1757
+		dist	46.3
+	}
+	GSTD &Arr{
+		lat	52.0559
+		lon	-176.1448
+		dist	45.2
+	}
+	GSTR &Arr{
+		lat	52.0943
+		lon	-176.0591
+		dist	38.5
+	}
+}
+
+Great_Sitkin &Tbl{
+	ADAG &Arr{
+		lat	51.9802
+		lon	-176.6017
+		dist	35.5
+	}
+	ETKA &Arr{
+		lat	51.8619
+		lon	-176.4059
+		dist	31.6
+	}
+	GSCK &Arr{
+		lat	52.0119
+		lon	-176.1620
+		dist	8.4
+	}
+	GSIG &Arr{
+		lat	51.9864
+		lon	-175.9250
+		dist	16.4
+	}
+	GSMY &Arr{
+		lat	52.0432
+		lon	-176.0563
+		dist	5.5
+	}
+	GSSP &Arr{
+		lat	52.0928
+		lon	-176.1757
+		dist	4.7
+	}
+	GSTD &Arr{
+		lat	52.0559
+		lon	-176.1448
+		dist	3.6
+	}
+	GSTR &Arr{
+		lat	52.0943
+		lon	-176.0591
+		dist	3.8
+	}
+	ADK &Arr{
+		lat	51.8823
+		lon	-176.6842
+		dist	45.1
+	}
+}
+
+Kanaga &Tbl{
+	ADAG &Arr{
+		lat	51.9802
+		lon	-176.6017
+		dist	38.9
+	}
+	KICM &Arr{
+		lat	51.9189
+		lon	-177.1953
+		dist	2.4
+	}
+	KIKV &Arr{
+		lat	51.8788
+		lon	-177.1704
+		dist	4.6
+	}
+	KIMD &Arr{
+		lat	51.7616
+		lon	-177.2349
+		dist	18.4
+	}
+	KINC &Arr{
+		lat	51.9314
+		lon	-177.1276
+		dist	2.6
+	}
+	KIRH &Arr{
+		lat	51.8996
+		lon	-177.0935
+		dist	5.1
+	}
+	KIWB &Arr{
+		lat	51.8531
+		lon	-177.1508
+		dist	7.5
+	}
+	TAPA &Arr{
+		lat	51.8155
+		lon	-177.8128
+		dist	46.4
+	}
+	ADK &Arr{
+		lat	51.8823
+		lon	-176.6842
+		dist	32.9
+	}
+}
+
+Tanaga &Tbl{
+	GALA &Arr{
+		lat	51.7617
+		lon	-178.7715
+		dist	45.4
+	}
+	GANE &Arr{
+		lat	51.8189
+		lon	-178.7767
+		dist	44.3
+	}
+	GAEA &Arr{
+		lat	51.7830
+		lon	-178.7468
+		dist	43.1
+	}
+	GANO &Arr{
+		lat	51.8203
+		lon	-178.8038
+		dist	46.1
+	}
+	TAPA &Arr{
+		lat	51.8155
+		lon	-177.8128
+		dist	23.6
+	}
+	TAFL &Arr{
+		lat	51.7566
+		lon	-177.8978
+		dist	21.6
+	}
+	TACS &Arr{
+		lat	51.8632
+		lon	-178.1394
+		dist	1.9
+	}
+	TASE &Arr{
+		lat	51.8350
+		lon	-178.0370
+		dist	8.7
+	}
+	TANO &Arr{
+		lat	51.9157
+		lon	-178.1208
+		dist	4.2
+	}
+	TAFP &Arr{
+		lat	51.9001
+		lon	-177.9833
+		dist	11.0
+	}
+}
+
+Gareloi &Tbl{
+	GAKI &Arr{
+		lat	51.5545
+		lon	-178.8121
+		dist	26.3
+	}
+	GALA &Arr{
+		lat	51.7617
+		lon	-178.7715
+		dist	3.4
+	}
+	GANE &Arr{
+		lat	51.8189
+		lon	-178.7767
+		dist	3.3
+	}
+	GAEA &Arr{
+		lat	51.7830
+		lon	-178.7468
+		dist	3.1
+	}
+	GANO &Arr{
+		lat	51.8203
+		lon	-178.8038
+		dist	3.5
+	}
+	GASW &Arr{
+		lat	51.7789
+		lon	-178.8546
+		dist	4.6
+	}
+	TACS &Arr{
+		lat	51.8632
+		lon	-178.1394
+		dist	45.5
+	}
+	TANO &Arr{
+		lat	51.9157
+		lon	-178.1208
+		dist	48.1
+	}
+}
+
+Semisopochnoi &Tbl{
+	CEAP &Arr{
+		lat	52.0024
+		lon	179.5778
+		dist	8.2
+	}
+	CETU &Arr{
+		lat	51.9661
+		lon	179.4942
+		dist	8.3
+	}
+	CEPE &Arr{
+		lat	51.9658
+		lon	179.6492
+		dist	5.2
+	}
+	CERB &Arr{
+		lat	51.9314
+		lon	179.6297
+		dist	2.0
+	}
+	CESW &Arr{
+		lat	51.9010
+		lon	179.5633
+		dist	4.1
+	}
+	CERA &Arr{
+		lat	51.9070
+		lon	179.6846
+		dist	6.3
+	}
+}
+
+Little_Sitkin &Tbl{
+	LSNW &Arr{
+		lat	51.9705
+		lon	178.5168
+		dist	2.8
+	}
+	LSSA &Arr{
+		lat	51.9496
+		lon	178.5132
+		dist	1.8
+	}
+	LSPA &Arr{
+		lat	51.9569
+		lon	178.5734
+		dist	2.4
+	}
+	LSSE &Arr{
+		lat	51.9332
+		lon	178.5690
+		dist	2.7
+	}
+}
+
+Segula &Tbl{
+	LSNW &Arr{
+		lat	51.9705
+		lon	178.5168
+		dist	26.9
+	}
+	LSSA &Arr{
+		lat	51.9496
+		lon	178.5132
+		dist	27.1
+	}
+	LSPA &Arr{
+		lat	51.9569
+		lon	178.5734
+		dist	31.0
+	}
+	LSSE &Arr{
+		lat	51.9332
+		lon	178.5690
+		dist	31.3
+	}
+}
+
+Kiska &Tbl{
+}

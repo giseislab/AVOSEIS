@@ -1,0 +1,6 @@
+# Parameter file for dboriginwatch
+DATABASE  	dbseg/quakes	# containing arrival, assoc, event, origin
+SLEEP		10		# sleep for thismany seconds between rechecking the origin table
+COMMAND		bin/dbnotify -p pf/dbnotify
+VOLC_NAME	Redoubt
+VOLC_CODE	RD		# Not used

@@ -1,0 +1,10 @@
+tr {
+	font-size: 12pt;
+}
+tr.acknowledged td {
+	background-color: #99FF99; color: black;
+}
+tr.not_acknowledged td {
+	background-color: #FF9999; color: black;
+}
+

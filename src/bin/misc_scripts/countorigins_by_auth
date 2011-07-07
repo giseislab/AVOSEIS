@@ -1,0 +1,19 @@
+#!/bin/bash
+# Glenn Thompson 2010/05/20
+# Count the number of origin rows, and sort them
+# works only if auth is column 24
+if [ "$#" = "1" ]
+then
+	table=$1
+	if [ -e "$table" ] 
+	then
+		awk '{print $24}' $table |  sort > rawlist
+		awk ' { per[$1] += 1 } 
+		END { for (i in per)
+		print per[i], i } ' rawlist | sort -n -r 
+	else
+		echo "$table not found"
+	fi
+else
+	echo "Usage: countorigins_by_auth dbname.origin"
+fi

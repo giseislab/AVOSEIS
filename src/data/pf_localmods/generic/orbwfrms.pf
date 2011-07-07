@@ -1,0 +1,66 @@
+#  
+#  orbwfrms parameter file used to specify channels to process
+#  and channel-dependent processing parameters
+#
+
+#  Following are global default parameters:
+
+calib_from_db	yes	# calib values from database?
+maxpkts		10	# maximum number of packets in time-ordered queue
+
+bands &Tbl{		# These are the processing frequency bands
+			# for each channel
+	&Arr{
+		filter	BW 0.5 4 3.0 4	# filter specification
+		fc	1.75		# center frequency
+		fpad	10.0		# filter transient pad
+		twin	600.0		# averaging window
+		dtrms	300.0		# averaging window output time increment
+		tmin	120.0		# minimum contiguous data for ave
+	}
+	&Arr{
+		filter	BW 1.0 4 10.0 4	# filter specification
+		fc	5.5		# center frequency
+		fpad	10.0		# filter transient pad
+		twin	60.0		# averaging window
+		dtrms	60.0		# averaging window output time increment
+		tmin	20.0		# minimum contiguous data for ave
+	}
+
+}
+
+#  Following are channel processing parameter templates:
+
+templates &Arr{
+	templ1 &Arr{		# template number 1
+		maxpkts	20	# maximum number of packets in time-ordered queue
+	}
+}
+
+
+#  Following is a list of channels for processing:
+
+channels &Tbl{
+#	netstachanloc		template
+        AV_BGL_EHZ_*		templ1
+        AV_BKG_EHZ_*		templ1
+        AV_CGL_EHZ_*		templ1
+        AV_CKL_EHZ_*		templ1
+        AV_CKN_EHZ_*		templ1
+        AV_CKT_EHZ_*		templ1
+        AV_CRP_EHZ_*		templ1
+        AV_CP2_EHZ_*		templ1
+        AV_NCG_EHZ_*		templ1
+        AV_SPNW_EHZ_*		templ1
+        AV_SPWE_EHZ_*		templ1
+        AV_STLK_EHZ_*		templ1
+}
+
+#  Following is a list of channels to reject for processing:
+
+channels_reject &Tbl{
+	AV_NCG_EHZ_*
+}
+
+
+pf_revision_time 1074017778

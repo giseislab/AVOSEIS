@@ -1,0 +1,45 @@
+#    Parameter file for orb2dbt
+
+assoc_P_thresh		2.0	# P-residual threshold for associations
+assoc_screen_old	(time-20.0)::(time+20.0)
+
+author_priority &Arr{ # prefor priority as a function of assoc author
+
+# These are the AVO analysts - they have the highest author priority
+	scott	9
+	jpower	8
+	jpdixon	8
+
+# AVO Earthworm detection system
+# Give these a slightly lower priority than automated AEIC solutions so AEIC regionals trump AVO Earthworm ew_rg
+	ew_*	2
+
+# These are the authors/grids for the AVO real-time Antelope detection system
+# Here the volcano grids have the highest priority of 4.
+# Bigger local grids for Pavlof_Dutton and Shishaldin_Westdahl have a priority of 3.
+# Regional scale grids have only a priority of 2.
+#
+# This may not be necessary. All these origins could just have an author like "orbassoc_avo".
+# Then here just give orbassoc_avo a priority of 2, 3 or 4. Do we need to give it higher priority
+# than AEIC automatic solutions? (3)
+	*_lo	1
+	*_reg	1 
+# These are the authors for the AEIC summary event database (see /iwrun/sum/run/pf/orb2dbt.pf) 
+        UAF:qc              7
+        UAF:natasha            6
+        UAF:kozyreva           6
+        UAF:liz               6
+        UAF:ian               5
+        UAF:anna               5
+        UAF:tammyg              5
+        UAF:sandru             5
+        UAF:sharon               5
+        UAF:alarm              5
+	UAF:dutylap            5
+        oa_op.*               3
+        oa_bk.*            3
+        oa_mg.*               3
+        USGS.*                 1
+}
+
+pf_revision_time 1009486447

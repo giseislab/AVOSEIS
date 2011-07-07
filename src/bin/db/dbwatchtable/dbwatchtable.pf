@@ -1,0 +1,14 @@
+# sleep for this many seconds between rechecking the table
+sleep_period		120
+
+# commands to execute		
+command_list &Tbl{
+	dbdetectswarm -v -t TIME EVENTDB ALARMDB
+}
+
+# process all news rows if this set to 0, just last row if this is 1
+last_row_only	1
+
+
+
+pf_revision_time 1271190068

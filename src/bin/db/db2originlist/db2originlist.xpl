@@ -1,0 +1,74 @@
+
+# db2originlist
+# Output a text formatted list of origin information
+# Michael West
+# 10/2006
+use Datascope ;
+use Getopt::Std;
+
+
+if ( ! &getopts('a') || $#ARGV != 0 ) {
+      die ( "Usage: db2originlist [-a] dbin > outfile \n\n\t-a \tinclude pickfile name from avo-style remark table\n\n" );
+}
+
+
+
+$dbname = pop(@ARGV);
+@db = dbopen($dbname,'r');
+@db = dblookup(@db,"","origin","",1);
+@db2 = dblookup(@db,"","event","",1);
+@db3 = dblookup(@db,"","netmag","",1);
+@db  = dbjoin(@db,@db2);
+@db  = dbsubset(@db,'orid==prefor');
+@db  = dbjoin(@db,@db3);
+
+
+@dbtest = dblookup(@db,"","remark","",1);
+if ( (dbquery(@dbtest,"dbTABLE_PRESENT")) && ($opt_a) ) {
+	$includeRemarkTable = 1;
+   	@db4 = dblookup(@db,"","remark","",1);
+   	@db  = dbjoin(@db,@db4);
+} else {
+	$includeRemarkTable = 0;
+}
+
+
+@db = dbsort(@db,'-r','time');
+$nrecords = dbquery(@db,"dbRECORD_COUNT");
+#print STDERR "number of hypocenters: $nrecords\n";
+
+
+if ($nrecords == 0) {
+	die ("database does not exist or origin table contains no records");
+}
+
+
+$curr_date = strlocaltime(now());
+#$curr_date = epoch2str(now(),'%D %H:%M:%S');
+print "Produced at $curr_date (from database $dbname)\n";
+print "   date    yrday    time         lat     lon      depth   mag magtype  eventid pickfile\n";
+
+for ($db[3]=0 ; $db[3]<$nrecords ; $db[3]++) {
+	if ( ($includeRemarkTable) && ($opt_a) ) {
+		($lon,$lat,$depth,$time,$orid,$evid,$magnitude,$magtype,$auth, $pick) = dbgetv(@db,"lon","lat","depth","time","orid","evid","magnitude","magtype","auth", "remark");
+		$timestr = epoch2str($time,'%Y/%m/%d (%j) %H:%M:%S.%s');
+		printf "%s %8.4f %9.4f %5.1f %6.1f    %s %d %s\n",$timestr,$lat,$lon,$depth,$magnitude,$magtype,$evid,$pick;
+	} else {
+		($lon,$lat,$depth,$time,$orid,$evid,$magnitude,$magtype,$auth) = dbgetv(@db,"lon","lat","depth","time","orid","evid","magnitude","magtype","auth");
+		$timestr = epoch2str($time,'%Y/%m/%d (%j) %H:%M:%S.%s');
+		printf "%s %8.4f %9.4f %5.1f %6.1f    %s %d\n",$timestr,$lat,$lon,$depth,$magnitude,$magtype,$evid;
+	}
+}
+dbclose(@db);
+
+
+
+
+
+
+
+
+
+
+
+

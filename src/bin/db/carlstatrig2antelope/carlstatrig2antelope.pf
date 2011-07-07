@@ -1,0 +1,29 @@
+# smbclient is used to copy log files from
+smbclient_logfileshare	//137.229.32.23/Log
+
+# where the smbclient connection file lives
+smbclient_connectionfile	pf/connection
+
+# where the temporary smbclient commands are stored
+smbclient_commandfile	state/smbclientcommands_carlstatrig
+
+# this is the log file leader which is appended to the Ymd to find the relevant carlsubtrig log file
+logfileleader	carlstatrig_
+
+# path to master stations for descriptor file
+masterstationspath	/home/iceweb/run/dbmaster
+
+# path to archive for descriptor file
+archivepath	/iwrun/op/db/archive
+
+# time to sleep (seconds) before re-copying and re-reading the log file 
+sleeptime	60
+
+# path to the avo_volcs.pf file
+avovolcspath	pf/avo_volcs.pf
+
+# folder for carlstatrig log files
+carlstatriglogdir	logs_earthworm
+
+
+pf_revision_time 1271285646

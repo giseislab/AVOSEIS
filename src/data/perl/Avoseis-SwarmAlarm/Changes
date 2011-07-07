@@ -1,0 +1,6 @@
+Revision history for Perl extension Avoseis::SwarmAlarm.
+
+0.01  Tue Apr 21 05:14:11 2009
+	- original version; created by h2xs 1.23 with options
+		-AXc -n Avoseis::SwarmAlarm
+

@@ -1,0 +1,38 @@
+ALARMCLASS	swarm
+ALARMNAME	swarm_SP
+AUTH_SUBSET	SP_lo
+BELLWETHERS	&Arr{
+	BGL	8
+	BKG	8
+	CGL	8
+	CKL	8
+	CKN	8
+	CKT	8
+	CP2	8
+	CRP	8
+	NCG	8
+	SPU	8
+#	STLK	8	# 30-50 km
+	SPNW	8
+	SPWE	8
+	SPBG	8
+	SPCG	8
+	SPCR	8
+}
+MESSAGE_DIR	dbalarm/alarmaudit/message
+MESSAGE_PFDIR	dbalarm/alarmaudit/messagepf
+REMINDER_TIME	180
+TIMEWINDOW	60
+VOLC_CODE	SP
+VOLC_NAME	Spurr
+swarmend_on	1
+escalations_on	1
+new_alarm	&Arr{
+    mean_rate	6	
+}
+pf_revision_time	1241137954
+reminders_on	1
+significant_change	&Arr{
+    mean_rate_pcchange	100
+}
+trackfile state/SP.pf

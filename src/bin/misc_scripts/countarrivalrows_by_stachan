@@ -1,0 +1,18 @@
+#!/bin/bash
+# Glenn Thompson 2010/05/20
+# Count the number of arrival table rows for BHZ, EHZ and SHZ stachans, and sort them
+# this is a wrapper for countrows_by_stachan as sta/chan are in columns 1 and 7 (not 1 and 2)
+if [ "$#" = "1" ]
+then
+	table=$1
+	if [ -e "$table" ] 
+	then
+		awk '{print $1,$7}' $table > tmpfile
+		countrows_by_stachan tmpfile
+		rm tmpfile
+	else
+		echo "$table not found"
+	fi
+else
+	echo "Usage: countarrivalrows_by_stachan dbname.table"
+fi
