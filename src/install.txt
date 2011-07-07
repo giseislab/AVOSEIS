@@ -1,13 +1,13 @@
-Installation procedure looks something like:
+Installation procedure:
 
 1 make clean # This is critical when servers have different versions of Antelope!
 2 cd lib/makerules
 3 make Include
 4 cd ../..
-5 make man
-6 make html
-7 make Include
-8 make install
+5 make Include
+6 make install
+7 make man
+8 make pf_localmods
 9 make perlmods
-10 make pf_localmods
-11 make scripts
+10 make scripts
+11 make html
