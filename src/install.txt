@@ -1,13 +1,23 @@
 Installation procedure:
 
-1 make clean # This is critical when servers have different versions of Antelope!
-2 cd lib/makerules
-3 make Include
-4 cd ../..
-5 make Include
-6 make install
-7 make man
-8 make pf_localmods
-9 make perlmods
-10 make scripts
+First installation only:
+1 cd adm/coldstart
+2 make
+3 cd ../..
+4 make firsttime
+
+All other times ("Updates")
+* source $AVOSEIS/setup.sh or $AVOSEIS/setup.csh to set AVOSEISMAKE variable *
+1 cd lib/makerules
+2 make Include
+3 cd ../..
+4 make Include
+5 make install
+6 make scripts
+7 make perlmods
+8 make schemas
+9 make pf_localmods
+
+Real-time servers only
+10 make host
 11 make html
