@@ -5,19 +5,23 @@ First installation only:
 2 make
 3 cd ../..
 4 make firsttime
+5. chmod -R a-w $AVOSEIS #prevent Mike from directly editing untracked files.
 
 All other times ("Updates")
-* source $AVOSEIS/setup.sh or $AVOSEIS/setup.csh to set AVOSEISMAKE variable *
-1 cd lib/makerules
-2 make Include
-3 cd ../..
-4 make Include
-5 make install
-6 make scripts
-7 make perlmods
-8 make schemas
-9 make pf_localmods
-
-Real-time servers only
-10 make host
-11 make html
+1. source $AVOSEIS/setup.sh or $AVOSEIS/setup.csh to set AVOSEISMAKE
+2. chmod -R a+w $AVOSEIS
+3. cd lib/makerules
+4. make Include
+5. cd ../..
+6. make Include
+7. make install
+8. make scripts
+9. make perlmods
+10. make schemas
+11. make pf_localmods
+12. make host # real-time servers only.
+13. chmod -R a-w $AVOSEIS # prevent Mike from directly editing untracked files
+### 14-16 REAL_TIME SERVERS ONLY
+14. chmod -R a+w $INTERNALWEBPRODUCTS
+15. make html
+16. chmod -R a-w $INTERNALWEBPRODUCTS
