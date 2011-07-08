@@ -1,0 +1,85 @@
+.TH CARLSTATRIG2ANTELOPE 1 2009/11/13 "BRTT Antelope 4.11" "User Commands"
+.SH NAME
+carlstatrig2antelope \- parse a carlstatrig log file and produce an Antelope detection table.
+.SH SYNOPSIS
+.nf
+\fBcarlstatrig2antelope [-v] [-d] [-c] [-p pffile] eventdb [carlstatrig_log_file]\fR
+.fi
+.SH DESCRIPTION
+\fBcarlstatrig2antelope\fR is a daemon which periodically reads a carlstatrig log file
+and produces corresponding rows in an Antelope detection table.
+If a statefile is specified, the most recent origin processed will be tracked, preventing
+data from being re-processed.
+.LP
+\fBcarlstatrig2antelope\fR examines the carlstatrig log file for the current UT day on the
+Earthworm PC. However, if a carlstatrig_log_file is specified on the command line, this
+will be used instead, and the statefile will be ignored. This provides an option to reprocess
+old data.
+.SH OPTIONS
+.IP -v
+Be more verbose
+.IP -d
+Copy only the 'triggered on' states detected by carlstatrig and label them with state 'D' in
+detection table.
+If omitted, 'triggered on' states will be labelled with state 'on' and 'triggered off' states
+will be labelled with state 'off'.
+.IP "-c"
+Output database is a continuous database, crossing day boundaries. If omitted, _yyyy_mm_dd will
+be added to the event database name given as a command line argument.
+.IP "-p pffile"
+\fIpffile\fP is the full path to the parameter file. If omitted, the
+parameter file used is the result of 'pfecho carlstatrig2antelope'.
+.SH PARAMETER FILE
+The \fBcarlstatrig2antelope\fP parameter file contains the following parameters:
+.in 2c
+.ft CW
+.nf
+# smbclient is used to copy log files from
+smbclient_logfileshare	//137.229.32.23/Log
+
+# where the smbclient connection file lives
+smbclient_connectionfile	/usr/local/AVOSEIS/4.11/data/pf/connection
+
+# where the temporary smbclient commands are stored
+smbclient_commandfile	state/smbclientcommands_carlstatrig
+
+# this is the log file leader which is appended to the Ymd to find the relevant carlstatrig log file
+logfileleader	carlstatrig85.log_
+
+# path to master stations for descriptor file
+masterstationspath	/avort/oprun/dbmaster
+
+# path to archive for descriptor file
+archivepath	/iwrun/op/db/archive
+
+# time to sleep (seconds) before re-copying and re-reading the log file
+sleeptime	60
+
+# path to the avo_volcs.pf file
+avovolcspath	/avort/oprun/pf/avo_volcs.pf
+
+# folder for carlstatrig log files
+carlstatriglogdir	carlstatriglogfiles
+
+.fi
+.ft R
+.in
+
+.SH EXAMPLE
+.in 2c
+.ft CW
+.nf
+%carlstatrig2antelope -v db/ewevents
+%carlstatrig2antelope -v -p carlstatrig2antelope db/ewevents2
+%carlstatrig2antelope -v -p carlstatrig2antelope db/ewevents_20091117 carlstatrig85.log_20091117
+.fi
+.ft R
+.in
+.SH "SEE ALSO"
+carlstatrig2antelope
+.nf
+.fi
+.SH AUTHOR
+Glenn Thompson
+.br
+Geophysical Institute, University of Alaska Fairbanks

@@ -1,0 +1,73 @@
+.TH DBWATCHTABLE 1 2009/05/18 "BRTT Antelope 4.11" "User Commands"
+.SH NAME
+dbwatchtable \- watch a given table of a database, and when new records are
+detected, run commands listed in parameter file
+.SH SYNOPSIS
+.nf
+\fBdbwatchtable [-p pffile] [-r recordno] [-v] database table\fR
+.fi
+.SH DESCRIPTION
+.LP
+\fBdbwatchtable\fR is a daemon that watches a database table, and will execute
+commands given in the parameter file when new records are detected.
+.LP
+By default the parameter file used will be the result of the command 'pfecho dbwatchtable'.
+This can be overridden by specifying \fI-p pffile\fP.
+.LP
+By default \fBdbwatchtable\fR will begin at the end of the database table specified. Existing
+records can be processed at start up by specifying the \fI-r recordno\fP option.
+.LP
+The \fI-v\fP option enables verbose mode.
+.SH OPTIONS
+.IP "-p pffile"
+\fIpffile\fP is the full path to the parameter file. If omitted, the
+parameter file used is the result of 'pfecho dbwatchtable'.
+.IP "-r recordno"
+\fIrecordno\fP is the record of the database to start processing at. If omitted,
+\fBdbwatchtable\fR will start at the end of the table.
+.IP -v
+Be more verbose
+
+.SH PARAMETER FILE
+The \fBdbwatchtable\fP parameter file contains parameters that
+control what should happen when new records are detected in the input
+database table.
+Following is an example \fBdbwatchtable\fP parameter file.
+.nf
+
+command_list    &Tbl{ # A list of commands to be executed
+    dbalarmdispatch -v -p pf/dbalarmdispatch -t TIME ALARMID ALARMDB
+}
+last_record_only        0	# Process all records (0) or just the last row (1)
+sleep_period    	120	# Wait for this many seconds before checking the table again
+.fi
+.SS Substitution in parameter file command_list
+In each command in the command list, the following substitutions will be made:
+
+.nf
+TIME  		-> lddate of the current record
+DB		-> database from the command line
+ALARMDB		-> $ALARMDB environment variable
+RECORDNO  	-> number of the current record
+EVID		-> evid field of the current record
+ORID		-> orid field of the current record
+PREFOR		-> prefor field of the current record
+ALARMID		-> alarmid field of the current record
+.fi
+
+.SH EXAMPLE
+.in 2c
+.ft CW
+.nf
+%dbwatchtable -p pf/mydbwatchtable.pf -v alarmdb/alarmdb alarms
+.fi
+.ft R
+.in
+.SH "SEE ALSO"
+watchtable subroutine in SwarmAlarm(3p)
+.nf
+.fi
+.SH AUTHOR
+Glenn Thompson
+.br
+Geophysical Institute, University of Alaska Fairbanks

@@ -1,0 +1,80 @@
+.TH CARLSUBTRIG2ANTELOPE 1 2009/11/13 "BRTT Antelope 4.11" "User Commands"
+.SH NAME
+CARLSUBTRIG2ANTELOPE \- parse a carlsubtrig log file and produce an Antelope database.
+.SH SYNOPSIS
+.nf
+\fBCARLSUBTRIG2ANTELOPE [-v] [-p pffile] eventdb [carlsubtrig_log_file]\fR
+.fi
+.SH DESCRIPTION
+\fBCARLSUBTRIG2ANTELOPE\fR is a daemon which periodically reads a carlsubtrig log file
+and produces corresponding rows in Antelope event, origin, arrival and assoc tables.
+If a statefile is specified, the most recent origin processed will be tracked, preventing
+data from being re-processed.
+.LP
+\fBCARLSUBTRIG2ANTELOPE\fR examines the carlsubtrig log file for the current UT day on the
+Earthworm PC. However, if a carlsubtrig_log_file is specified on the command line, this
+will be used instead, and the statefile will be ignored. This provides an option to reprocess
+old data.
+.SH OPTIONS
+.IP -v
+Be more verbose
+.IP "-c"
+Output database is a continuous database, crossing day boundaries. If omitted, _yyyy_mm_dd will
+be added to the event database name given as a command line argument.
+.IP "-p pffile"
+\fIpffile\fP is the full path to the parameter file. If omitted, the
+parameter file used is the result of 'pfecho carlsubtrig2antelope'.
+.SH PARAMETER FILE
+The \fBcarlsubtrig2antelope\fP parameter file contains the following parameters:
+.in 2c
+.ft CW
+.nf
+# smbclient is used to copy log files from
+smbclient_logfileshare	//137.229.32.23/Log
+
+# where the smbclient connection file lives
+smbclient_connectionfile	/usr/local/AVOSEIS/4.11/data/pf/connection
+
+# where the temporary smbclient commands are stored
+smbclient_commandfile	state/smbclientcommands_carlsubtrig
+
+# this is the log file leader which is appended to the Ymd to find the relevant carlsubtrig log file
+logfileleader	carlsubtrig85.log_
+
+# path to master stations for descriptor file
+masterstationspath	/avort/oprun/dbmaster
+
+# path to archive for descriptor file
+archivepath	/iwrun/op/db/archive
+
+# time to sleep (seconds) before re-copying and re-reading the log file
+sleeptime	60
+
+# path to the avo_volcs.pf file
+avovolcspath	/avort/oprun/pf/avo_volcs.pf
+
+# folder for carlsubtrig log files
+carlsubtriglogdir	carlsubtriglogfiles
+
+.fi
+.ft R
+.in
+
+.SH EXAMPLE
+.in 2c
+.ft CW
+.nf
+%carlsubtrig2antelope -v db/ewevents
+%carlsubtrig2antelope -v -p carlsubtrig2antelope db/ewevents2
+%carlsubtrig2antelope -v -p carlsubtrig2antelope db/ewevents_20091117 carlsubtrig85.log_20091117
+.fi
+.ft R
+.in
+.SH "SEE ALSO"
+carlstatrig2antelope
+.nf
+.fi
+.SH AUTHOR
+Glenn Thompson
+.br
+Geophysical Institute, University of Alaska Fairbanks

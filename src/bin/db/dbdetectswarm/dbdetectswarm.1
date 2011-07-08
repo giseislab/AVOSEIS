@@ -1,0 +1,159 @@
+.TH DBDETECTSWARM 1 2009/05/18 "BRTT Antelope 4.11" "User Commands"
+.SH NAME
+dbdetectswarm \- declare a new swarm, or the escalation, continuation or end
+of a swarm, depending on event parameters.
+.SH SYNOPSIS
+.nf
+\fBdbdetectswarm [-p pffile] [-t endtime] [-d] [-v] [-r] eventdb alarmdb swarmdb\fR
+.fi
+.SH DESCRIPTION
+\fBdbdetectswarm\fR reads an event database for a given timewindow, and determines
+if the rate of events, or the magnitudes of those events, warrants the declaration
+of an alarm. An alarm can be issued for a new swarm, the escalation of an ongoing
+swarm, or the end of a swarm. Reminder alarms can also be issued regarding the
+continuation of an ongoing swarm after a specified period of time. Declaring an
+alarm means a new record gets written to the alarms table of the output alarm database.
+.LP
+\fBdbdetectswarm\fR examines the last timewindow minutes of the eventdb datatabase,
+where timewindow is set in the parameter file. Loads a list of event times and magnitudes,
+and from this determines the mean hourly event rate, median hourly event rate, mean magnitude (ml)
+and cumulative magnitude of events in that timewindow. These are termed mean_rate, median_rate,
+mean_ml and cum_ml respectively.
+.LP
+Reads the alarms table looking for the most recent message of alarm algorithm name alarmname as
+set in the parameter file. Reads the associated swarm message parameter file. This contains
+information about the previous message declared about this swarm, including it's swarm_end time.
+If swarm_end time is non-positive, it means the swarm has not ended.
+.LP
+If the previous message indicates the swarm has ended (swarm_end > 0) check if the new_alarm
+threshold is exceeded. The compulsory threshold parameter that must be checked is the mean_rate.
+Optionally, thresholds for median_rate, mean_ml and cum_ml can also be set in the parameter file.
+If optional thresholds are specified, all conditions must be met for a new swarm alarm to be
+declared.
+.LP
+If swarm_end <= 0, a swarm is still considered to be continuing. Nevertheless, the swarm may have
+ ended since that previous message, or it may have escalated. So those conditions are checked for.
+In the parameter file there is a significant change hash, where percentage changes in mean_rate,
+median_rate and absolute changes in mean_ml and cum_ml can be specified (the first is compulsory,
+the latter 3 are optional). So if there has been a 'significant' increase in swarm parameters since
+the previous message about this swarm, a swarm escalation alarm is declared. Otherwise, if swarm
+parameters are now significantly below the new swarm alarm threshold, the end of that swarm is
+declared.
+.LP
+If none of these conditions are true, the swarm is continuing at approximately the same level. So
+the final check is to see if more than REMINDER_TIME minutes have passed since the previous message
+about this alarm. If so, a swarm reminder is sent.
+.LP
+If an alarm is declared, a row is written to the alarms table in alarmdb, linking to an external
+message file.
+
+.SH OPTIONS
+.IP "-p pffile"
+\fIpffile\fP is the full path to the parameter file. If omitted, the
+parameter file used is the result of 'pfecho dbdetectswarm'.
+.IP "-r replay"
+Do not look for new records since the last time \fBdbdetectswarm\fR ran.
+\fIrecordno\fP is the record of the database to start processing at. If omitted,
+\fBdbdetectswarm\fR will start at the end of the table.
+.IP -v
+Be more verbose
+.IP -d
+Test mode. An alarm of alarmname 'test' will be declared regardless of how many
+events occurred in the given time window.
+.IP "-t endtime"
+Force the timewindow to end at endtime, rather than now. So new alarm rows might get written,
+based on historic data. Use this carefully, as new records corresponding to old database could
+get written at the end of an existing database. So when running on old datasets, it is better to
+create a new database.
+
+.SH FILES
+To track changes in an input event database between successive runs of \fBdbdetectswarm\fR, a
+tracking parameter file is used. This way if  \fBdbdetectswarm\fR is run as a cronjob, it can
+still tell when the event database changes. The tracking parameter file path is specified in
+\fIpffile\fP.
+
+.SH PARAMETER FILE
+The \fBdbdetectswarm\fP parameter file contains parameters that
+control what should happen when new records are detected in the input
+database event table.
+Following is an example \fBdbdetectswarm\fP parameter file.
+.in 2c
+.ft CW
+.nf
+# alarm class - type of alarm
+ALARMCLASS      swarm
+
+# an identifier for this particular combination of stations/bellwethers/timewindow/timeout parameters
+ALARMNAME       rapid_onset_RD
+
+# Directory where the email message files will be written
+MESSAGE_DIR     alarmdb/alarmaudit/message
+
+# Directory where the message parameter files will be written
+MESSAGE_PFDIR   alarmdb/alarmaudit/messagepf
+
+# Name of the volcano
+VOLC_NAME       Redoubt
+
+# Code for the volcano
+VOLC_CODE       RD              # Not used
+
+# string used to subset auth field for "located" events
+AUTH_SUBSET     local_RD
+
+# Timewindow of data to check (minutes)
+TIMEWINDOW      30
+
+# Reminder time - reminders will be sent this frequently about an ongoing swarm
+REMINDER_TIME   180
+
+# Control whether messages are sent for reminders and escalations
+reminders_on    1       # 0 (off) or 1 (on)
+escalations_on  1       # 0 (off) or 1 (on)
+
+# Control what kind of messages go to cellphones
+cellphones_on   1       # 0 = none, 1 = only new swarm alarms, 2 = include escalations also, 3 = include reminders also
+
+# new alarm threshold
+new_alarm &Arr{
+        # mean_rate - minimum mean hourly event rate
+        mean_rate 20
+        # median_rate - minimum median hourly event rate (optional)
+#       median_rate 25
+        # mean_ml - minimim mean Ml (optional)
+#       mean_ml 1.0
+        # cum_ml - minimum cumulative magnitude
+#       cum_ml 1.2
+}
+
+# significant change threshold - used for declaring escalation alarms and end of swarm alarms
+significant_change &Arr{
+        # mean_rate_pcchange - minimum percentage change in mean hourly event rate to declare a significant change
+        mean_rate_pcchange 25
+        # median_rate_pcchange - minimum percentage change in median hourly event rate to declare a significant change (optional)
+#       median_rate_pcchange 25
+        # mean_ml_change - minimim change mean Ml to declare a significant change (optional)
+#       mean_ml_change  0.2
+        # cum_ml_change - minimum change in cumulative magnitude to declare a significant change (optional)
+#       cum_ml_change 0.2
+}
+.fi
+.ft R
+.in
+
+.SH EXAMPLE
+.in 2c
+.ft CW
+.nf
+%dbdetectswarm -p pf/mydbdetectswarm.pf -v dbseg/quakes alarmdb/alarmdb
+.fi
+.ft R
+.in
+.SH "SEE ALSO"
+watchtable subroutine in SwarmAlarm(3p)
+.nf
+.fi
+.SH AUTHOR
+Glenn Thompson
+.br
+Geophysical Institute, University of Alaska Fairbanks

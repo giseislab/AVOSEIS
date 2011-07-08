@@ -1,0 +1,26 @@
+.TH RENAMEFILES 1 2007/03/12 "BRTT Antelope 4.11" "User Commands"
+.SH NAME
+.nf
+renamefiles - rename a group of files (such as a Datascope database)
+.fi
+.SH SYNOPSIS
+.nf
+renamefiles  matchstr replacestr
+.fi
+.SH DESCRIPTION
+\fBrenamefiles\fP is a simple Perl script that searches for all files in the local directory whose filenames start with a particular string provided in the first command line argument, and substitutes another string provided in the second command line argument. Its particularly useful for renaming a Datascope database, without having to write an inline foreach loop or tediously issuing a "mv" command for each file. Think of it as the equivalent of the ed, vi or Perl regular expression "s/matchstr/replacestr/g" but on filenames rather than strings in a file.
+.LP
+Its rather like being able to run a command like:
+.PP
+mv (matchstr)foo.bar (replacestr)foo.bar
+.SH OPTIONS
+These are identical to dbevents, except for the addition of:
+.IP "matchstr"
+The substring in the names of the source files to replace.
+.IP "replacestr"
+The substring with which to replace 'matchstr'
+.SH AUTHOR
+Glenn Thompson
+.br
+Alaska Earthquake Information Center
+

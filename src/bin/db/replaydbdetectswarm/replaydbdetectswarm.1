@@ -1,0 +1,35 @@
+.TH REPLAYDBDETECTSWARM 1 2009/05/19 "BRTT Antelope 4.11" "User Commands"
+.SH NAME
+replaydbdetectswarm \- dispatch an alarm to a call-down list of recipients
+.SH SYNOPSIS
+.nf
+\fBreplaydbdetectswarm -v eventdbroot alarmdb starttime endtime timestep dbswarmdetectpf\fR
+
+	e.g.
+	$PROG_NAME dbseg/Quakes alarms/alarmdb20090319RD 1237420800 1237852800 900 pf/dbdetectswarm_RD.pf\fR
+.fi
+.SH DESCRIPTION
+\fBreplaydbdetectswarm\fR runs dbdetectswarm on old data, stored in databases like eventdbroot_YYYY_MM_DD. New alarm rows will be written to alarmdb. The first timewindow will start at starttime, the last timewindow will end at endtime and the time step used will be timestep. The timewindow used will be defined in the parameter file dbswarmdetectpf. Typically the timewindow might be 60 minutes long, and the timestep just 5 minutes.
+
+.SH OPTIONS
+.IP -v
+Be more verbose
+
+.SH EXAMPLE
+To re-run dbdetectswarm from event databases like dbseg/Quakes_YYYY_MM_DD from 2009-01-24 to 2009-05-19 in 5 minute steps:
+.in 2c
+.ft CW
+.nf
+
+replaydbdetectswarm -v dbseg/Quakes alarms/alarmdb20090319RD 1232755200 1242691200 300 pf/dbdetectswarm_RD.pf\fR
+.fi
+.ft R
+.in
+.SH "SEE ALSO"
+dbdetectswarm
+.nf
+.fi
+.SH AUTHOR
+Glenn Thompson
+.br
+Geophysical Institute, University of Alaska Fairbanks

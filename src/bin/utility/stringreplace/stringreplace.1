@@ -1,0 +1,26 @@
+.TH STRINGREPLACE 1 2007/11/12 "BRTT Antelope 4.11" "User Commands"
+.SH NAME
+.nf
+stringreplace -  replace a regular expression in one file globally by another
+.fi
+.SH SYNOPSIS
+stringreplace oldpattern newpattern  infile  outfile
+.nf
+.SH DESCRIPTION
+\fBstringreplace\fP simply replaces oldpattern in infile with newpattern in outfile. So its just a way of replacing one string with another without using sed.
+.SH EXAMPLE:
+stringreplace foo bar file.in file.out
+.SH OPTIONS
+.IP oldpattern
+Any regular expression.
+.IP newpattern
+Any regular expression.
+.IP infile
+The source file.
+.IP outfile
+The target file.
+.SH AUTHOR
+Glenn Thompson
+.br
+Alaska Earthquake Information Center
+

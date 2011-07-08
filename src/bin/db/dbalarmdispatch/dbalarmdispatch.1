@@ -1,0 +1,112 @@
+.TH DBALARMDISPATCH 1 2009/05/18 "BRTT Antelope 4.11" "User Commands"
+.SH NAME
+dbalarmdispatch \- dispatch an alarm to a call-down list of recipients
+.SH SYNOPSIS
+.nf
+\fBdbalarmdispatch [-p pffile] [-t runtime] [-d] [-v] alarmid alarmdb\fR
+.fi
+.SH DESCRIPTION
+\fBdbalarmdispatch\fR is run for a particular alarmid of an alarms table,
+and dispatches the alarm with subject as given in that record, and a pre-formed message which is
+stored in a reference pointed to by the dir & dfile fields.
+.LP
+Alarms are dispatched to recipients as defined in the parameter file. There is a
+default block which gives a default list of recipients. Each recipient has a delay
+time, in seconds. An alarm is dispatched to a recipient when this delay time is met.
+This allows a call-down list to be implemented whereby recipients get the alarms at
+different times.
+.LP
+A related program, confirm_alarms.php, allows users to acknowledgment an alarm they
+have received, and doing so will stop the call-down at that point. This sets the
+acknowledged field in the alarms record to 1.
+.LP
+If the recipient list needs to be tweaked for a particular alarm algorithm name
+(alarmname) then a separate block can be added in the parameter file. Recipients are
+added to the default list.
+.LP
+To test this program, call with the -d flag and that message will
+be dispatched (again). The -d flag simply resets the acknowledged field back to 0.
+In this mode, runTime is set to alarmtime, so that the latency < max_ack_wait_sec
+condition does not stop the program executing. The alarm is dispatched, but the
+subject of the message is changed to "TEST". Test alarms can also be acknowledged
+in the usual way through confirm_alarms.php.
+
+.SH OPTIONS
+.IP "-p pffile"
+\fIpffile\fP is the full path to the parameter file. If omitted, the
+parameter file used is the result of 'pfecho dbalarmdispatch'.
+.IP -v
+Be more verbose
+.IP -d
+Test mode. Resets the 'acknowledged' field to false (0). The message will be (re-)dispatched
+but with the subject changed to 'TEST'.
+.IP "-t runtime"
+Force the timewindow to end at runtime, rather than now.
+
+.SH PARAMETER FILE
+The \fBdbalarmdispatch\fP parameter file contains parameters that
+control what should happen when an alarms record is dispatched.
+
+Following is an example \fBdbalarmdispatch\fP parameter file. For
+alarmname 'swarm_RD', recipients will be:
+glennthompson1971@gmail.com	0
+avors.tech@gmail.com 30
+glenn@giseis.alaska.edu 60
+9076877747@mms.att.net  0
+
+This means that after 0 seconds, the alarm will be sent to glennthompson1971@gmail.com
+and 9076877747@mms.att.net. If not cancelled after 30 seconds, the alarm will be sent to
+avors.tech@gmail.com. If not cancelled after 60 seconds, the alarm will be sent to
+glenn@giseis.alaska.edu.
+
+# parameter file for dbalarmdispatch
+
+.in 2c
+.ft CW
+.nf
+default	&Arr{
+	alarmclass	default
+	max_ack_wait_sec	90
+	recipients	&Arr{
+		glennthompson1971@gmail.com	0
+		avors.tech@gmail.com 30
+		glenn@giseis.alaska.edu 60
+	}
+	sleep	10
+}
+iceweb_tremor_Redoubt	&Arr{
+	max_ack_wait_sec	300
+	alarmclass	tremor
+	recipients	&Arr{
+		9076877747@mms.att.net  0 # Glenn Thompson cell phone
+	}
+}
+swarm_RD	&Arr{
+	max_ack_wait_sec	300 	# overrides the default
+	alarmclass	swarm 		# overrides the default
+	recipients	&Arr{		# appends to the default
+		9076877747@mms.att.net  0 # Glenn Thompson cell phone
+	}
+}
+
+.fi
+.ft R
+.in
+
+.SH EXAMPLE
+To dispatch alarm with alarmid==100 to the recipients defined in pf/mydbalarmdispatch.pf:
+.in 2c
+.ft CW
+.nf
+dbalarmdispatch -p pf/mydbalarmdispatch.pf -v 100 alarmdb/alarmdb
+.fi
+.ft R
+.in
+.SH "SEE ALSO"
+confirm_alarms.php
+.nf
+.fi
+.SH AUTHOR
+Glenn Thompson
+.br
+Geophysical Institute, University of Alaska Fairbanks
