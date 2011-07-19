@@ -1,0 +1,25 @@
+.TH GET_AVO_STATIONS_DB 1 "$Date$"
+.SH NAME
+get_avo_stations_db \- create an xml-formatted version of hypocenter solutions.
+
+.SH SYNOPSIS
+.nf
+\fBget_avo_stations_db\fP \fIdbout\fP 
+.fi
+.SH DESCRIPTION
+\fBget_avo_stations_db\fP subsets the Seis Lab masterstations database for all stations with an AV network code that are currently active (not yet closed). It is a simple tool, but useful for producing dynamic lists of AVO stations. It is particularly useful to exclude networks in the masterstations database that are not suppose to be made public.
+
+.SH OPTIONS
+None.
+
+.SH ENVIRONMENT
+$ANTELOPE and $AVOSEIS must be set.
+
+.SH PARAMETER FILE
+None.
+
+.SH BUGS AND CAVEATS
+This program is used in real time operations but is very simplistic. It would benefit from a parameter file. It would also be greatly improved by allowing it to subset stations that belong to one or more networks in addition to AV. For example, to include all stations belonging to AV, AK and AT. In this case it should probably also be renamed.
+
+.SH AUTHOR
+Michael West

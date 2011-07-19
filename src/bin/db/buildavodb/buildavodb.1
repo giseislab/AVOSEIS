@@ -1,0 +1,31 @@
+.TH BUILDAVODB 1 "$Date$"
+.SH NAME
+buildavodb \- convert one month of AVO pick files to database tables.
+.SH SYNOPSIS
+.nf
+\fBbuildavodb\fP YYYY MM
+  
+.fi
+.SH DESCRIPTION
+\fBbuildavodb\fP converts one month of AVO pick files into Antelope database tables where YYYY and MM are the year and month, respectively. The bulk of the work is done by calls to \fBavo2db\fP, which must be in the path in order to work. \fBbuildavodb\fP is really a wrapper script which hardwires the directory locations for in and out data and allows looping through many months or years at once.
+
+This program was written to address specific needs when working with data from AVO.  
+
+.SH OPTIONS
+none.
+
+.SH ENVIRONMENT
+$ANTELOPE and $AVOSEIS must be set. \fBavo2db\fP must be in the path.
+
+.SH PARAMETER FILE
+None.
+
+.SH "SEE ALSO"
+avo2db(1)
+
+.SH "BUGS AND CAVEATS"
+There is currently no parameter file for this program. Most parameters are hardwired. While this matches the static structure of the Observatory's pick file directories, it does not allow for more generalized use. This code actually sends pickfiles to \fBavo2db\fP in batches of a few hundred. This is done to avoid exceeding the command line buffer size. It works fine but there is no actual testing of the command line length for compliance.
+
+.SH AUTHOR
+Michael West
+

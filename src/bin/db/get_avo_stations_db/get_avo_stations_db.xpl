@@ -8,7 +8,7 @@ use File::Copy ;
 
 
 if (! $#ARGV == 0 ) {
-	die ( "Usage: get_avo_stations_db dbout\n" );
+	die ( "Useage: get_avo_stations_db dbout\n\nSee man page for description" );
 }
 
 

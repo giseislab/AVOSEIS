@@ -1,17 +1,10 @@
-
-#
 # db2pick
 # 
-# Convert a css3.0 catalog of hypocenters to CNSS Unified Single Line Catalog Format
+# Convert a css3.0 catalog of hypocenters to Hypoellipse pickfile format.
 #
-# Kent Lindquist
-# Geophysical Institute
-# University of Alaska
-# December, 1996
-
-# Edited: Summer 2007, 2008
+# Written: Summer 2007, 2008
 # by Anna Bulanova
-#
+# 
 
 use Datascope;
 use Getopt::Long qw(:config bundling);

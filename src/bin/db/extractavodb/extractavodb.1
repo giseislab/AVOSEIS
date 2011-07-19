@@ -1,0 +1,55 @@
+.TH EXTRACTAVODB 1 "$Date$"
+.SH NAME
+extractavodb \- Extract a selection of hypocenters from the AVO earthquake catalog.
+.SH SYNOPSIS
+.nf
+\fBextractavodb \fP[-af] [-i \fIdbin\fP] "\fIstart_date\fP" "\fIend_date\fP" \fIdbout\fP [\fIexpression\fP]
+.fi
+.SH DESCRIPTION
+\fBextarctavodb\fP creates an Antelope database of hypocenters according to user input. By default the program extracts from the AVO Total catalog of analyst reviewed events. This database dates to late 1989. Start and end dates are required. All Antelope recognized date formats are acceptible. An optional \fIexpression\fP term allows arbitrary subseting of the hypocenters. See example useages below. Note that extractavodb can require up to tens of seconds to execute depending on the size of the request. To prevent users fram accidentally making burdensome requests, requests are limited to 5000 or fewer hypocenters (500 if phase arrivals are included in the request). This limit can be overridden with the -f flag. Limiting request size by default makes this script suitable for back end use to web requests.
+.LP
+In many cases users will want to subset by volcano. The appropriate way to do this is by distance from a given lat/lon. See the examples below for ways to acheive this.
+
+.SH OPTIONS
+.IP -a
+include arrival and assoc table in results. This can add considerable processing time.
+.IP -f
+force requests that exceed to hypocenter or phase arrival request size.
+.IP -i
+draw hypocenters from a database other than the default total database.
+
+
+.SH ENVIRONMENT
+$ANTELOPE and $AVOSEIS must be set. 
+
+.SH PARAMETER FILE
+None. However the path to the total database would be more apporpriate in a parameter file.
+
+.SH EXAMPLES
+
+1) Extract eight years of events occurring within 15 km of
+   Gareloi summit:
+    extractavodb "1/1/2000" "12/31/2007 23:59:59" dbout \\ 
+         "deg2km(distance(lat,lon,51.7892,-178.796))<15"
+
+2) Extract 2006 events in Katmai region EXCLUDING those near Martin:
+   extractavodb "1/1/2006" "1/1/2007" dbout \\
+        "deg2km(distance(lat,lon,58.3,-154.9))<50 && \\ 
+        deg2km(distance(lat,lon,58.1692,-155.3566))>3"
+
+3) Extract all AVO earthquakes larger than magnitude 3.0
+    extractavodb "1989-001" "now" dbout "ml>3.0"
+
+4) Extract all deep b-type events within 20 km of Spurr, including 
+   arrival information:
+    extractavodb -a "1/1/1989" "now" dbout \\
+        "(deg2km(distance(lat,lon,61.299,-152.254))<25 && depth>20 && etype=~/b/)";
+
+.SH "SEE ALSO"
+None.
+
+.SH "BUGS AND CAVEATS"
+Processing time is longer than I would like, especially when arrival and assoc tables are included. Tests in summer 2007 benchmarked performance drawing from the total database vs. drawing from the directories of monthly databases. In the end, the total database methodology was selected. 
+
+.SH AUTHOR
+Michael West

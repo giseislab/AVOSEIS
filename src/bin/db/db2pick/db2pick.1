@@ -1,0 +1,29 @@
+.TH DB2PICK 1 "$Date$"
+.SH NAME
+db2pick \- convert hypocenter database table into AVO-style Hypoellipse pick file.
+.SH SYNOPSIS
+.nf
+\fBdb2pick\fP[-v] \fIdbname out\fP \fIdbname\fP 
+.fi
+.SH DESCRIPTION
+\fBdb2pick\fP maps hypocenter solutions stored in Antelope database tables into the pick file format used by the Alaska Volcano Observatory. \fBdb2pick\fP is roughly the reverse process of \fBavo2db\fP. While the program is general enough to work on most hypocenter tables, some desecisions about how to map non-transferable fields are hardwired to be work well with AVO data. 
+.LP
+.SH OPTIONS
+None.
+
+.SH ENVIRONMENT
+$ANTELOPE and $AVOSEIS must be set.
+
+.SH PARAMETER FILE
+None.
+
+.SH "SEE ALSO"
+avo2db(1)
+.br
+pick2db(1)
+
+.SH "BUGS AND CAVEATS"
+Filename convensions and preferred magnitude selection are written to best address the needs of AVO.
+
+.SH AUTHOR
+Michael West

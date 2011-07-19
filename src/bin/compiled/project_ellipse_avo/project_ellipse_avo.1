@@ -1,0 +1,31 @@
+.TH PROJECT_ELLIPSE_AVO 1 "$Date$"
+.SH NAME
+project_ellipse_avo \- Convert Hypoellipse errors to a traditional error ellipse. 
+.SH SYNOPSIS
+.nf
+\fBproject_ellipse_avo\fP azimuth_1 dip_1 se_1 azimuth_2 dip_2 se_2 se_3
+  
+.fi
+.SH DESCRIPTION
+\fBproject_ellipse_avo\fP reads hypocenter error parameters created by Hypoellipse and projects them onto an error ellipse and depth error more compatible with a css3.0 database. \fBproject_ellipse_avo\fP is a version of \fBproject_ellipse\fP modified by M. Thorne in 2007. For reasons unknown, \fBproject_ellipse\fP is not producing appropriate errors. Particularly suspect is the fact the that example given on the project_ellipse man page does not return the anticipated value (last accessed 2011). \fBproject_ellipse_avo\fP was modified just slightly. The routine has been validated using error projections carried out with independent Matlab codes.
+
+This program was written to address specific needs when working with data from AVO.  
+
+.SH OPTIONS
+none.
+
+.SH ENVIRONMENT
+None.
+
+.SH PARAMETER FILE
+None.
+
+.SH "SEE ALSO"
+project_ellipse(1)
+
+.SH "BUGS AND CAVEATS"
+None.
+
+.SH AUTHOR
+Michael West
+

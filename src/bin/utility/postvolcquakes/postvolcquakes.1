@@ -1,0 +1,22 @@
+.TH POSTVOLCQUAKES 1 "$Date$"
+.SH NAME
+postvolcquakes \- beta program to post a catalog of volcanic earthquakes.
+
+.SH SYNOPSIS
+.nf
+\postvolcquakes\fP \fIdbname\fP \fIoutdirectory\fP
+.fi
+
+.SH DESCRIPTION
+\fBpostvolcquakes\fP is a tool to create a readable html-formatted catalog of recent earthquakes. In several aspects, it is well tailored to posting volcanic earthquake catalogs. Good features include: (1) Awareness of volcano names and two-letter codes; (2) distance and direction of earthquake relative to volcano; and (3) the ability to link to Valve waveform displays.
+.LP
+In its current state however the program is hopefully hardwired to Redoubt. This code should eityher be removed or heavily rewritten to place the numerous controlling parameters into a proper parameter file.
+
+.SH OPTIONS
+None.
+
+.SH ENVIRONMENT
+$ANTELOPE and $AVOSEIS must be set.
+
+.SH AUTHOR
+Michael West

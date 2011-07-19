@@ -1,0 +1,35 @@
+.TH DB2RESPONSEHTML 1 "$Date$"
+.SH NAME
+db2responsehtml \- convert Antelope database of channel and response tables into a very simple html format.
+.SH SYNOPSIS
+.nf
+\fBdb2responsehtml\fP \fIdbname\fP > \fIhtml_file\fP
+.fi
+.SH DESCRIPTION
+\fBdb2responsehtml\fP creates a rudimentary html version of database information that allows users to select links to raw instrument response files. It allows for quick web presentation of instrument response information contained in an Antelope database. This is useful when sharing instrument responses with non-Antelope users.
+.LP
+.SH OPTIONS
+None.
+
+.SH ENVIRONMENT
+$ANTELOPE and $AVOSEIS must be set.
+
+.SH PARAMETER FILE
+None.
+
+.SH EXAMPLE
+The resulting web page looks like this:
+PLMK	HHZ	2010/10/30(303)	2011/04/13(103)	1	\fIresponse/cmg3t_120sec+rt130@100\fP	Guralp CMG3T_120sec/Reftek 130 Datalogger
+PLMK	HH1	2010/04/13(103)	2010/10/30(303)	1	\fIresponse/cmg3t_120sec+rt130@100\fP	Guralp CMG3T_120sec/Reftek 130 Datalogger
+PLMK	HHZ	2010/04/13(103)	2010/10/30(303)	1	\fIresponse/cmg3t_120sec+rt130@100\fP	Guralp CMG3T_120sec/Reftek 130 Datalogger
+PLMK	HHE	2010/10/30(303)	2011/04/13(103)	1	\fIresponse/cmg3t_120sec+rt130@100\fP	Guralp CMG3T_120sec/Reftek 130 Datalogger
+PLMK	HHN	2010/10/30(303)	2011/04/13(103)	1	\fIresponse/cmg3t_120sec+rt130@100\fP	Guralp CMG3T_120sec/Reftek 130 Datalogger
+etc. 
+.SH "SEE ALSO"
+None.
+
+.SH "BUGS AND CAVEATS"
+The output html code includes links to actual text response files. These links match paths given by the dir and dfile fields in the database. This code does NOT create these files. It would be customary to run this script on a database that is already web accessible. Then code will provide an index of the response files for each channel.
+
+.SH AUTHOR
+Michael West

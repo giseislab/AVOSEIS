@@ -1,6 +1,6 @@
-: # use perl
-eval 'exec $ANTELOPE/bin/perl -S $0 "$@"'
-if 0;
+# Convert one month of AVO pick files to a one month database.
+# Michael West, Apirl 2009
+# 
 
 use lib "$ENV{ANTELOPE}/data/perl" ;
 use Datascope;
@@ -64,13 +64,7 @@ sub run_avo2db {
 $Usage = "
 Usage: buildavodb YYYY MM 
 
-This script converts a month of AVO pick files into Antelope database tables where YYYY and MM are the year and month, respectively. The bulk of the work is done by AVO2DB, which must be in the path in order to work. BUILDAVODB is really a wrapper script which hardwires the directory locations for in and out data and allows looping through many months or years at once.
-
-CAVEATS
-There is currently no parameter file for this program. Most parameters are hardwired. While this matches the static structure of the pickfile directories, it does not allow for more generalized use. This code actually sends pickfiles to avo2db in batches of a few hundred. This is done to avoid exceeding the command line buffer size. It works fine but there is no actual testing of the command line length for compliance.
-AUTHOR
-Michael West
-April 2009
+This script converts a month of AVO pick files into Antelope database tables where YYYY and MM are the year and month, respectively. See man page for full description.
 \n\n";
 
 
