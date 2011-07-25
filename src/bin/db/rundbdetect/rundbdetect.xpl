@@ -106,7 +106,7 @@ FEOF
 							unless (-e "$newdb.detection") {
         							runCommand("dbdetect -pf $pffile -tstart $TSTART -twin $TWIN $refdb $newdb",$RUN);
 							}
-        						runCommand("~/src/GTResearchTools/bin/makelastid $newdb",$RUN);
+        						runCommand("makelastid $newdb",$RUN);
 						} # goodvalue_min
 					} # det_tmax
 				} # det_tmin
