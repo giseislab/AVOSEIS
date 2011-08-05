@@ -1,0 +1,111 @@
+: # use perl
+eval 'exec $ANTELOPE/bin/perl -S $0 "$@"'
+if 0;
+
+use lib "$ENV{ANTELOPE}/data/perl" ;
+use Avoseis::SwarmAlarm qw(runCommand);
+use Datascope;
+use Getopt::Std;
+
+# Get the program name
+our $PROG_NAME;
+($PROG_NAME = $0) =~ s(.*/)();  # PROG_NAME becomes $0 minus any path
+
+# Usage - command line options and arguments
+our ($opt_v);
+if ( ! &getopts('v') || $#ARGV != 1  ) {
+    print STDERR <<"EOU" ;
+
+    Usage: $PROG_NAME  bestdetectdb grid
+
+    For more information:
+        > man $PROG_NAME
+EOU
+    exit 1 ;
+}
+
+# End of  GT Antelope Perl header
+#################################################################
+use File::Basename;
+$RUN = 1;
+$bestdetectdb = $ARGV[0];
+$grid = $ARGV[1];
+print "bestdetectdb = $bestdetectdb\n";
+$volcano = basename $bestdetectdb;
+
+$dataset_index = 0;
+
+foreach $process_time_window (8.0, 200.0) {
+   
+    foreach $assoc_P_thresh (2.0, 5.0, 10.0) {
+	$assoc_S_thresh = 2  * $assoc_P_thresh;
+
+	foreach $timediff (1.0, 4.0, 16.0, 64.0) {
+		foreach $P_det_tmin (4.0, 10.0) {
+			foreach $cluster_twin (0.5, 1.5, 4.5) {
+				foreach $nsta_thresh (4, 5) {
+  					$dataset_index++;
+        				$fstr = sprintf("%s_%d",$volcano,$dataset_index);
+        				$pffile = "dbgrassoc_$fstr";
+        				$newdb = "assoc/trialdb/$fstr";
+					print "Writing params to pf/$pffile.pf\n";
+        				open(FOUT, ">pf/$pffile.pf");
+        				print FOUT<<EOF;
+assoc_P_thresh	$assoc_P_thresh
+assoc_S_thresh	$assoc_S_thresh
+assoc_expression	\$nass>=\$nars
+assoc_firstphase	yes
+assoc_ignoreiphase	no
+assoc_method	tttaup
+assoc_model	iasp91
+assoc_phases	basic
+assoc_screen_new	time
+assoc_screen_old	(time-$timediff)::(time+$timediff)
+author_priority	&Arr{
+}
+pf_revision_time	1214342895
+process_ncycle	8		
+process_tcycle	0.0
+process_time_window	$process_time_window
+grid_params	&Arr{
+     $grid &Arr{
+        P_channel_sifter        ..Z
+        P_det_tmin     $P_det_tmin 
+        S_channel_sifter        ..[NE]
+        algorithm       orbassoc
+        associate_S     no
+        auth    volcano
+        cluster_twin   $cluster_twin 
+        drop_if_on_edge yes
+        #dwt_dist_far    1.0
+        #dwt_dist_near   0.1
+        #dwt_wt_far      0.0
+        #dwt_wt_near     1.0
+        nsta_thresh    $nsta_thresh 
+        nxd     11
+        nyd     11
+        priority        5
+        #relocate        rundbgenloc
+        #relocate_params &Arr{
+        #    depth_floor 24.0
+        #}
+        reprocess_S     no
+        try_S   no
+        use_dwt no
+    }
+}
+
+EOF
+
+     					runCommand("cp $bestdetectdb $newdb",$RUN);
+     					runCommand("cp $bestdetectdb.lastid $newdb.lastid",$RUN);
+					unless (-e "$newdb.arrival") {
+        					runCommand("dbgrassoc -pf $pffile $bestdetectdb $newdb grids/grid_$grid",$RUN);
+					}
+				} 
+			} 
+		    } 
+		} 
+	} 
+} 
+###############################################################################
