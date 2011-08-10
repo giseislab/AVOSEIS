@@ -1,0 +1,17 @@
+TWIN	240
+TSTART	1237734000
+refdb	referencedb/refdb_20090322
+volcano	Redoubt
+stachans &Tbl{
+	RSO	EHZ
+	REF	EHZ
+	RDN	EHZ
+	RDWB	BHZ
+	RDJH	BHZ
+	RED	EHZ
+	DFR	EHZ
+#	RDDF	BHZ
+	NCT	EHZ
+#	RDDR	BHZ
+	RDT	EHZ
+}
