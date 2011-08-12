@@ -1,0 +1,34 @@
+.TH MAKE_RECENT_EVENT_LIST 1 "$Date$"
+.SH NAME
+htmldir \- create a database of recent events and publishes it in several formats.
+
+.SH SYNOPSIS
+.nf
+\fBmake_recent_event_list\fP
+.fi
+.SH DESCRIPTION
+\fBmake_recent_event_list\fP runs the following programs: 
+   \fBextractavodb\fP (to grab the past 31 days worth of events)
+   \fBget_avo_stations_db\fP
+   \fBdb2kml\fP
+   \fBdb2avoxml\fP
+   \fBdb2originlist\fP
+   \fBdb2arrivallist\fP
+   \fBdb2responsehtml\fP
+.br
+Though the products are necessary, the process is due for overhaul. It is essentially a bundle of programs designed to run as a single call from an rtexec process. It contains numerous hardwired calls and requires environment variables to be set in the shell. Essentially it cannot be run outside of a specific realtime environment and there would be little reason to. It should probably be removed alltogether and be run as individual components direct from rtexec.
+
+.SH OPTIONS
+None.
+
+.SH ENVIRONMENT
+$ANTELOPE, $AVOSEIS, $INTERNALWEBPRODUCTS and $PUBLICWEBPRODUCTS must be set.
+
+.SH PARAMETER FILE
+None.
+
+.SH BUGS AND CAVEATS
+Plenty. See program description. The biggest issue is that calling this bundle of programs from rtexec instead of calling the necessary components, obfuscates the performance of each one. i.e. they parts can't be observed from rtm, for example.
+
+.SH AUTHOR
+Michael West

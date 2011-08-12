@@ -8,7 +8,7 @@ use Datascope ;
 
 
 if (! $#ARGV == 0 ) {
-        die ( "Useage: dbresponse2html dbin. *Note that actual response files must be copied by hand." );
+        die ( "Usage: dbresponse2html dbin. *Note that actual response files must be copied by hand." );
 }
 
 

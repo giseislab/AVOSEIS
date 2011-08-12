@@ -1,0 +1,57 @@
+.TH DB2AVOXML 1 "$Date$"
+.SH NAME
+db2avoxml \- create an xml-formatted version of hypocenter solutions.
+
+.SH SYNOPSIS
+.nf
+\fBdb2avoxml\fP [-sob] \fIdbname\fP > \fIxml_file\fP 
+.fi
+.SH DESCRIPTION
+\fBdb2avoxml\fP This script creates a xml file in a format suitable for use with the AVO public Google Maps pages. It uses event or station information extracted from the input database. At least one option flag must be used or the resulting xml file will be empty. To maintain a quick response when used with Google Maps, output is currently limited to the first 300 events. This limit can be overridden with the -f flag.
+
+.SH OPTIONS
+.IP -s
+create placemarks for all seismic stations in database.
+.IP -o
+creates placemarks for all preferred origins. This option requires the origin, event and netmag tables. Origin placemarks are colored by depth. Size is scaled by origin magnitude.
+.IP -b
+creates basic placemarks for all origins. This is a simplified version of the -o flag that reads only an origin table. The same color and depth scale is used as for -o. A single magnitude is assigned in the order of preference: Ms, mb, ml. Either the -o or -b should be used, but not both.
+.IP -f
+force program to include all origins. By default only the first 300 are included in the output.
+
+.SH ENVIRONMENT
+$ANTELOPE and $AVOSEIS must be set.
+
+.SH PARAMETER FILE
+None.
+
+.SH EXAMPLE
+#hawk> db2avoxml -o quakes > outfile.txt
+.br
+#hawk> more outfile.txt
+#hawk> head outfile.txt 
+.br
+<?xml version="1.0" encoding="UTF-8"?>
+.br
+<markers>
+.br
+<!-- created by db2avoxml from database: quakes on  7/19/2011   2:07:51.059 UTC -->
+.br
+     <marker name="ml:1.0 04/11/2010" icon="hyp0040FF.png" lat="-22.2724" lon="-67.3583" depth="15.0" ml="1.0" scale="0.39825" color="FF0040FF" TimeStamp="2010-04-11T20:04:34Z">[b]04/11/2010 20:04:34 UTC[/b][br][b]magnitude: 1.0[/b][br]lat,lon: -22.2724,-67.3583[br]depth: 15.0</marker>
+.br
+     <marker name="ml:2.9 04/11/2010" icon="hyp408600.png" lat="-22.5714" lon="-67.7756" depth="70.0" ml="2.9" scale="0.612" color="FF408600" TimeStamp="2010-04-11T19:05:43Z">[b]04/11/2010 19:05:43 UTC[/b][br][b]magnitude: 2.9[/b][br]lat,lon: -22.5714,-67.7756[br]depth: 70.0</marker>
+.br
+     ...
+.br
+</markers>
+  
+.SH SEE ALSO
+db2kml(1)
+
+.SH BUGS AND CAVEATS
+At the time of writing this I don't recall the difference between -b and -o. In some (all?) cases they return the same information. It is possible that -b is obsolete.
+.LP
+Numerous subsets of placemarks may be desirable - stations in a date range, origins in a magnitude range. These options are not coded into db2xml. These subsets should be carried out on the input database prior to sending to \fBdb2avoxml\fP.
+
+.SH AUTHOR
+Michael West

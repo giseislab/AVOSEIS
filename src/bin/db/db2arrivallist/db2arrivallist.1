@@ -1,0 +1,56 @@
+.TH DB2ARRIVALLIST 1 "$Date$"
+.SH NAME
+db2arrivallist \- create a simple text-formatted list of origins and corresponding phase arrivals.
+
+.SH SYNOPSIS
+.nf
+\fBdb2arrivallist\fP \fIdbname\fP > \fIoutfile.txt\fP 
+.fi
+.SH DESCRIPTION
+\fBdb2arrivallist\fP creates a list of hypocenters and corresponding phase arrivals in a simple parseable text format.
+
+.SH OPTIONS
+None.
+
+.SH ENVIRONMENT
+$ANTELOPE and $AVOSEIS must be set.
+
+.SH PARAMETER FILE
+None.
+
+.SH EXAMPLE
+#hawk> db2arrivallist quakes > outfile.txt
+.br
+#hawk> more outfile.txt
+.br
+Origin line format:
+.br
+date   yrday     time         lat      lon    depth  mag magtype author eventid
+.br
+Arrival line format:
+.br
+sta   chan  phase  date   yrday     time      residual  arrivalid
+
+4/11/10 (101) 20:04:34.862  -22.2724  -67.3583  15.0  1.0    ml   local 4888
+     UTLA2  SHZ    P   4/11/10 (101) 20:04:39.940    -0.015  39753
+     UTCA   SHZ    P   4/11/10 (101) 20:04:40.360    -0.109  39754
+     UTCM   SHZ    P   4/11/10 (101) 20:04:41.540     0.095  39755
+     UTSA   BHZ    P   4/11/10 (101) 20:04:42.340     0.118  39756
+     UTLL   SHZ    P   4/11/10 (101) 20:04:42.980    -0.089  39757
+
+ 4/11/10 (101) 19:05:43.748  -22.5714  -67.7756  70.0  2.9    ml   local 4887
+     UTSW   SHZ    P   4/11/10 (101) 19:06:00.560     0.029  39743
+     UTLA2  SHZ    P   4/11/10 (101) 19:05:59.080    -0.080  39742
+     UTCA   SHZ    P   4/11/10 (101) 19:06:00.580    -0.037  39744
+     ...
+
+.SH SEE ALSO
+db2originlist(1)
+.br
+dbselect(1)
+
+.SH BUGS AND CAVEATS
+Custom versions of this type of output can be easily created with \fBdbselect\fP. \fBdb2arrivallist\fP seeks merely to provide a standardized format for serving text requests for hypocenter and phase data with non-database users.
+
+.SH AUTHOR
+Michael West

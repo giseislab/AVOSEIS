@@ -1,0 +1,49 @@
+.TH DB2ORIGINLIST 1 "$Date$"
+.SH NAME
+db2originlist \- create a simple text-formatted list of origins.
+
+.SH SYNOPSIS
+.nf
+\fBdb2originlist\fP \fIdbname\fP > \fIoutfile.txt\fP 
+.fi
+.SH DESCRIPTION
+\fBdb2originlist\fP creates a list of hypocenters in a simple parseable text format. When used with the AVO analyst-reviewed catalog, the -a flag will cause the output to include a column for the name of the pickfile. This option is only applicable when using the versions of the AVO cataog database that include the remark table.
+
+.SH OPTIONS
+.IP -a
+include the pickfile name in output. Only applicable to AVO databases that include the remark table, such as those produced by \fBextractavodb.\fP
+
+.SH ENVIRONMENT
+$ANTELOPE and $AVOSEIS must be set.
+
+.SH PARAMETER FILE
+None.
+
+.SH EXAMPLE
+#hawk> db2originlist quakes > outfile.txt
+.br
+#hawk> more outfile.txt
+.br
+Produced at  7/18/2011  17:26:49.787 AKDT (from database quakes)
+.br
+   date    yrday    time         lat     lon      depth   mag magtype  eventid pickfile
+ 2010/04/11 (101) 20:04:34.862 -22.2724  -67.3583  15.0    1.0    ml 4888
+ 2010/04/11 (101) 19:05:43.748 -22.5714  -67.7756  70.0    2.9    ml 4887
+ 2010/04/11 (101) 16:33:09.357 -21.9098  -67.4171  30.0    2.1    ml 4886
+ 2010/04/11 (101) 12:14:23.291 -21.7596  -67.5501 140.0    2.0    ml 4885
+ 2010/04/11 (101) 09:51:12.872 -22.7599  -67.0458 120.0    2.1    ml 4884
+ 2010/04/11 (101) 03:08:21.724 -22.1725  -67.1948  15.0    0.6    ml 4883
+ 2010/04/11 (101) 02:39:01.813 -22.3589  -67.7747 100.0    2.8    ml 4882
+ 2010/04/11 (101) 02:27:15.611 -22.2725  -67.1949   4.0    0.8    ml 4881
+     ...
+
+.SH SEE ALSO
+db2arrivallist(1)
+.br
+extractavodb(1)
+
+.SH BUGS AND CAVEATS
+Custom versions of this type of output can be easily created with \fBdbselect\fP. \fBdb2originlist\fP seeks merely to provide a standardized format for serving text requests for hypocenter.
+
+.SH AUTHOR
+Michael West

@@ -1,4 +1,4 @@
-BIN=avo2db
-MAN1=avo2db.1
+BIN=htmldir
+MAN1=htmldir.1
 DIRS=
 include $(AVOSEISMAKE)

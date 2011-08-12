@@ -1,0 +1,25 @@
+.TH HTMLDIR 1 "$Date$"
+.SH NAME
+htmldir \- create an index.html file that lists contents of current directory.
+
+.SH SYNOPSIS
+.nf
+\fBhtmldir\fP
+.fi
+.SH DESCRIPTION
+\fBhtmldir\fP is a brutally simple program that generates an index.html file that lists hyperlinks to all contents of the current directory. This can be used to provide an index to contents of a web directory on systems where direct browsing of directories is forbidden.
+
+.SH OPTIONS
+None.
+
+.SH ENVIRONMENT
+$ANTELOPE and $AVOSEIS must be set.
+
+.SH PARAMETER FILE
+None.
+
+.SH BUGS AND CAVEATS
+\fBhtmldir\fP is hardwired to index the contents of the current working directory only. The output file is always called \fIhtmldir\fP and is always written to the current working directory. If an index.html file already exists, it will be overwritten. 
+
+.SH AUTHOR
+Michael West
