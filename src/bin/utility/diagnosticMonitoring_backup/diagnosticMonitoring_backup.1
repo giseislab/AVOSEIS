@@ -1,0 +1,30 @@
+.TH DIAGNOSTICMONITORING_BACKUP 1 "$Date$"
+.SH NAME
+DIAGNOSTICMONITORING_BACKUP \- Check that diagnosticMonitoring has run within past 2 hours.
+.SH SYNOPSIS
+.nf
+\fBdiagnosticMonitoring_backup \fP[-vf] dbin
+.fi
+.SH DESCRIPTION
+\fBdiagnosticMonitoring_backup\fP checks that diagnosticMonitoring has run on /avort/oprun and /avort/devrun in past 2 hours.  
+
+.SH OPTIONS
+None.
+
+.SH COMMAND LINE VARIABLES
+None.
+
+.SH ENVIRONMENT
+$ANTELOPE and $AVOSEIS must be set. 
+Uses Avoseis::SwarmAlarm
+
+.SH PARAMETER FILE
+None.
+
+.SH "SEE ALSO"
+diagnosticMonitoring(1)
+
+.SH "BUGS AND CAVEATS"
+
+.SH AUTHOR
+Glenn Thompson

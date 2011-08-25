@@ -40,16 +40,22 @@ None. However the path to the total database would be more apporpriate in a para
 3) Extract all AVO earthquakes larger than magnitude 3.0
     extractavodb "1989-001" "now" dbout "ml>3.0"
 
-4) Extract all deep b-type events within 20 km of Spurr, including 
+4) Extract all deep b-type events within 25 km of Spurr, including 
    arrival information:
     extractavodb -a "1/1/1989" "now" dbout \\
         "(deg2km(distance(lat,lon,61.299,-152.254))<25 && depth>20 && etype=~/b/)";
 
+5) Extract all events from the FEAST catalog within 30 km of Spurr, excluding 
+   arrival information:
+    extractavodb -i /avort/oprun/events/earthworm/events_earthworm "1/1/2011" "now" dbout \\
+        "(deg2km(distance(lat,lon,61.299,-152.254))<30)";
+
+
 .SH "SEE ALSO"
-None.
+avo2db(1), dbt2orbpf(1), db2dbsubset (AEIC).
 
 .SH "BUGS AND CAVEATS"
-Processing time is longer than I would like, especially when arrival and assoc tables are included. Tests in summer 2007 benchmarked performance drawing from the total database vs. drawing from the directories of monthly databases. In the end, the total database methodology was selected. 
+Processing time is longer than we would like, especially when arrival and assoc tables are included. Tests in summer 2007 benchmarked performance drawing from the total database vs. drawing from the directories of monthly databases. In the end, the total database methodology was selected. 
 
 .SH AUTHOR
-Michael West
+Michael West, Glenn Thompson

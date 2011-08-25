@@ -16,11 +16,11 @@ our $PROG_NAME;
 ($PROG_NAME = $0) =~ s(.*/)();  # PROG_NAME becomes $0 minus any path
 
 # Usage - command line options ad arguments
-our ($opt_p, $opt_v, $opt_d); 
-if ( ! &getopts('p:vdr') || !( ($#ARGV == 0 ) || ($#ARGV == 2) ) ){
+our ($opt_v); 
+if ( ! &getopts('v') || !( ($#ARGV == 0 ) || ($#ARGV == 2) ) ){
     print STDERR <<"EOU" ;
 
-    Usage: $PROG_NAME [-p pffile] [-d] [-v] detection_table [tstart tend]
+    Usage: $PROG_NAME [-v] detection_table [tstart tend]
 
     For more information:
 	> man $PROG_NAME	 
@@ -30,7 +30,6 @@ EOU
 
 # End of  GT Antelope Perl header
 #################################################################
-#use Avoseis::SwarmAlarm;
 use POSIX;
 use List::Util qw(min max);
 printf("\n**************************************\n\nRunning $PROG_NAME at %s\n\n", epoch2str(now(),"%Y-%m-%d %H:%M:%S")) if $opt_v; 

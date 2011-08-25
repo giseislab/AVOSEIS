@@ -1,12 +1,12 @@
 .TH DBSPLIT2DAYVOLUMES 1 2010/03/10 "BRTT Antelope 4.11" "User Commands"
 .SH NAME
-dbsplitcron \- Split an event database into day volumes.
+dbsplit2dayvolumes \- Split an event database into day volumes.
 .SH SYNOPSIS
 .nf
-\fBdbsplitcron [-d] [-v] [-n Ndays] dbin dbout [yyyy-mm-dd]\fR
+\fBdbsplit2dayvolumes [-d] [-v] [-n Ndays] dbin dbout [yyyy-mm-dd]\fR
 .fi
 .SH DESCRIPTION
-\fBdbsplitcron\fR reads an input event database and splits out the last full UT day
+\fBdbsplit2dayvolumes\fR reads an input event database and splits out the last full UT day
 into an output event database. This can be overridden with the -n nDays argument which
 will try to split out the UT day from nDays UT days ago. This should be a positive
 integer from 1 to 365 (default is 1).
@@ -29,7 +29,7 @@ Split out the UT day from nDays UT days ago instead (ignored if yyyy-mm-dd is gi
 .in 2c
 .ft CW
 .nf
-%dbsplitcron  -v dbseg/quakes dbseg/Quakes 2010-03-10
+%dbsplit2dayvolumes  -v dbseg/quakes dbseg/Quakes 2010-03-10
 .fi
 .ft R
 .in

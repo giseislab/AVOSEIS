@@ -1,0 +1,72 @@
+.TH DIAGNOSTICMONITORING 1 "$Date$"
+.SH NAME
+DIAGNOSTICMONITORING \- Check that real-time databases are being created.
+.SH SYNOPSIS
+.nf
+\fBdiagnosticMonitoring \fP[-vf] dbin
+.fi
+.SH DESCRIPTION
+\fBdiagnosticMonitoring\fP checks a number of real-time databases, to ensure they are being created for the current UTC day. Optionally, with YYYY MM DD arguments, it can check whether database entries were made for a day in the past instead. 
+.LP
+Checks performed are:
+.IP \(em 
+Has FEAST detection table been modified in past NUMBER_OF_DAYS? If not, declare alarm.
+.IP \(em 
+Has FEAST origin table been modified in past NUMBER_OF_DAYS? If not, declare alarm.
+.IP \(em 
+Has real-time (orbdetect) detection table been modified in past NUMBER_OF_DAYS? If not, declare alarm.
+.IP \(em 
+Has real-time (orbassoc) origin table been modified in past NUMBER_OF_DAYS? If not, declare alarm.
+.IP \(em 
+Has the swarm tracking module log file been modified in the past hour? If not, declare alarm.
+.IP \(em 
+Has the watch alarms table log file been modified in the past hour? If not, send MMS to Glenn's cellphone. (It would be pointless to declare an alarm, since if dbwatchtable is not running, it wont get sent!)
+.IP \(em 
+Has the master events origin table had any new FEAST origins in the past NUMBER_OF_DAYS? If not, declare alarm. 
+.IP \(em 
+Has the master events origin table had any new AEIC origins in the past NUMBER_OF_DAYS? If not, declare alarm.
+.IP \(em 
+Has the master events origin table had any new USGS (NEIC) origins in the past NUMBER_OF_DAYS? If not, declare alarm.
+.IP \(em 
+Make a maximum of 2 attempts to ping the AVO servers chinook, humpy, raven, muskox and bronco. If either of them are down, declare alarm.
+.IP \(em 
+Check that rtexec, orbdetect, orbassoc, carlsubtrig2antelope, carlstatrig2antelope, and dbwatchtable are running. If either of them are not, declare alarm.
+.LP
+If there are multiple alarm conditions, a single alarm is sent with all alarm conditions concatenated. \fBdiagnosticMonitoring\fP also has the ability to generate a summary HTML table, but this feature is currently turned off.
+.LP
+
+.SH OPTIONS
+-d DEBUG_LEVEL (default is 0): works the same way as debug/print_debug in MATLAB
+
+-h optional HTML output file
+
+-t NUMBER_OF_DAYS (Default: 0.25, i.e. 6 hours).
+
+.SH COMMAND LINE VARIABLES
+YYYY MM DD (Optional)    The year, month and day in the past to run diagnosticMonitoring on. (Default is today).
+
+.SH ENVIRONMENT
+$ANTELOPE and $AVOSEIS must be set. 
+Uses Avoseis::SwarmAlarm
+
+.SH PARAMETER FILE
+None.
+
+.SH EXAMPLES
+Run diagnostic checks with debug level 2. Databases and log files must have been modified within the last 1 day. Send HTML summary to diagnostic.html. 
+
+   \fBdiagnosticMonitoring\fP -d 2 -h diagnostic.html -t 1
+
+Run diagnostic checks on databases from 2011 08 22:
+
+   \fBdiagnosticMonitoring\fP 2011 08 22
+
+
+.SH "SEE ALSO"
+diagnosticMonitoring_backup(1)
+
+.SH "BUGS AND CAVEATS"
+HTML output is not complete. The debugging level feature is incomplete. Some paths are hardwired (most come from environment variables).
+
+.SH AUTHOR
+Glenn Thompson

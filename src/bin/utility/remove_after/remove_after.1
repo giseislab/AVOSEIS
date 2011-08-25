@@ -1,0 +1,33 @@
+.TH REMOVE_AFTER 1 "$Date$"
+.SH NAME
+REMOVE_AFTER \- Remove old files. 
+.SH SYNOPSIS
+.nf
+\fBremove_after \fP[-vf] DAYS DIR MATCHSTR
+.fi
+.SH DESCRIPTION
+\fBremove_after\fP removes files older (after) a given number of days since modification.  
+
+.SH OPTIONS
+None.
+
+.SH COMMAND LINE VARIABLES
+.IP DAYS 
+Number of days after which to remove files.
+.IP DIR 
+Directory to search
+.IP MATCHSTR 
+Remove files older than DAYS matching MATCHSTR*.
+
+.SH ENVIRONMENT
+
+.SH PARAMETER FILE
+None.
+
+.SH "SEE ALSO"
+remove_after(1)
+
+.SH "BUGS AND CAVEATS"
+
+.SH AUTHOR
+Glenn Thompson

@@ -1,0 +1,40 @@
+.TH DBT2ORBPF 1 "$Date$" 
+.SH NAME
+dbt2orbpf - monitor a database for new origins, and generate a /pf/orb2dbt packet and send it to an orb if a new origin meet certain criteria
+.SH SYNOPSIS
+dbt2orbpf [-vV] [-S state_file] [-l origin_sleep_time] [-m time_to_wait_for_magnitude] [-o ORIGINS_TO_PROCESS] [-s select_expression]  database orb [orb2 [orb3 ...]]
+.SH DESCRIPTION
+\fBdbt2orbpf\fP watches the origin table of a given database for new origin rows. An origin that meets the \fBselect_expression\fP is packaged along with its event, assoc, arrival and netmag data into a /pf/orb2dbt packet which is written to the output orb(s).
+.LP
+The origin table is checked every \fBorigin_sleep_time\fP seconds. A variable called \fBlast_lddate\fP tracks the load time of the last origin that was processed, and a \fBstate_file\fP can optionally be used also allowing \fBdbt2orbpf\fP to start again where it left over upon restart (\fBORIGINS_TO_PROCESS\fP must be set to "STATE" to allow this). Only origins with an lddate greater than \fBlast_lddate\fP will be processed.
+.SH OPTIONS
+.IP "-m time_to_wait_for_magnitude"
+Specifies the maximum time to wait for a magnitude to be computed. Once this limit is met, the origin will be ignored. If omitted, defaults to 60 (seconds). Typically a magnitude is not computed by orbevproc for 30-60s after the origin is computed. 
+.IP "-o ORIGINS_TO_PROCESS"
+Default is "ALL" which means upon startup, start with the first record in an origin table. "NEW" means only origins added after startup will be processed. "STATE" instructs the program to load the time of the last origin processed from a statefile, and process all origins in the table beyond that time. 
+.IP "-l origin_sleep_time"
+Specifies the time to wait between rechecking the database for new origins. If omitted, defaults to 10 (seconds).
+.IP "-s select_expression"
+A dbe/dbsubset style select expression applied to origins. Those not matching it will not be processed. 
+.IP "-S state_file"
+Changes the name of the state_file from state/dbt2orbpf. Required if you are running more than 1 instance of \fBdbt2orbpf\fP to prevent them clashing.
+.IP "-v"
+Verbose mode.
+.IP "-V"
+Very verbose mode.
+.SH COMMAND LINE ARGUMENTS
+.IP database
+The database to monitor for new origins
+.IP "orb [orb2 [orb3 ... ]  ]"
+The orbserver(s) to write /pf/orb2dbt packets too.
+.SH "PARAMETER FILE"
+None.
+.SH "SEE ALSO"
+This code is heavily based on dbsubset2orb, which was itself based on dbt2pf (and dbt2pf2). All of those earlier codes should be deprecated in favour of this.
+.SH BUGS AND CAVEATS
+None known.
+.SH AUTHOR
+Glenn Thompson
+.br
+Alaska Earthquake Information Center, Alaska Volcano Observatory
+

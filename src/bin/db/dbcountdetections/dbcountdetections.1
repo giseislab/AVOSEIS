@@ -1,0 +1,36 @@
+.TH DBCOUNTDETECTIONS 1 "$Date$"
+.SH NAME
+dbcountdetections \- count detections by station
+.SH SYNOPSIS
+.nf
+\fBdbcountdetections\fP detection_table [tstart tend] 
+.fi
+.SH DESCRIPTION
+\fBdbcountdetections\fP outputs a list of detections per station.
+
+.SH OPTIONS
+None.
+
+.SH COMMAND LINE ARGUMENTS
+.IP detection_table
+The full path to the detection table you wish to summarise.
+.IP tstart tend (Optional)
+If you don't want to summarise the full time range in the detection table, enter
+start and end epoch times.
+
+.SH ENVIRONMENT
+$ANTELOPE and $AVOSEIS must be set.
+
+.SH PARAMETER FILE
+None.
+
+.SH "SEE ALSO"
+dbcounthourlydetections(1)
+.br
+
+
+.SH "BUGS AND CAVEATS"
+None.
+
+.SH AUTHOR
+Glenn Thompson

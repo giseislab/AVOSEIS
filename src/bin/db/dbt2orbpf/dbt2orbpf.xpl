@@ -30,11 +30,11 @@ our $PROG_NAME;
 ($PROG_NAME = $0) =~ s(.*/)();  # PROG_NAME becomes $0 minus any path
 
 # Usage - command line options and arguments
-our ($opt_v, $opt_V, $opt_l, $opt_m, $opt_o, $opt_p, $opt_s, $opt_S); 
+our ($opt_v, $opt_V, $opt_l, $opt_m, $opt_o, $opt_s, $opt_S); 
 if ( ! &Getopts('vVl:m:o:s:S:') || $#ARGV < 1 ) {
 	print STDERR <<"EOU" ;
 	
-	Usage: $PROG_NAME [-v] [-V] [-l sleeptime] [-m timetowaitformagnitude] [-o "ALL"|"NEW"|"STATE"] [-p pffile] [-s select_expr] [-S statefile] database orb [orb2...]
+	Usage: $PROG_NAME [-v] [-V] [-l sleeptime] [-m timetowaitformagnitude] [-o "ALL"|"NEW"|"STATE"] [-s select_expr] [-S statefile] database orb [orb2...]
 	
 	Also see manpage.
 		

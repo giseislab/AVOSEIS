@@ -1,8 +1,3 @@
-: # use perl
-eval 'exec $ANTELOPE/bin/perl -S $0 "$@"'
-if 0;
-
-use lib "$ENV{ANTELOPE}/data/perl" ;
 # extractavodb
 # Create database of avo data from requested date range
 # Michael West
@@ -17,78 +12,6 @@ use lib "$ENV{ANTELOPE}/data/perl" ;
 
 use Datascope ;
 use Getopt::Std;
-
-
-
-sub do_origin_tables {
-
-	$start_date_epoch = str2epoch($start_date);
-	$end_date_epoch = str2epoch($end_date);
-	@db_dscr = dbopen($dbin,'r');
-	@db = dblookup(@db_dscr,"","origin","",1);
-	@db = dbsubset(@db,"(time>=$start_date_epoch) && (time<=$end_date_epoch)");
-	@db2 = dblookup(@db_dscr,"","origerr","",1);
-	@db  = dbjoin(@db,@db2);
-		if ($DO_EXP) {
-		@db = dbsubset(@db,"$exp");
-	}
-	@db = dbsort(@db,'time');
-	@db2 = dblookup(@db_dscr,"","event","",1);
-	@db  = dbjoin(@db,@db2);
-	@db2 = dblookup(@db_dscr,"","netmag","",1);
-	@db  = dbjoin(@db,@db2);
-	if (dbquery(@db,"dbTABLE_PRESENT")) {
-		@db2 = dblookup(@db_dscr,"","remark","",1);
-		@db  = dbjoin(@db, @db2);
-	}
-	$nrecords = dbquery(@db,"dbRECORD_COUNT");
-	print "number of origin records: $nrecords\n";
-
-
-	# ADD OPTIONAL ARRIVAL/ASSOC/STAMAG TABLES
-	if ( ($nrecords > 5000) && (!$opt_f) ) {
-		die("You have requested more than 5000 earthquakes. This may require extensive processing time. Consider submitting smaller requests. If you really want to submit this entire request, use the -f flag.\n");
-	}
-	if ($nrecords == 0) {
-		die("database does not exist or it contains no origin records");
-	}
-	if ($opt_a) {
-		if ( ($nrecords > 500) && (!$opt_f) ) {
-			die("You have requested arrival information from more than 500 earthquakes. This may require extensive processing time. Consider submitting smaller requests. If you really want to submit this entire request, use the -f flag.\n");
-		}
-		#@db2 = dbsubset(@db2,"(time>=$start_date_epoch) && (time<=$end_date_epoch)");
-		@db2 = dblookup(@db_dscr,"","assoc","",1);
-		@db  = dbjoin(@db,@db2);
-		@db2 = dblookup(@db_dscr,"","arrival","",1);
-		@db  = dbjoin(@db,@db2);
-		$nrecords = dbquery(@db,"dbRECORD_COUNT");
-		@db2 = dblookup(@db_dscr,"","stamag","",1);
-		@db  = dbjoin(@db,@db2, -outer);
-		print "number of arrival records: $nrecords\n";
-	}	
-
-
-	# CREATE OUTPUT DATABASE
-	dbunjoin(@db,$dbout);
-}
-
-
-sub descriptor {
-        open(OUT,">$_[0]");
-        print OUT "\#\n";
-        print OUT "schema css3.0\n";
-        print OUT "dblocks\n";
-        print OUT "dbidserver\n";
-        print OUT "dbpath\n";
-        close(OUT);
-}
-
-
-
-
-
-
-##############################################
 
 # SET CONSTANTS
 $dbin = "/Seis/Kiska4/picks/Total/Total";
@@ -170,4 +93,71 @@ if ($dt < 0) {
 # PREPARE TABLES
 &do_origin_tables
 &descriptor($dbout);
+
+#################################################################################################################
+
+sub do_origin_tables {
+
+	$start_date_epoch = str2epoch($start_date);
+	$end_date_epoch = str2epoch($end_date);
+	@db_dscr = dbopen($dbin,'r');
+	@db = dblookup(@db_dscr,"","origin","",1);
+	@db = dbsubset(@db,"(time>=$start_date_epoch) && (time<=$end_date_epoch)");
+	@db2 = dblookup(@db_dscr,"","origerr","",1);
+	@db  = dbjoin(@db,@db2);
+		if ($DO_EXP) {
+		@db = dbsubset(@db,"$exp");
+	}
+	@db = dbsort(@db,'time');
+	@db2 = dblookup(@db_dscr,"","event","",1);
+	@db  = dbjoin(@db,@db2);
+	@db2 = dblookup(@db_dscr,"","netmag","",1);
+	@db  = dbjoin(@db,@db2);
+	if (dbquery(@db,"dbTABLE_PRESENT")) {
+		@db2 = dblookup(@db_dscr,"","remark","",1);
+		@db  = dbjoin(@db, @db2);
+	}
+	$nrecords = dbquery(@db,"dbRECORD_COUNT");
+	print "number of origin records: $nrecords\n";
+
+
+	# ADD OPTIONAL ARRIVAL/ASSOC/STAMAG TABLES
+	if ( ($nrecords > 5000) && (!$opt_f) ) {
+		die("You have requested more than 5000 earthquakes. This may require extensive processing time. Consider submitting smaller requests. If you really want to submit this entire request, use the -f flag.\n");
+	}
+	if ($nrecords == 0) {
+		die("database does not exist or it contains no origin records");
+	}
+	if ($opt_a) {
+		if ( ($nrecords > 500) && (!$opt_f) ) {
+			die("You have requested arrival information from more than 500 earthquakes. This may require extensive processing time. Consider submitting smaller requests. If you really want to submit this entire request, use the -f flag.\n");
+		}
+		#@db2 = dbsubset(@db2,"(time>=$start_date_epoch) && (time<=$end_date_epoch)");
+		@db2 = dblookup(@db_dscr,"","assoc","",1);
+		@db  = dbjoin(@db,@db2);
+		@db2 = dblookup(@db_dscr,"","arrival","",1);
+		@db  = dbjoin(@db,@db2);
+		$nrecords = dbquery(@db,"dbRECORD_COUNT");
+		@db2 = dblookup(@db_dscr,"","stamag","",1);
+		@db  = dbjoin(@db,@db2, -outer);
+		print "number of arrival records: $nrecords\n";
+	}	
+
+
+	# CREATE OUTPUT DATABASE
+	dbunjoin(@db,$dbout);
+}
+
+
+sub descriptor {
+        open(OUT,">$_[0]");
+        print OUT "\#\n";
+        print OUT "schema css3.0\n";
+        print OUT "dblocks\n";
+        print OUT "dbidserver\n";
+        print OUT "dbpath\n";
+        close(OUT);
+}
+
+
 
