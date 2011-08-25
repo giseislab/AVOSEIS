@@ -1,0 +1,36 @@
+.TH DBDETECTSWARM_WRAPPER 1 "$Date$"
+.SH NAME
+DBDETECTSWARM_WRAPPER \- Run dbdetectswarm on a list of origin/grid authors.
+.SH SYNOPSIS
+.nf
+\fBdbdetectswarm_wrapper \fP[-vf] quakedb alarmdb swarmdb pffile
+.fi
+.SH DESCRIPTION
+\fBdbdetectswarm_wrapper\fP checks that diagnosticMonitoring has run on /avort/oprun and /avort/devrun in past 2 hours.  
+
+.SH OPTIONS
+None.
+
+.SH COMMAND LINE VARIABLES
+.IP QUAKEDB ALARMDB SWARMDB PFFILE
+.IP QUAKEDB
+The event database to run dbdetectswarm on.
+.IP ALARMDB
+The alarm database dbdetectswarm should post new alarms to.
+.IP SWARMDB
+The swarm database dbdetectswarm should use for tracking swarm status.
+.IP PFFILE
+The dbdetectswarm parameter file.
+
+.SH ENVIRONMENT
+
+.SH PARAMETER FILE
+None. (The parameter file argument is for dbdetectswarm, not \fBdbdetectswarm_wrapper\fP).
+
+.SH "SEE ALSO"
+dbdetectswarm(1)
+
+.SH "BUGS AND CAVEATS"
+
+.SH AUTHOR
+Glenn Thompson
