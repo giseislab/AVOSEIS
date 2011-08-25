@@ -3,33 +3,16 @@
 # Author: Glenn Thompson (GT) 2010
 #         ALASKA VOLCANO OBSERVATORY
 #
-# Description:
-#       1. Call with optional debug level, html output file, and YYYY MM DD parameter
-#       2. If no YYYY MM DD parameter, default to today. Automatically set $opt_s if using YYYY MM DD parameters.
-#       3. Check FEAST:
-#               i. If database does not exist, send alarm.
-#               ii. If no origin table, send alarm.
-#               iii. If no events today, send alarm.
-#               iv. If logfile contains more events than database, send warning.
-#               v. If no detection table, send alarm.
-#               vi. If no detections today, send alarm.
-#               vii. If logfile contains more detections than database, send warning.
-#       4. Check RTDB (as above).
-#       5. Check if carlsubtrig2db is running.
-#       6. Check if carlstatrig2db is running.
-#       7. Check if orbdetect is running.
-#       8. Check if orbassoc is running.
-#       9. Check if orbserver is running.
-#       10. Check if rtexec is running.
-#       11. Check if chinook is pingable.
-#       12. Check if swarmtracker_antelope/dbdetectswarm has run in last hour.
-#       13. Check if dbwatchtable has run in last hour.
-#
 # History:
 #       2010-03-22: Created by GT
 #	2010-07-12: Substantially modified to fit swarm alarm project
 #
 # To do:
+#	- remove any hard-wired paths
+#	- add HTML content
+#	- currently the opt_d option does nothing, although there is a nice
+#	  print_debug function which should really be brought into Avoseis/SwarmAlarm.pm
+#	  the latter should also be renamed, or broken up into other modules.	
 ##############################################################################
 
 use Datascope;
@@ -76,7 +59,7 @@ else
 }
 $opt_d = 0 unless ($opt_d);
 $opt_t = (6/24) unless ($opt_t);
-#&print_html_header() if $opt_h;
+&print_html_header() if $opt_h;
 
 my $alarmdb = "dbalarm/alarm";
 my $dbname;
@@ -147,11 +130,13 @@ if (-e $logfile) {
 		$txt .= &getFileAgeStr($logfile)."\n";
 		$txt .= "dbwatchtable for alarms not running?\n";
 		$alarms++;
+		system("echo \"alarm system not running\" | rtmail -s \"alarm system down\" 9076877747\@mms.att.net");
 	} 
 }
 else
 {
-		$txt .= "$logfile does not exist: dbwatchtable for alarm not running?\n";
+		$txt .= "$logfile does not exist: dbwatchtable for alarms not running?\n";
+		system("echo \"alarm system not running\" | rtmail -s \"alarm system down\" 9076877747\@mms.att.net");
 		$alarms++;
 } 
 
@@ -179,7 +164,7 @@ if ($outOfDate) {
 }
 
 # *************** CHECK XPICK DATABASE ************
-{
+if 0 {a # Skip test
 	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime();
 	if ($wday > 0 && $wday < 6 && $hour > 16) { # 0 is Sunday, so this checks only after 4pm Mon-Fri
 		$dbname = $ENV{DBEVENTS_XPICK};
@@ -241,7 +226,7 @@ if ($alarms>0) {
 	print "$txt\n";
 }
 
-#&print_html_footer() if $opt_h;
+&print_html_footer() if $opt_h;
 printf("Ran $PROG_NAME at %s\n\n", epoch2str(now(),"%Y-%m-%d %H:%M:%S"));
 1;
 ###################################### SUBROUTINES FOLLOW ###################################

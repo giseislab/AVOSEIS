@@ -25,17 +25,18 @@ our $PROG_NAME;
 #################################################################
 
 use Avoseis::SwarmAlarm;
-
-
-my $logfile = "logs/cron-diagnostics";
-if (-e $logfile) {
-	if (-M $logfile > 1/24) {
-		&declareDiagnosticAlarm("diagnosticMonitoring not running?", "$logfile not being updated", "dbalarm/alarm");
+my $DBALARM = "dbalarm/alarm";
+foreach $dir ("/avort/oprun", "/avort/devrun") {
+	my $logfile = "$dir/logs/cron-diagnostics";
+	if (-e $logfile) {
+		if (-M $logfile > 1/24) {
+			&declareDiagnosticAlarm("diagnosticMonitoring not running?", "$logfile not being updated", $DBALARM);
+		}
 	}
-}
-else
-{
-		&declareDiagnosticAlarm("diagnosticMonitoring not running?", "$logfile does not exist", "dbalarm/alarm");
+	else
+	{
+			&declareDiagnosticAlarm("diagnosticMonitoring not running?", "$logfile does not exist", $DBALARM);
+	}a
 } 
 printf("Ran $PROG_NAME at %s\n\n", epoch2str(now(),"%Y-%m-%d %H:%M:%S"));
 ###################################### SUBROUTINES FOLLOW ###################################
@@ -64,7 +65,7 @@ sub declareDiagnosticAlarm {
 		&writeAlarmsRow($alarmdb, $alarmid, $alarmkey, $alarmclass, $alarmname, $alarmtime, $subject, $mdir, $mdfile);
 	};
 	if ($@) {
-		system("echo \"$PROG_NAME failed to write diagnostic alarm to $alarmdb\n$txt\" | mailx -s \"Alarm write failed\" gthompson\@alaska.edu");
+		system("echo \"$PROG_NAME failed to write diagnostic alarm to $alarmdb\n$txt\" | rtmail -s \"Alarm write failed\" gthompson\@alaska.edu");
 	}
 
 }

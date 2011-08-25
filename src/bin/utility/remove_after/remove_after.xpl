@@ -1,14 +1,11 @@
 
 ##############################################################################
 # Author: Glenn Thompson (GT) 2007
-#         ALASKA EARTHQUAKE INFORMATION CENTER
+#         Geophysical Institute, University of Alaska Fairbanks
 #
 # Modifications:
 #       2007-??-??: Written
 #
-# Purpose:
-#
-#       This program is 
 ##############################################################################
 
 use Datascope;

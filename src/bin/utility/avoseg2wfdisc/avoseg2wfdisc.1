@@ -6,7 +6,7 @@ AVOSEG2WFDISC \- Create wfdisc table that points to AVO segmented waveform sac f
 \fBavoseg2wfdisc \fP[-vf] dbin
 .fi
 .SH DESCRIPTION
-\fBavoseg2wfdisc\fP writes a wfdisc table which points to the segmented waveforms that accompany the events in dbin. By default the program will not overwrite or add to an existing database. The -f option overrides this. The program creates a symbolic link called avo_segmented_data that points to /Seis/Kisk4/data. Referencing the data through a link allows the resulting database to be portable away from the seis lab networks.
+\fBavoseg2wfdisc\fP writes a wfdisc table which points to the segmented waveforms that accompany the events in dbin. By default the program will not overwrite or add to an existing database. The -f option overrides this. The program creates a symbolic link called avo_segmented_data that points to /Seis/Kiska4/data. Referencing the data through a link allows the resulting database to be portable away from the seis lab networks.
 .LP
 The critical input parameter (the only parameter!) is the origin database \fIdbin\fP. This is a specific style of hypocenter database used with AVO data. The AVO monthly and total databases include a remark table. This remark table is what allows the origin database to be tied to specific pick files and segment waveforms. (The process of pairing hypocenters with existing segmented waveforms is not a straight-forward as it might seem.) For \fBavoseg2wfdisc\fP to be successful, \fIdbin\fP must include this remark table. The best way to ensure that the remark table is included is to use the program \fBextractavodb\fP to prepare \fIdbin\fP.
 
