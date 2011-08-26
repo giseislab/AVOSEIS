@@ -1,13 +1,8 @@
-: # use perl
-eval 'exec $ANTELOPE/bin/perl -S $0 "$@"'
-if 0;
-
-use lib "$ENV{ANTELOPE}/data/perl" ;
-# Create xml file of seismic network information. Used by AVO server to generate Google Maps
-# This program has been modified from db2kml. As a result there are several references to "kml"
-# in the script that now actually refer to xml code
+# Create xml file of seismic network information. Used by AVO server 
+# to generate Google Maps interface. 
 # Michael West
 # 01/2008
+
 use Datascope;
 use Getopt::Std;
 
@@ -15,10 +10,7 @@ use Getopt::Std;
 $maxevents = 300;
 
 
-
-
-
-sub kmlstart {		##### Write the starting portion of a xml file
+sub xmlstart {		##### Write the starting portion of a xml file
 print <<END_OF_ENTRY
 <?xml version="1.0" encoding="UTF-8"?>
 <markers>
@@ -27,7 +19,7 @@ END_OF_ENTRY
 }
 
 
-sub kmlfinish {	##### close a kml file
+sub xmlfinish {	##### close a xml file
 	print <<END_OF_ENTRY 
 </markers>
 END_OF_ENTRY
@@ -50,7 +42,7 @@ sub get_orig_records {	##### extract origin records
 	if ($nrecords == 0) {
 		die ("database does not exist or origin table contains no records");
 	}
-	if ($nrecords > $maxevents) {
+	if (($nrecords > $maxevents) && (! $opt_f)) {
 		$nrecords = $maxevents;
 	}
 	print STDERR "number of hypocenter placemarks: $nrecords\n";
@@ -223,62 +215,40 @@ sub do_site {		##### write out a single site placemark
 $Usage = "
 Usage: db2avoxml [-sob]  dbname > xml_file
 
-This script creates a kml file suitable for Google Earth using 
-event or station information extracted from the specified 
-database. At least one option flag must be used or the resulting 
-kml file will be empty. Numerous subsets of placemarks may be 
-desirable - stations in a date range, origins in a magnitude 
-range. In lieu of coding these options into db2kml, it is more 
-expedient to handle such subsets directly on the database before 
-sending to db2kml.
-
-OPTIONS
-
--o creates placemarks for all preferred origins. This option 
-   requires the origin, event and netmag tables. Origin placemarks 
-   are colored by depth. Size is scaled by origin magnitude. 
-
--s create placemarks for all seismic stations in database.
-
--b creates basic placemarks for all origins. This is a simplified 
-   version of the -o flag that reads only an origin table. The same 
-   color and depth scale is used as for -o. A single magnitude is 
-   assigned in the order of preference: Ms, mb, ml. In most cases 
-   either -o or -b will be used, but not both.
-
-CAVEATS
-At this point, an actual database name is needed as input - db2kml 
-cannot read a piped view.
-
-AUTHOR
-Michael West
+See man page for description.
 \n\n";
 
 
 
 $opt_s = $opt_o = $opt_b = 0; # Kill "variable used once" error
-if ( ! &getopts('sob') || $#ARGV != 0 ) {
+if ( ! &getopts('sobf') || $#ARGV != 0) {
 	die ( "$Usage" );
-} else {
-	if ($opt_s && $opt_o) {
-		die("Error: -s and -o flags cannot be used together.\n");
-	}
-	$dbname = pop(@ARGV);
-	@dbname = split(/\//,$dbname);
-	$dbnameshort = pop(@dbname);
-	&kmlstart;
-	if ($opt_o) {
-		$BASIC = 0;
-		&get_orig_records();
-	}
-	if ($opt_b) {
-		$BASIC = 1;
-		&get_orig_records();
-	}
-	if ($opt_s) {
-		&get_site_records();
-	}
-	&kmlfinish;
 }
+if (($opt_s && $opt_o) || ($opt_s && $opt_b) || ($opt_o && $opt_b)) {
+		die( "$Usage" );
+} 
+if (! $opt_s && ! $opt_o && ! $opt_b) {
+	die ( "$Usage" );
+} 
+
+	
+	
+$dbname = pop(@ARGV);
+@dbname = split(/\//,$dbname);
+$dbnameshort = pop(@dbname);
+&xmlstart;
+if ($opt_o) {
+	$BASIC = 0;
+	&get_orig_records();
+}
+if ($opt_b) {
+	$BASIC = 1;
+	&get_orig_records();
+}
+if ($opt_s) {
+	&get_site_records();
+}
+&xmlfinish;
+
 
 

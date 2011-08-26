@@ -181,12 +181,12 @@ swarm_tracker LOCAL 0,5,10,15,20,25,30,35,40,45,50,55 * * * * dbdetectswarm_wrap
 copy_Pffiles UTC 37 * * * * rsync pf/* $INTERNALWEBPRODUCTS/pf # should probably use a --delete option here
 
 ######################## XML PRODUCTS FOR GOOGLE MAPS ###################################
-xml_antelope UTC 4,19,34,49 * * * * db2avoxml2 -o -e 'time>(now()-7*86400)' $DBT_ANTELOPE > $PUBLICWEBPRODUCTS/kml/seismicity_antelope.xml
-xml_unreviewed_avo UTC 5,20,35,50 * * * * db2avoxml2 -o -e 'auth=~/ew.*/ && time>(now()-7*86400)' $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_unreviewed_avo.xml
-## xml_reviewed_avo UTC 6,21,36,51 * * * * db2avoxml2 -o -e 'auth=~/AVO:.*/ && time>(now()-7*86400)' $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_avo.xml
-xml_unreviewed_aeic UTC 7,22,37,52 * * * * db2avoxml2 -o -e '( review!="y" && ( (auth=~/^USGS:[aA][kK]/ && lddate<(time+1000)) || auth=~/^oa.*/) && time>(now()-7*86400 ) )' $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_unreviewed_aeic.xml
-xml_reviewed_aeic UTC 8,23,38,53 * * * * db2avoxml2 -o -e '(review=="y" || auth=~/^UAF.*/  || (auth=~/^USGS.*/ && lddate>time+999) ) && time>(now()-7*86400)'  $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_aeic.xml
-xml_stations UTC 9 * * * * db2avoxml2 -s  $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/stations_lastweek.xml
+xml_antelope UTC 4,19,34,49 * * * * db2avoxml -o -e 'time>(now()-7*86400)' $DBT_ANTELOPE > $PUBLICWEBPRODUCTS/kml/seismicity_antelope.xml
+xml_unreviewed_avo UTC 5,20,35,50 * * * * db2avoxml -o -e 'auth=~/ew.*/ && time>(now()-7*86400)' $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_unreviewed_avo.xml
+## xml_reviewed_avo UTC 6,21,36,51 * * * * db2avoxml -o -e 'auth=~/AVO:.*/ && time>(now()-7*86400)' $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_avo.xml
+xml_unreviewed_aeic UTC 7,22,37,52 * * * * db2avoxml -o -e '( review!="y" && ( (auth=~/^USGS:[aA][kK]/ && lddate<(time+1000)) || auth=~/^oa.*/) && time>(now()-7*86400 ) )' $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_unreviewed_aeic.xml
+xml_reviewed_aeic UTC 8,23,38,53 * * * * db2avoxml -o -e '(review=="y" || auth=~/^UAF.*/  || (auth=~/^USGS.*/ && lddate>time+999) ) && time>(now()-7*86400)'  $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_aeic.xml
+xml_stations UTC 9 * * * * db2avoxml -s  $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/stations_lastweek.xml
 
 ########################## MIKE'S WEB PRODUCTS ######################################################
 # KML file of all origins (and stations) currently in the quakes event database

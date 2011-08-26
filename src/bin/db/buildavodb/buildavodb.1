@@ -21,10 +21,12 @@ $ANTELOPE and $AVOSEIS must be set. \fBavo2db\fP must be in the path.
 None.
 
 .SH "SEE ALSO"
-avo2db(1)
+avo2db(1), buildavodb_plus(1)
 
 .SH "BUGS AND CAVEATS"
-There is currently no parameter file for this program. Most parameters are hardwired. While this matches the static structure of the Observatory's pick file directories, it does not allow for more generalized use. This code actually sends pickfiles to \fBavo2db\fP in batches of a few hundred. This is done to avoid exceeding the command line buffer size. It works fine but there is no actual testing of the command line length for compliance.
+There is currently no parameter file for this program. Most parameters are hardwired. While this matches the static structure of the Observatory's pick file directories, it does not allow for more generalized use. See however \fBbuildavodb_plus\fP which is a more generalized version of \fBbuildavodb\fP.
+.PP
+This code actually sends pickfiles to \fBavo2db\fP in batches of a few hundred. This is done to avoid exceeding the command line buffer size. It works fine but there is no actual testing of the command line length for compliance.
 
 .SH AUTHOR
 Michael West

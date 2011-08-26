@@ -1,15 +1,73 @@
-# Create xml file of seismic network information. Used by AVO server 
-# to generate Google Maps interface. 
-# Michael West
-# 01/2008
+
+
+##############################################################################
+# Author: Michael West 2008/01
+#         Geophysical Institute, University of Alaska Fairbanks
+#
+# Modifications: Glenn Thompson
+#	2010/10/27: Added this new program header. Changed all references to KML to XML.
+#	2010/10/27: Added "reviewed" field to list of fields read and output in XML.
+#	2010/11/02: Changed icon style for unreviewed events
+#	2010/11/02: Added subset expressions with -e option
+#
+# Purpose:
+#       Convert a database to XML suitable for display with Seth Snedigars Google Maps app.. 
+#
+# History:
+# 	This program has been modified from db2kml.
+# 	It is not related to the Antelope program db2xml created by Kent Lindquist
+#
+#
+##############################################################################
 
 use Datascope;
 use Getopt::Std;
+use Env;
 
 # SET MAXIMUM NUMBER OF EVENTS
-$maxevents = 300;
+$maxevents = 300; # Changed from 1000 to 300 because seeing malloc problems in cronjobs.
+
+#USAGE
+$Usage = "
+Usage: db2avoxml [-sobf] [-e subset_expr] dbname > xml_file
+
+See manpage for further details.
+
+AUTHOR
+Michael West, Glenn Thompson
+\n\n";
 
 
+# Command line arguments
+$opt_s = $opt_o = $opt_b = $opt_e = $opt_f = 0; # Kill "variable used once" error
+if ( ! &getopts('sobe:f') || $#ARGV != 0 ) {
+	die ( "$Usage" );
+} else {
+	if ($opt_s && $opt_o) {
+		die("Error: -s and -o flags cannot be used together.\n");
+	}
+	$dbname = pop(@ARGV);
+	@dbname = split(/\//,$dbname);
+
+	$dbnameshort = pop(@dbname);
+
+	# Write XML
+	&xmlstart;
+	if ($opt_o) {
+		$BASIC = 0;
+		&get_orig_records();
+	}
+	if ($opt_b) {
+		$BASIC = 1;
+		&get_orig_records();
+	}
+	if ($opt_s) {
+		&get_site_records();
+	}
+	&xmlfinish;
+}
+
+######################################################################
 sub xmlstart {		##### Write the starting portion of a xml file
 print <<END_OF_ENTRY
 <?xml version="1.0" encoding="UTF-8"?>
@@ -28,37 +86,53 @@ END_OF_ENTRY
 
 
 sub get_orig_records {	##### extract origin records
+	# checks added by GTHO 2010/11/02
+	die("database $dbname does not exist\n") unless (-e $dbname);
+	die("table $dbname.origin does not exist\n") unless (-e $dbname.".origin");
+	die("table $dbname.event does not exist\n") unless (-e $dbname.".event");
 	@db = dbopen($dbname,'r');
 	@db = dblookup(@db,"","origin","",1);
+	@db = dbsubset(@db, $opt_e) if ($opt_e ne "0");
 	if ($BASIC != 1) {
 		@db2 = dblookup(@db,"","event","",1);
-		@db3 = dblookup(@db,"","netmag","",1);
 		@db  = dbjoin(@db,@db2);
-		@db  = dbjoin(@db,@db3);
+		if (-e "$dbname.netmag") { # GTHO 2010/11/02 - not all databases contain a netmag table
+			@db3 = dblookup(@db,"","netmag","",1);
+			@db3  = dbjoin(@db,@db3);
+			if (dbquery(@db3, "dbRECORD_COUNT")>0) { # This extra check needed because netmag table exists, but not for Earthworm origins
+				@db = @db3;
+			} else {
+				$BASIC = 1;
+			}
+		}
+		else
+		{
+			$BASIC = 1; # GTHO 2010/11/02 force basic mode if lacking netmag table since magnitude dbgetv will fail otherwise
+		}
 		@db  = dbsubset(@db,"orid == prefor");
 	}
 	@db = dbsort(@db,'-r','time');
 	$nrecords = dbquery(@db,"dbRECORD_COUNT");
-	if ($nrecords == 0) {
-		die ("database does not exist or origin table contains no records");
+	if ($nrecords == 0) { # changed by GTHO
+		die ("no records returned from $dbname matching $opt_e");
 	}
-	if (($nrecords > $maxevents) && (! $opt_f)) {
+	if (($nrecords > $maxevents) && (! $opt_f) ) {
 		$nrecords = $maxevents;
 	}
 	print STDERR "number of hypocenter placemarks: $nrecords\n";
+	print STDERR "BASIC=$BASIC\n";
 	
 	# GET CURRENT TIME
-	#@months = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
-	#($second, $minute, $hour, $dayOfMonth, $month, $yearOffset, $dayOfWeek, $dayOfYear, $daylightSavings) = gmtime();
-	#$year = 1900 + $yearOffset;
-	#$theTime = "$months[$month] $dayOfMonth, $year $hour:$minute:$second UTC";
 	$theTime = strtime(now);
 	print "\t<!-- created by db2avoxml from database: $dbname on $theTime UTC -->\n";
 	#
 	foreach $row (0..$nrecords-1) {
 		$db[3] = $row ;
-		if ($BASIC) {
-			($lon,$lat,$depth,$time,$orid,$evid,$etype,$mb,$ms,$ml,$auth) = dbgetv(@db,"lon","lat","depth","time","orid","evid","etype","mb","ms","ml","auth");
+		# added "review", "auth", "nass", "ndef", "algorithm" to following line GTHO 2010/11/02
+		($lon,$lat,$depth,$time,$orid,$evid,$etype,$review,$auth,$nass,$ndef,$algorithm) = dbgetv(@db,"lon","lat","depth","time","orid","evid","etype","review","auth","nass","ndef","algorithm");
+
+		if ($BASIC) { 
+			($mb,$ms,$ml) = dbgetv(@db,"mb","ms","ml");
 			if ($ms != -999) {
 				$magnitude = $ms;
 				$magtype = 'Ms';
@@ -76,11 +150,46 @@ sub get_orig_records {	##### extract origin records
 				$magtype = 'Unknown magnitude';
 			}
 		}
-		else {
-			($lon,$lat,$depth,$time,$orid,$evid,$etype,$magnitude,$magtype,$auth) = dbgetv(@db,"lon","lat","depth","time","orid","evid","etype","magnitude","magtype","auth");
+		else 
+		{ 
+			($magnitude,$magtype) = dbgetv(@db,"magnitude","magtype");
 		}
-		#print STDERR "$magnitude\n";
-		#$magnitude = printf "%5.1f",$magnitude;
+
+		# GTHO 2010/10/04 Remove ridiculous magnitudes from orbmag
+		if ($magnitude > 9.9) {
+			$magtype = "error: $magnitude";
+			$magnitude = 0;
+		}
+		
+		our @netstachan = ();
+		our $firstarrivaltime = 999999999999;
+		our $lastarrivaltime = -999999999999;
+		if (-e "$dbname.assoc" && -e "$dbname.arrival") {
+			eval { # try to join this origin to assoc and arrival to get arrival.sta/chan/time 
+				my @db2 = dbopen($dbname, 'r');
+				my @dbo = dblookup(@db2,"","origin","",1);
+				@dbo = dbsubset(@dbo,"orid==$orid"); 
+				@dba = dblookup(@db2,"","assoc","",1);
+				@dba = dbjoin(@dba, @dbo);
+				my @dbar = dblookup(@db2,"","arrival","",1);
+				@dba = dbjoin(@dba, @dbar);
+				# try to add affiliation table to get net
+				my @dbaf = dblookup(@db2,"","affiliation","",1);
+				@dbaf = dbsubset(@dbaf,"net=~/A./");
+				@dba = dbjoin(@dba, @dbaf);
+				$numarrivals = dbquery(@dba, "dbRECORD_COUNT") + 1;
+				if ($numarrivals > 0) {
+					foreach $arow (0..$numarrivals-1) {
+						$dba[3] = $arow;
+						push @netstachan, sprintf("%s.%s.%s", dbgetv(@dba, "net"), dbgetv(@dba, "sta"), dbgetv(@dba, "chan")); 
+						my $atime = dbgetv(@dba, "arrival.time");
+						$firstarrivaltime = $atime if ($atime < $firstarrivaltime);
+						$lastarrivaltime = $atime if ($atime > $lastarrivaltime);
+					}
+				}
+			}
+		}
+
 		&origin_size_color;
 		&do_origin;
 	}
@@ -91,15 +200,58 @@ sub get_orig_records {	##### extract origin records
 sub do_origin {	##### write out a single origin placemark
 	$look_lon = $lon;
 	$look_lat = $lat;
-	$datestr = epoch2str($time,'%m/%d/%Y');
+	# datestr format changed by GTHO 2010/11/02
+	#$datestr = epoch2str($time,'%m/%d/%Y');
+	$datestr = epoch2str($time,'%Y/%m/%d');
 	$timestr = epoch2str($time,'%H:%M:%S');
 	$timestampstr = epoch2str($time,'%Y-%m-%dT%H:%M:%SZ');
 	$depth = sprintf "%3.1f",$depth;
+
 	$magnitude = sprintf "%2.1f",$magnitude;
 	$icon = substr $color, 2;
-	$icon = 'hyp'.$icon.'.png';
+	# Different icon for unreviewed origins GTHO 2010/11/02
+	if ($review eq "y" || $auth eq "scott" || $auth=~/UAF.*/ || $auth=~/AVO.*/) {
+		$reviewed = "y";
+		$icon = 'hyp'.$icon.'.png';
+	} else {
+		$reviewed = "n";
+		$icon = 'unreviewed'.$icon.'.png';
+	}
+
+	if ($auth =~ /^ew/) {
+		$source = "AVO Earthworm automatic";
+	} elsif ($auth =~ /^USGS/) {
+		$source = "USGS automatic";
+	} elsif ($auth =~/^oa/ || $auth =~ /^orbassoc/) {
+		$source = "AEIC automatic";
+	} elsif ($auth =~/scott/ || $auth =~ /jpower/ || $auth =~ /dixon/ || $auth =~ /^AVO/) {
+		$source = "AVO reviewed";
+	} elsif ($auth =~ /^UAF/) {
+		$source = "AEIC reviewed";
+	} else  {
+		$source = "unknown";
+	}
+
 	print "\t<marker name=\"ml:$magnitude $datestr\" icon=\"$icon\" lat=\"$lat\" lon=\"$lon\" depth=\"$depth\" ml=\"$magnitude\" scale=\"$size\" color=\"$color\" TimeStamp=\"$timestampstr\">";
-	print "\[b\]$datestr $timestr UTC\[/b\]\[br\]\[b\]magnitude: $magnitude\[/b\]\[br\]lat,lon: $lat,$lon\[br\]depth: $depth";
+	print "\[b\]$datestr $timestr UTC\[/b\]\[br\] \[b\]$magtype: $magnitude\[/b\]\[br\] lat=$lat, lon=$lon, depth=$depth km\[br\] source: $source\[br\] author: $auth\[br\] event type: $etype";
+	print "\[br\] \[b\]arrivals: $nass/$ndef\[/b\] \[br\]";
+
+	# waveform URL
+	my $pretime = 10;
+	my $posttime = 10;
+	my $minf = 0.8;
+	my $maxf = 15.0;
+	my $startTimeValve = epoch2str($firstarrivaltime-$pretime,'%Y%m%d%H%M%S%s');
+	my $endTimeValve =   epoch2str($lastarrivaltime+$posttime,'%Y%m%d%H%M%S%s');
+	if ($#netstachan > -1) {
+		my %netstachancount;
+		foreach my $netstachan (@netstachan) {
+			$netstachancount{$netstachan}++;
+		}
+		$netstachanlist = join(",",keys(%netstachancount));
+		my $waveform_url = $ENV{'INTERNALWEBPRODUCTSURL'}."/html/waveforms.php?starttime=$startTimeValve&amp;endtime=$endTimeValve&amp;stachanlist=$netstachanlist&amp;minf=$minf&amp;maxf=$maxf";
+		print "\[a href=\"$waveform_url\"\ target=\"waveform\"]waveforms\[/a\]\n";
+	}
 	print "<\/marker>\n";
 }
 
@@ -183,25 +335,73 @@ sub origin_size_color {	##### calculate the size and color of hypocenter icons
 sub get_site_records {	##### extract site records
 	@db = dbopen($dbname,'r');
 	@db = dblookup(@db,"","site","",1);
+	
+	# added by GT 2010/11/17
+	@db = dbsubset(@db, "offdate==NULL"); # added by GT 2010/11/17
+	my @db2 = dblookup(@db,"","affiliation","",1);
+	@db = dbjoin(@db, @db2);
+	@db = dbsubset(@db, "net=~/A[KTV]/");
+	# end of GT block
+
 	$nrecords = dbquery(@db,"dbRECORD_COUNT");
 	if ($nrecords == 0) {
-		die ("database does not exist or origin table contains no records");
+		die ("database $dbname does not exist or site table contains no records\n");
 	}
 	print STDERR "number of station placemarks: $nrecords\n";
 	$theTime = strtime(now);
 	print "\t<!-- created by db2avoxml from database: $dbname on $theTime UTC -->\n";
 	for ($db[3]=0 ; $db[3]<$nrecords ; $db[3]++) {
-		($sta,$lon,$lat,$elev,$staname) = dbgetv(@db,"sta","lon","lat","elev","staname");
+		my ($sta,$lon,$lat,$elev,$staname,$net) = dbgetv(@db,"sta","lon","lat","elev","staname","net");
 		$elev = $elev*1000;				# convert km to meters
-		&do_site;
+
+		# added by GT 2010/11/17 - look for number of arrivals/events for this station
+		my $num_arrivals = 0;
+		if (-f "$dbname.arrival") {
+			my @dba = dblookup(@db, "", "arrival", "", 1);
+			@dba = dbsubset(@dba, "sta==\"$sta\"");
+			@dba = dbjoin(@dba, @db);
+			$num_arrivals = dbquery(@dba, "dbRECORD_COUNT");
+			print STDERR "$num_arrivals arrivals for sta $sta\n";
+			#dbclose(@dba);
+		}
+
+		# end of GT block
+			
+		&do_site($sta, $lon, $lat, $elev, $staname, $net, $num_arrivals);
 	}
 	dbclose(@db);
 }
 
 
 sub do_site {		##### write out a single site placemark
-	print "\t<marker name=\"$sta\" icon=\"seismometer_2.png\" lat=\"$lat\" lon=\"$lon\" elev=\"$elev\">";
-	print "\[center][b\]$sta\[/b\]\[\/center]\[br\]\"$staname\"\[br\]elevation: $elev meters";
+	my($sta, $lon, $lat, $elev, $staname, $net, $num_arrivals) = @_;
+	my $icondir = $ENV{'PUBLICWEBPRODUCTSURL'}."/kml/icons";
+	my $icon = "seismometer_2.png"; # default
+	if ($net eq "AV") {
+		if ($num_arrivals > 0) {
+			$icon = "seismometer_avo_green.png";
+		} else {
+			$icon = "seismometer_avo_red.png";
+		}
+	}
+	if ($net eq "AK") {
+		if ($num_arrivals > 0) {
+			$icon = "seismometer_aeic_green.png";
+		} else {
+			$icon = "seismometer_aeic_red.png";
+		}
+	}
+	if ($net eq "AT") {
+		if ($num_arrivals > 0) {
+			$icon = "seismometer_atwc_green.png";
+		} else {
+			$icon = "seismometer_atwc_red.png";
+		}
+	}
+	print "\t<marker name=\"$sta\" icon=\"$icon\" lat=\"$lat\" lon=\"$lon\" elev=\"$elev\">";
+	print "\[center][b\]$sta\[/b\]\[\/center]\[br/\]\"$staname\"\[br/\]elevation: $elev meters\[br/\]net: $net";
+	print "\[br/\]arrivals: $num_arrivals" if ($num_arrivals>0);
+#	print "$sta\n$net";
 	print "<\/marker>\n";
 }
 
@@ -210,45 +410,7 @@ sub do_site {		##### write out a single site placemark
 
 
 
-##############################################
 
-$Usage = "
-Usage: db2avoxml [-sob]  dbname > xml_file
-
-See man page for description.
-\n\n";
-
-
-
-$opt_s = $opt_o = $opt_b = 0; # Kill "variable used once" error
-if ( ! &getopts('sobf') || $#ARGV != 0) {
-	die ( "$Usage" );
-}
-if (($opt_s && $opt_o) || ($opt_s && $opt_b) || ($opt_o && $opt_b)) {
-		die( "$Usage" );
-} 
-if (! $opt_s && ! $opt_o && ! $opt_b) {
-	die ( "$Usage" );
-} 
-
-	
-	
-$dbname = pop(@ARGV);
-@dbname = split(/\//,$dbname);
-$dbnameshort = pop(@dbname);
-&xmlstart;
-if ($opt_o) {
-	$BASIC = 0;
-	&get_orig_records();
-}
-if ($opt_b) {
-	$BASIC = 1;
-	&get_orig_records();
-}
-if ($opt_s) {
-	&get_site_records();
-}
-&xmlfinish;
 
 
 

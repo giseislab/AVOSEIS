@@ -1,15 +1,14 @@
-.TH DB2AVOXML 1 "$Date$"
+.TH DB2AVOXML [DEPRECATED] 1 "$Date$"
 .SH NAME
-db2avoxml \- create an xml-formatted version of hypocenter solutions.
+db2avoxml_old \- Deprecated but robust version of db2avoxml.
 
 .SH SYNOPSIS
 .nf
-\fBdb2avoxml\fP [-sobf] [-e subset_expression] \fIdbname\fP > \fIxml_file\fP 
+\fBdb2avoxml_old\fP [-sob] \fIdbname\fP > \fIxml_file\fP 
 .fi
 .SH DESCRIPTION
-\fBdb2avoxml\fP This script creates a xml file in a format suitable for use with the AVO public Google Maps pages. It uses event or station information extracted from the input database. At least one option flag must be used or the resulting xml file will be empty. To maintain a quick response when used with Google Maps, output is currently limited to the first 300 events. This limit can be overridden with the -f flag.
-.PP
-Different icons are now used depending on whether the station has recent phase arrivals or not - an indication of whether it is working. Author field is also translated into more meaningful output for popup windows. A link is added to popup boxes to \fBwaveforms.php\fP which drives VALVE3 waveform plots. If these additional features are not wanted, you are welcome to  use \fBdb2avoxml_old\fP, but that version should no longer be developed.
+\fBdb2avoxml_old\fP This script creates a xml file in a format suitable for use with the AVO public Google Maps pages. It uses event or station information extracted from the input database. At least one option flag must be used or the resulting xml file will be empty. To maintain a quick response when used with Google Maps, output is currently limited to the first 300 events. This limit can be overridden with the -f flag.
+
 .SH OPTIONS
 .IP -s
 create placemarks for all seismic stations in database.
@@ -17,19 +16,17 @@ create placemarks for all seismic stations in database.
 creates placemarks for all preferred origins. This option requires the origin, event and netmag tables. Origin placemarks are colored by depth. Size is scaled by origin magnitude.
 .IP -b
 creates basic placemarks for all origins. This is a simplified version of the -o flag that reads only an origin table. The same color and depth scale is used as for -o. A single magnitude is assigned in the order of preference: Ms, mb, ml. Either the -o or -b should be used, but not both.
-.IP "-e subset_expression"
-Apply a dbeval expression to subset the origins.
 .IP -f
 force program to include all origins. By default only the first 300 are included in the output.
 
 .SH ENVIRONMENT
-$ANTELOPE, $AVOSEIS and $INTERNALWEBPRODUCTS must be set.
+$ANTELOPE and $AVOSEIS must be set.
 
 .SH PARAMETER FILE
 None.
 
 .SH EXAMPLE
-#hawk> db2avoxml -o quakes > outfile.txt
+#hawk> db2avoxml_old -o quakes > outfile.txt
 .br
 #hawk> more outfile.txt
 #hawk> head outfile.txt 
@@ -38,7 +35,7 @@ None.
 .br
 <markers>
 .br
-<!-- created by db2avoxml from database: quakes on  7/19/2011   2:07:51.059 UTC -->
+<!-- created by db2avoxml_old from database: quakes on  7/19/2011   2:07:51.059 UTC -->
 .br
      <marker name="ml:1.0 04/11/2010" icon="hyp0040FF.png" lat="-22.2724" lon="-67.3583" depth="15.0" ml="1.0" scale="0.39825" color="FF0040FF" TimeStamp="2010-04-11T20:04:34Z">[b]04/11/2010 20:04:34 UTC[/b][br][b]magnitude: 1.0[/b][br]lat,lon: -22.2724,-67.3583[br]depth: 15.0</marker>
 .br
@@ -49,12 +46,14 @@ None.
 </markers>
   
 .SH SEE ALSO
-db2kml(1), db2avoxml_old(1)
+db2avoxml(1), db2kml(1)
 
 .SH BUGS AND CAVEATS
 At the time of writing this I don't recall the difference between -b and -o. In some (all?) cases they return the same information. It is possible that -b is obsolete.
 .LP
-Numerous subsets of placemarks may be desirable - stations in a date range, origins in a magnitude range. These options are not coded into db2xml. These subsets should be carried out on the input database prior to sending to \fBdb2avoxml\fP.
+Part of the reason this module has been deprecated is because there are at least 3 different versions which represent different stages of this module developed by Mike West and added to AVOSEIS at different times. It is only worth reconciling which code is "correct" or merging these versions if \fBdb2avoxml\fP does not fulfill your needs.
+.LP
+Numerous subsets of placemarks may be desirable - stations in a date range, origins in a magnitude range. \fBdb2avoxml\fP allows subsetting through a command-line option. These options are not coded into db2avoxml_old and should be carried out on the input database prior to sending to \fBdb2avoxml_old\fP.
 
 .SH AUTHOR
-Originally by Michael West, significantly modified/improved by Glenn Thompson
+Michael West
