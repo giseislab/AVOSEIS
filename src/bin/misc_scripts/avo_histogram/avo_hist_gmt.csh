@@ -1,5 +1,3 @@
-#!/bin/csh
-
 # avo_hist.gmt version 0.2
 # GMT script for creating a 3-D histogram showing the number of earthquakes
 # per week at volcanoes seismically monitored by AVO.

@@ -167,7 +167,7 @@ cleanlogs LOCAL 5,17,29,41,53 * * * * truncate_log -m 200 -r logs/*
 ## patches LOCAL 4 3 * * 0 antelope_update -l -n -v -m $LOGNAME 
 
 ##################### EVENT DATABASES #####################
-xpick2db UTC 0,15,30,45 * * * * watchpickfiles2db -v $DBT_XPICK
+#xpick2db UTC 0,15,30,45 * * * * watchpickfiles2db -v $DBT_XPICK # This function needs troubleshooting
 
 # split event databases into day volumes
 dbsplit2dayvolumes_earthworm UTC 40 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_EARTHWORM
@@ -177,7 +177,7 @@ dbsplit2dayvolumes_master UTC 42 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_MAST
 
 ################# SWARM ALARM SYSTEM #####################
 # watchalarmstable MUST ALSO BE RUNNING, ELSE ALARMS WILL NOT BE SENT
-swarmtracker_antelope LOCAL 0,5,10,15,20,25,30,35,40,45,50,55 * * * * swarmtracker_antelope $DBT_ANTELOPE $DBALARM $DBSWARM pf/dbdetectswarm_fast.pf
+swarm_tracker LOCAL 0,5,10,15,20,25,30,35,40,45,50,55 * * * * dbdetectswarm_wrapper $DBT_ANTELOPE $DBALARM $DBSWARM pf/dbdetectswarm_fast.pf
 copy_Pffiles UTC 37 * * * * rsync pf/* $INTERNALWEBPRODUCTS/pf # should probably use a --delete option here
 
 ######################## XML PRODUCTS FOR GOOGLE MAPS ###################################

@@ -1,9 +1,3 @@
-: # use perl
-
-eval 'exec $ANTELOPE/bin/perl -S $0 "$@"'
-if 0;
-
-use lib "$ENV{ANTELOPE}/data/perl" ;
 use Datascope;
 use Getopt::Std;
 
@@ -13,31 +7,8 @@ Usage: avo_hist.pl [-d database -p parameter file]
 
 Perl script to create a weekly histogram plot of earthquakes at all AVO-monitored volcanoes.
 
-OPTIONS
--d database 		Specifies a css3.0 database to use 
-			(default:/usr/local/apache/htmldocs/AVO/internal/AVOEQ/db_AVO_recentEQ)
--p parameter file	Specifies a parameter file to use 
-			(default:./avo_volcs.pf)
+See man page for details."
 
-PARAMETER FILE FORMAT
-Volcano_Name Latitude Longitude Min_Latitude Max_Latitude Min_Longitude Max_Longitude
-
-Notes:
-Parameter file is white-space sensitive - fields must be space-delimited.
-Min/Max_Latitude and Min/Max_Longitude define a rectangular box within which earthquakes are 
-associated with the given volcano.
-
-Example:
-Spurr 61.2989 -152.2539 61.0 61.4 -152.7 -151.8
-Redoubt	60.4852	-152.7438 60.3 60.7 -153.0 -152.2
-Iliamna	60.0319	-153.0918 59.85 60.25 -153.5 -152.7
-Augustine 59.3626 -153.435 59.3 59.45 -153.6 -153.3
-Fourpeaked 58.7703 -153.6738 58.55 59.0 -154.1 -153.25
-
-AUTHOR
-matt Gardine
-21 January 2008
-\n";
 #############################################################################################
 use Env;
 use File::Copy;
@@ -245,8 +216,7 @@ for ($i=0 ; $i<scalar @volc_name ; $i++){
 # Close the output file for reading/writing
 close(TEMPOUT);
 
-
-$command = "avo_hist.gmt";
+$command = "avo_hist_gmt.csh";
 print "$command\n";
 system($command);
 $command = "ps2pdf AVO_recent_EQ_hist.ps";
