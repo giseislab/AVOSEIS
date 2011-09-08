@@ -1,5 +1,8 @@
-DATADIR=perl
-DATA=SwarmAlarm.pm
-MAN3P=SwarmAlarm.3p
-include $(AVOSEISMAKE)
+#DATADIR=perl
+#DATA=SwarmAlarm.pm
+#MAN3P=SwarmAlarm.3p
+#include $(AVOSEISMAKE)
+install:
+
+Include:
 
