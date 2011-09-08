@@ -7,15 +7,18 @@ avo_hist \- Create a weekly histogram plot of earthquakes at all AVO-monitored v
 .fi
 .SH DESCRIPTION
 Creates a weekly histogram plot of AVO earthquakes by volcano for the public web page.
-Based on original code by Seth Moran dating back to the 1990s, there is a Perl wrapper
-which creates a data file, and a C-shell script which drives GMT to produce the figure.
+Based on original code by Seth Moran dating back to the 1990s, avo_hist is a Perl wrapper
+which creates a data file, and calls a C-shell script (avo_hist_gmt) which uses Generic
+Mapping Tools to produce the figure.
 Matt Gardine modified the Perl wrapper to load data from an Antelope database.
 
 .SH OPTIONS
-.IP "-d database"       Specifies a css3.0 database to use
-                        (default:/usr/local/apache/htmldocs/AVO/internal/AVOEQ/db_AVO_recentEQ)
-.IP "-p parameter file" Specifies a parameter file to use
-                        (default:./avo_volcs.pf)
+.IP "-d database"       
+Specifies a css3.0 database to use
+(default:/usr/local/apache/htmldocs/AVO/internal/AVOEQ/db_AVO_recentEQ)
+.IP "-p parameter file" 
+Specifies a parameter file to use
+(default:./avo_volcs.pf)
 .SH PARAMETER FILE
 .IP FORMAT
 Volcano_Name Latitude Longitude Min_Latitude Max_Latitude Min_Longitude Max_Longitude
@@ -42,11 +45,7 @@ Fourpeaked 58.7703 -153.6738 58.55 59.0 -154.1 -153.25
 .fi
 .SH ENVIRONMENT
 $ANTELOPE and $AVOSEIS must be set. 
-
 .SH "SEE ALSO"
-
-.SH "BUGS AND CAVEATS"
-
-
+avo_hist_gmt
 .SH AUTHOR
 Matt Gardine, 21 January 2008. More recent modifications by Glenn Thompson. 
