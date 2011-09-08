@@ -1,4 +1,4 @@
-BIN=buildavodb buildavodb_plus
-MAN1=buildavodb.1  buildavodb_plus.1
+BIN=buildavodb buildavodb_new
+MAN1=buildavodb.1  buildavodb_new.1
 DIRS=
 include $(AVOSEISMAKE)

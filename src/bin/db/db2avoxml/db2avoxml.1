@@ -55,6 +55,8 @@ db2kml(1), db2avoxml_old(1)
 At the time of writing this I don't recall the difference between -b and -o. In some (all?) cases they return the same information. It is possible that -b is obsolete.
 .LP
 Numerous subsets of placemarks may be desirable - stations in a date range, origins in a magnitude range. These options are not coded into db2xml. These subsets should be carried out on the input database prior to sending to \fBdb2avoxml\fP.
+.PP
+db2avoxml has not been thoroughly tested yet, having been substantially modified from an old version which was and is preserved as db2avoxml_old. Once db2avoxml has been proved to work ok in all circumstances, db2avoxml_old should be removed from AVOSEIS. If there are problems, a second old version is preserved as db2avoxml_otherversion.xpl, but is not built. This differs greatly from db2avoxml and db2avoxml_old. This too should be removed from AVOSEIS once db2avoxml has been tested effectively.
 
 .SH AUTHOR
 Originally by Michael West, significantly modified by Glenn Thompson
