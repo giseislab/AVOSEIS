@@ -16,14 +16,11 @@ include arrival and assoc table in results. This can add considerable processing
 .IP -f
 force requests that exceed to hypocenter or phase arrival request size.
 .IP -i
-draw hypocenters from a database other than the default total database.
+draw hypocenters from a database other than the default. 
 
-
-.SH ENVIRONMENT
-$ANTELOPE and $AVOSEIS must be set. 
 
 .SH PARAMETER FILE
-None. However the path to the total database would be more apporpriate in a parameter file.
+None. However the path to the total database would be more appropriate in a parameter file.
 
 .SH EXAMPLES
 
@@ -52,9 +49,7 @@ None. However the path to the total database would be more apporpriate in a para
 
 
 .SH "SEE ALSO"
-avo2db(1), dbt2orbpf(1) 
-.PP
-Also db2dbsubset in the AEIC repository, which has similar functionality.
+
 
 .SH "BUGS AND CAVEATS"
 Processing time is longer than we would like, especially when arrival and assoc tables are included. Tests in summer 2007 benchmarked performance drawing from the total database vs. drawing from the directories of monthly databases. In the end, the total database methodology was selected. 

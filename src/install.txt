@@ -1,6 +1,5 @@
-Installation procedure for the AVOSEIS package on your filesystem
------------------------------------------------------------------
-
+Installation procedure for the AVOSEIS package 
+-----------------------------------------------
 # If $AVOSEIS and $AVOSEISMAKE already exist:
 	make update
 	# make update calls make clean, make Include, make install, make schemas, make pf_localmods
@@ -9,8 +8,6 @@ Installation procedure for the AVOSEIS package on your filesystem
 	cd adm/coldstart
 	make
 	cd ../..
-	mkdir -p ${AVOSEIS}/man/man1
-	mkdir -p ${AVOSEIS}/man/man5
 	make update
 	# You will want to source $AVOSEIS/setup.sh in your .bashrc file (if you use bash)
 	# or $AVOSEIS/setup.csh in your .(t)cshrc file (if you use (t)csh).
@@ -19,16 +16,17 @@ Installation procedure for the AVOSEIS package on your filesystem
 	make host 
 	make html
 
+
 Rebuild $AVOSEISMAKE
 --------------------
 # This should not be necessary, but if you need to rebuild $AVOSEISMAKE, do this:
 	cd lib/makerules
 	make Include
 	make update
+	
 
 Testing and rebuilding the Perl modules 
 ---------------------------------------
-
 # (not needed during a regular update)
 
 	# Currently there is only one Perl module - Avoseis::SwarmAlarm
