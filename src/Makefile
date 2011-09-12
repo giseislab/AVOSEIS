@@ -7,7 +7,8 @@ DIRS= adm lib bin data
 
 # Note make rules for clean, Include, install (and all) already in $AVOSEISMAKE
 
-update:	clean Include install perlmods schemas pf_localmods
+#update:	clean Include install perlmods schemas pf_localmods
+update:	clean Include install schemas pf_localmods
 
 perlmods:	
 	cd ${PERLMOD}

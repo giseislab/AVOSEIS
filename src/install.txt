@@ -6,20 +6,12 @@ Installation procedure for the AVOSEIS package on your filesystem
 	# make update calls make clean, make Include, make install, make schemas, make pf_localmods
 
 # Otherwise:
-	# Create the directory where AVOSEIS will be installed, e.g. /usr/local/avoseis/5.0-64
-		sudo mkdir -p /usr/local/avoseis/5.0-64
-	# If using bash:
-		export AVOSEIS=/usr/local/avoseis/5.0-64
-	# If using csh
-		setenv AVOSEIS "/usr/local/avoseis/5.0-64"
-	# Build AVOSEIS:
-		cd adm/coldstart
-		make
-		cd ../..
-		mkdir -p ${AVOSEIS}/man/man1
-		mkdir -p ${AVOSEIS}/man/man5
-		make update
-
+	cd adm/coldstart
+	make
+	cd ../..
+	mkdir -p ${AVOSEIS}/man/man1
+	mkdir -p ${AVOSEIS}/man/man5
+	make update
 	# You will want to source $AVOSEIS/setup.sh in your .bashrc file (if you use bash)
 	# or $AVOSEIS/setup.csh in your .(t)cshrc file (if you use (t)csh).
 
