@@ -1,25 +1,33 @@
-Installation procedure:
+Installation procedure for the AVOSEIS package on your filesystem:
 
-First installation only:
-1 cd adm/coldstart
-2 make
-3 cd ../..
-4 make firsttime
+# If $AVOSEIS and $AVOSEISMAKE already exist:
+	make update
 
-All other times (Updates)
-1. source $AVOSEIS/setup.sh or $AVOSEIS/setup.csh to set AVOSEISMAKE
-2. chmod -R a+w $AVOSEIS
-3. cd lib/makerules
-4. make Include
-5. cd ../..
-6. make Include
-7. make install
-8. make scripts
-9. make perlmods
-10. make schemas
-11. make pf_localmods
-12. make host # real-time servers only.
-### 13-15 REAL_TIME SERVERS ONLY
-13. chmod -R a+w $INTERNALWEBPRODUCTS
-14. make html
-15. chmod -R a-w $INTERNALWEBPRODUCTS
+# Otherwise:
+	# Create the directory where AVOSEIS will be installed, e.g. /usr/local/avoseis/5.0-64
+	sudo mkdir -p /usr/local/avoseis/5.0-64
+	If using bash:
+		export AVOSEIS=/usr/local/avoseis/5.0-64
+	If using csh
+		setenv AVOSEIS "/usr/local/avoseis/5.0-64"
+	Build AVOSEIS:
+		cd adm/coldstart
+		make
+		cd ../..
+		mkdir -p ${AVOSEIS}/man/man1
+		mkdir -p ${AVOSEIS}/man/man3p
+		mkdir -p ${AVOSEIS}/man/man5
+		mkdir -p ${AVOSEIS}/data/perl/Avoseis
+		make update
+
+# Additional steps for real-time servers only
+	make host 
+	make html
+
+# For a really clean build, do this:
+	chmod -R a+w $AVOSEIS
+	cd lib/makerules
+	make Include
+	cd ../..
+	make update
+	chmod -R a-w $AVOSEIS

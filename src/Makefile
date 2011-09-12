@@ -4,16 +4,15 @@ include $(AVOSEISMAKE)
 
 DIRS= adm lib bin data
 
-# First install only (make coldstart first)
-firsttime:
-	mkdir -p ${AVOSEIS}/man/man1
-	mkdir -p ${AVOSEIS}/man/man3p
-	mkdir -p ${AVOSEIS}/man/man5
-	mkdir -p ${PERLMOD}/Avoseis
+# Note make rules for clean, Include, install (and all) already in $AVOSEISMAKE
 
-# Every time
-scripts:
-	rsync bin/misc_scripts/* ${AVOSEIS}/bin
+update:	#clean Include install schemas perlmods pf_localmods
+	make clean
+	make Include
+	make install
+	make schemas
+	make perlmods
+	make pf_localmods
 
 schemas:
 	rsync -r data/schemas/* ${AVOSEIS}/data/schemas
@@ -25,11 +24,13 @@ perlmods:
 pf_localmods:
 	rsync -r data/pf_localmods/generic/* ${AVOSEIS}/data/pf_localmods/
 
-# Real-time servers only, everytime
+# Real-time servers only
 host:
 	rsync -r data/pf_localmods/${HOST}/* ${AVOSEIS}/data/pf_localmods/
 
 html:
+	chmod -R a+w $INTERNALWEBPRODUCTS
 	cp -r html/* ${INTERNALWEBPRODUCTS}/html
+	chmod -R a-w $INTERNALWEBPRODUCTS
 
 
