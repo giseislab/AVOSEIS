@@ -1,33 +1,58 @@
-Installation procedure for the AVOSEIS package on your filesystem:
+Installation procedure for the AVOSEIS package on your filesystem
+-----------------------------------------------------------------
 
 # If $AVOSEIS and $AVOSEISMAKE already exist:
 	make update
+	# make update calls make clean, make Include, make install, make schemas, make pf_localmods
 
 # Otherwise:
 	# Create the directory where AVOSEIS will be installed, e.g. /usr/local/avoseis/5.0-64
-	sudo mkdir -p /usr/local/avoseis/5.0-64
-	If using bash:
+		sudo mkdir -p /usr/local/avoseis/5.0-64
+	# If using bash:
 		export AVOSEIS=/usr/local/avoseis/5.0-64
-	If using csh
+	# If using csh
 		setenv AVOSEIS "/usr/local/avoseis/5.0-64"
-	Build AVOSEIS:
+	# Build AVOSEIS:
 		cd adm/coldstart
 		make
 		cd ../..
 		mkdir -p ${AVOSEIS}/man/man1
-		mkdir -p ${AVOSEIS}/man/man3p
 		mkdir -p ${AVOSEIS}/man/man5
-		mkdir -p ${AVOSEIS}/data/perl/Avoseis
 		make update
+
+	# You will want to source $AVOSEIS/setup.sh in your .bashrc file (if you use bash)
+	# or $AVOSEIS/setup.csh in your .(t)cshrc file (if you use (t)csh).
 
 # Additional steps for real-time servers only
 	make host 
 	make html
 
-# For a really clean build, do this:
-	chmod -R a+w $AVOSEIS
+Rebuild $AVOSEISMAKE
+--------------------
+# This should not be necessary, but if you need to rebuild $AVOSEISMAKE, do this:
 	cd lib/makerules
 	make Include
-	cd ../..
 	make update
-	chmod -R a-w $AVOSEIS
+
+Testing and rebuilding the Perl modules 
+---------------------------------------
+
+# (not needed during a regular update)
+
+	# Currently there is only one Perl module - Avoseis::SwarmAlarm
+	cd data/perl/Avoseis-SwarmAlarm
+
+	# Clean the Module installation, including the Makefile
+	make clean
+
+	# Create the Makefile
+	perl Makefile.PL
+
+	# Test the Perl module - currently failing because cannot load Datascope.pm
+	make test
+
+	# If desired, build the Perl module (executable, perldoc entry, man page)
+	# Executable goees to: /opt/antelope/perl5.10-64/lib/site_perl/5.10.0/Avoseis
+	# Manpage goes to something like blib/lib/...
+	# (note "make update" also calls "make install", and so does these things)
+	make install
