@@ -43,7 +43,7 @@ EOU
 # End of Perl header
 #################################################################
 
-printf("\n\nRunning $PROG_NAME at %s\n\n", epoch2str(now(),"%Y-%m-%d %H:%M:%S"));
+#printf("\n\nRunning $PROG_NAME at %s\n\n", epoch2str(now(),"%Y-%m-%d %H:%M:%S"));
 
 #### COMMAND LINE ARGUMENTS
 our ($start_date, $end_date, $dbout) = @ARGV[0..2];
@@ -55,8 +55,6 @@ our $dbin = "/Seis/Kiska4/picks/Total/Total";
 $dbin = $opt_i if $opt_i;
 
 # SWITCH START AND END DATE IF NECESSARY
-print $start_date,"\n";
-print $end_date,"\n";
 my $dt = str2epoch($end_date)-str2epoch($start_date);
 if ($dt < 0) {
 	print "Start and end dates are reversed\n";
@@ -78,7 +76,7 @@ sub do_origin_tables {
 	@db = dblookup(@db_dscr,"","origin","",1);
 	@db = dbsubset(@db,"(time>=$start_date_epoch) && (time<=$end_date_epoch)");
 	$nrecords = dbquery(@db,"dbRECORD_COUNT");
-	print "number of origin records after time subset: $nrecords\n";
+	#print "number of origin records after time subset: $nrecords\n";
 	die if ($nrecords < 1);
 	if (-e "$dbin.origerr") {
 		@db2 = dblookup(@db_dscr,"","origerr","",1);
@@ -99,7 +97,7 @@ sub do_origin_tables {
 		@db  = dbjoin(@db, @db2,-outer) if (dbquery(@db2, "dbRECORD_COUNT")>0);
 	}
 	$nrecords = dbquery(@db,"dbRECORD_COUNT");
-	print "number of origin recordsi after all subsets: $nrecords\n";
+	print "number of origins: $nrecords\n";
 
 
 	# ADD OPTIONAL ARRIVAL/ASSOC/STAMAG TABLES
