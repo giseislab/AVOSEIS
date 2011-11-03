@@ -1,5 +1,5 @@
-PWD := $(shell pwd)
-PERLMOD=$(PWD)/data/perl/Avoseis-SwarmAlarm
+#PWD:=$(shell pwd)
+PERLMOD=${PWD}/data/perl/Avoseis-SwarmAlarm
 
 include $(AVOSEISMAKE)
 
@@ -27,10 +27,10 @@ host:
 	rsync -r data/pf_localmods/${HOST}/* ${AVOSEIS}/data/pf_localmods/
 
 html:
-	chmod -R a+w $INTERNALWEBPRODUCTS
+	chmod -R a+w ${INTERNALWEBPRODUCTS}
 	cp -r html/* ${INTERNALWEBPRODUCTS}/html
-	chmod -R a-w $INTERNALWEBPRODUCTS
+	chmod -R a-w ${INTERNALWEBPRODUCTS}
 
 
 cwd:
-	echo $(PWD)
+	echo ${PWD}
