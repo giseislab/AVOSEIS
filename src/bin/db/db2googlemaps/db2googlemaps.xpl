@@ -13,6 +13,9 @@
 #
 #
 ##############################################################################
+# Get the program name
+our $PROG_NAME;
+($PROG_NAME = $0) =~ s(.*/)();  # PROG_NAME becomes $0 minus any path
 
 use Datascope;
 use Getopt::Std;
@@ -23,13 +26,9 @@ $maxevents = 300; # Changed from 1000 to 300 because seeing malloc problems in c
 
 #USAGE
 $Usage = "
-Usage: $0 [-sobf] [-e subset_expr] [-x] [-w] dbname > xml_file
+Usage: $0 [-sobf] [-e subset_expr] [-x N] [-w] dbname > xml_file
 
 See manpage for further details.
-By default, $0 will produce XML formatted as db2avoxml module.
-If -x flag used, XML will be formatted as for VOLC2 product of Wes Thelen.
-If -w flag used, waveform URLs will be added. Ignored if -x used.
-Will not export more than 300 origins, unless -f flag used.
 
 AUTHOR
 Glenn Thompson
@@ -38,7 +37,7 @@ Glenn Thompson
 
 # Command line arguments
 $opt_s = $opt_o = $opt_b = $opt_e = $opt_f = $opt_x = 0; # Kill "variable used once" error
-if ( ! &getopts('sobe:fx') || $#ARGV != 0 ) {
+if ( ! &getopts('sobe:fx:') || $#ARGV != 0 ) {
 	die ( "$Usage" );
 } else {
 	if ($opt_s && $opt_o) {
@@ -53,6 +52,7 @@ if ( ! &getopts('sobe:fx') || $#ARGV != 0 ) {
 	die("table $dbname.site not found") if (!(-e "$dbname.site") && $opt_s);
 
 	# Write XML
+	our $xmlstr = "";
 	&xmlstart;
 	if ($opt_o) {
 		$BASIC = 0;
@@ -66,26 +66,30 @@ if ( ! &getopts('sobe:fx') || $#ARGV != 0 ) {
 		&get_site_records();
 	}
 	&xmlfinish;
+	print $xmlstr;
+
+	1;
 }
 
 ######################################################################
 sub xmlstart {		##### Write the starting portion of a xml file
-	print "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+	$xmlstr .= "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
 	$localtimestr = epoch2str(now(),'%Y/%m/%d %H:%M:%S %Z', 'US/Alaska');
 	$utctimestr = epoch2str(now(),'%Y/%m/%d %H:%M:%S %Z');
-	unless ($opt_x && ($opt_o || $opt_b)) {
-		print "<markers>\n";
+	$xmlstr .= "\t<!-- created by $PROG_NAME from database: $dbname at $utctimestr UTC -->\n";
+	unless (($opt_x==2) && ($opt_o || $opt_b)) {
+		$xmlstr .= "<markers>\n";
 	} else {
-		print "<merge fileTime_loc=\"$localtimestr\" fileTime_utc=\"$utctimestr\">\n";
+		$xmlstr .= "<merge fileTime_loc=\"$localtimestr\" fileTime_utc=\"$utctimestr\">\n";
 	}
 }
 
 
 sub xmlfinish {	##### close a xml file
-	unless ($opt_x && ($opt_o || $opt_b)) {
-		print "</markers>\n";
+	unless (($opt_x==2) && ($opt_o || $opt_b)) {
+		$xmlstr .= "</markers>\n";
 	} else {
-		print "</merge>\n";
+		$xmlstr .= "</merge>\n";
 	}
 }
 
@@ -128,10 +132,6 @@ sub get_orig_records {	##### extract origin records
 	print STDERR "number of hypocenter placemarks: $nrecords\n";
 	print STDERR "BASIC=$BASIC\n";
 	
-	# GET CURRENT TIME
-	$theTime = strtime(now);
-	print "\t<!-- created by css2volcxml from database: $dbname on $theTime UTC -->\n";
-	#
 	foreach $row (0..$nrecords-1) {
 		$db[3] = $row ;
 		# added "review", "auth", "nass", "ndef", "algorithm" to following line GTHO 2010/11/02
@@ -140,20 +140,20 @@ sub get_orig_records {	##### extract origin records
 		if ($BASIC) { 
 			($mb,$ms,$ml) = dbgetv(@db,"mb","ms","ml");
 			if ($ms != -999) {
-				$magnitude = $ms;
+				$magnitude = sprintf "%2.1f",$ms;
 				$magtype = 'Ms';
 			} 
 			elsif ($mb != -999) {
-				$magnitude = $mb;
+				$magnitude = sprintf "%2.1f",$mb;
 				$magtype = 'mb';
 			} 
 			elsif ($ml != -999) {
-				$magnitude = $ml;
+				$magnitude = sprintf "%2.1f",$ml;
 				$magtype = 'ml';
 			} 
 			else {
-				$magnitude = 0;
-				$magtype = 'Unknown magnitude';
+				$magnitude = "";
+				$magtype = 'No magnitude';
 			}
 		}
 		else 
@@ -226,16 +226,21 @@ sub do_origin {	##### write out a single origin placemark
 	$timestr = epoch2str($time,'%H:%M:%S');
 	$timestampstr = epoch2str($time,'%Y-%m-%dT%H:%M:%SZ');
 	$depth = sprintf "%3.1f",$depth;
-
-	$magnitude = sprintf "%2.1f",$magnitude;
 	$icon = substr $color, 2;
-	# Different icon for unreviewed origins GTHO 2010/11/02
+
 	if ($review eq "y" || $auth eq "scott" || $auth=~/UAF.*/ || $auth=~/AVO.*/) {
 		$reviewed = "y";
 		$icon = 'hyp'.$icon.'.png';
 	} else {
 		$reviewed = "n";
-		$icon = 'unreviewed'.$icon.'.png';
+		# Different icon for unreviewed origins if not in public mode GTHO 2010/11/02
+		if ($opt_x > 0) {
+			$icon = 'unreviewed'.$icon.'.png';
+		}
+		else
+		{
+			$icon = 'hyp'.$icon.'.png';
+		}
 	}
 
 	if ($auth =~ /^ew/) {
@@ -274,19 +279,25 @@ sub do_origin {	##### write out a single origin placemark
 	}
 
 	# PRINT XML CODE
-	unless ($opt_x) {
-		print "
-<marker name=\"ml:$magnitude $datestr\" icon=\"$icon\" lat=\"$lat\" lon=\"$lon\" depth=\"$depth\" ml=\"$magnitude\" scale=\"$size\" color=\"$color\" TimeStamp=\"$timestampstr\">
+	if ($opt_x==0) {
+		$xmlstr.= "<marker name=\"$magnitude $datestr\" icon=\"$icon\" lat=\"$lat\" lon=\"$lon\" depth=\"$depth\" ml=\"$magnitude\" scale=\"$size\" color=\"$color\" TimeStamp=\"$timestampstr\">
+\[b\]$datestr $timestr UTC\[/b\]\[br/\] 
+\[b\]magnitude: $magnitude\[/b]\[br/\] 
+lat=$lat, lon=$lon, depth=$depth km\[br/\] 
+</marker>\n";
+	};
+	if ($opt_x==1) {
+		$xmlstr.= "<marker name=\"$magnitude $datestr\" icon=\"$icon\" lat=\"$lat\" lon=\"$lon\" depth=\"$depth\" ml=\"$magnitude\" scale=\"$size\" color=\"$color\" TimeStamp=\"$timestampstr\">
 \[b\]$datestr $timestr UTC\[/b\]\[br/\] 
 \[b\]$magtype: $magnitude\[/b]\[br/\] 
 lat=$lat, lon=$lon, depth=$depth km\[br/\] 
 source: $source\[br\] author: $auth\[br/\] 
 event type: $etype\[br/\] 
-\[b\]arrivals: $nass/$ndef\[/b\] \[br/\]	
-$waveform_hyperlink
-</marker>
-		";
-	} else {
+\[b\]arrivals: $nass/$ndef\[/b\] \[br/\]\n";	
+		$xmlstr .= $waveform_hyperlink if ($waveform_hyperlink ne "");
+		$xmlstr .= "</marker>\n";
+	};
+	if ($opt_x==2) {
 		$year = epoch2str($time,'%Y');
 		$month = epoch2str($time,'%m');
 		$day = epoch2str($time,'%d');
@@ -295,7 +306,7 @@ $waveform_hyperlink
 		$second = epoch2str($time,'%S');
 		$localtime = epoch2str($time, '%a %b %d, %Y %H:%M:%S %Z');
 		$time_stamp = epoch2str(now(), '%Y/%m/%d_%H:%M:%S');
-		print "<event id=\"$evid\" network-code=\"AK\" time-stamp=\"$time_stamp\" version=\"1\">
+		$xmlstr .= "<event id=\"$evid\" network-code=\"AK\" time-stamp=\"$time_stamp\" version=\"1\">
 <param name=\"year\" value=\"$year\"/>
 <param name=\"month\" value=\"$month\"/>
 <param name=\"day\" value=\"$day\"/>
@@ -409,12 +420,10 @@ sub get_site_records {	##### extract site records
 
 	$nrecords = dbquery(@db,"dbRECORD_COUNT");
 	if ($nrecords == 0) {
-		print "database $dbname does not exist or site table contains no records\n";
+		print STDERR "database $dbname does not exist or site table contains no records\n";
 		return;
 	}
 	print STDERR "number of station placemarks: $nrecords\n";
-	$theTime = strtime(now);
-	print "\t<!-- created by css2volcxml from database: $dbname on $theTime UTC -->\n";
 	for ($db[3]=0 ; $db[3]<$nrecords ; $db[3]++) {
 		my ($sta,$chan,$lon,$lat,$elev,$staname,$net) = dbgetv(@db,"sta","chan","lon","lat","elev","staname","net");
 		$elev = $elev*1000;				# convert km to meters
@@ -464,8 +473,8 @@ sub do_site {		##### write out a single site placemark
 	}
 
 	# PRINT XML
-	unless ($opt_x) {
-		print "<marker name=\"$sta\" icon=\"$icon\" lat=\"$lat\" lon=\"$lon\" elev=\"$elev\">
+	if ($opt_x<2) {
+		$xmlstr .= "<marker name=\"$sta\" icon=\"$icon\" lat=\"$lat\" lon=\"$lon\" elev=\"$elev\">
 \[center\]\[b\]$sta\[/b\]\[/center\]\[br/\]
 \"$staname\"\[br/\]
 elevation: $elev meters\[br/\]
@@ -481,7 +490,7 @@ arrivals: $num_arrivals\[br/\]
 		{
 			$type = "SP";
 		}
-		print "<marker lat=\"$lat\" lng=\"$lon\" station=\"$sta\" channel=\"$chan\" network=\"$net\" location=\"--\" type=\"$type\"/>\n";
+		$xmlstr .= "<marker lat=\"$lat\" lng=\"$lon\" station=\"$sta\" channel=\"$chan\" network=\"$net\" location=\"--\" type=\"$type\"/>\n";
 	}
 }
 
