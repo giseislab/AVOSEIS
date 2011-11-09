@@ -48,9 +48,9 @@ foreach $volcanoview (@$volcanoviewsref) {
 		$zoom = $fields[3];
 		$dist = (2.0 ** (12 - $zoom)) * 5.0;
 		print "volcano = $volcano, lat = $lat, lon = $lon, zoom = $zoom, distance = $dist\n";
-		system("db2googlemaps -x -b -f -e \"time>$WEEKAGO && deg2km(distance($lat, $lon, lat, lon))<$dist\" $DBNAME  > $XMLDIR/origins_$volcano"."_lastweek.xml");
-		system("db2googlemaps -x -b -f -e \"time>$YEARAGO && deg2km(distance($lat, $lon, lat, lon))<$dist\" $DBNAME  > $XMLDIR/origins_$volcano.xml");
-		system("db2googlemaps  -x -s -f -e \"deg2km(distance($lat, $lon, lat, lon))<$dist\" $DBMASTER  > $XMLDIR/stations_$volcano.xml");
+		system("db2googlemaps -x 2 -b -f -e \"time>$WEEKAGO && deg2km(distance($lat, $lon, lat, lon))<$dist\" $DBNAME  > $XMLDIR/origins_$volcano"."_lastweek.xml");
+		system("db2googlemaps -x 2 -b -f -e \"time>$YEARAGO && deg2km(distance($lat, $lon, lat, lon))<$dist\" $DBNAME  > $XMLDIR/origins_$volcano.xml");
+		system("db2googlemaps  -x 2 -s -f -e \"deg2km(distance($lat, $lon, lat, lon))<$dist\" $DBMASTER  > $XMLDIR/stations_$volcano.xml");
 		print FOUT "<volcano name=\"$volcano\" lat=\"$lat\" lon=\"$lon\" zoomlevel=\"$zoom\" />\n";
 }
 print FOUT "</volcanoes>\n";

@@ -7,9 +7,17 @@ Processes &Tbl{
 # Antelope event detections
 orbserver_antelope	orbserver -p $ORB_ANTELOPE orbserver_antelope
 orbdetect_antelope	orbdetect -pf pf/orbdetect_antelope.pf -out $ORB_ANTELOPE : $DBT_ANTELOPE
-orbassoc_antelope	orbassoc -start NEWEST -select '(/db/detection)' -v $ORB_ANTELOPE $ORB_ANTELOPE grids/grid_*
+orbassoc_antelope	orbassoc -start NEWEST -select '(/db/detection)' -v $ORB_ANTELOPE $ORB_ANTELOPE grids_old/grid_*
 orbevproc_antelope		orbevproc  -v -p orbevproc_antelope $ORB $ORB_ANTELOPE $SITE_DB
 orb2dbt_antelope		orb2dbt  -v -state state/orb2dbt_antelope -overwrite -select '(.*/pf/orb2dbt|.*/db/.*)' $ORB_ANTELOPE $DBT_ANTELOPE
+
+# Optimised Antelope event detections - and locate with CWAKE models
+orbserver_optimised	orbserver -p $ORB_OPTIMISED orbserver_optimised
+orb2orb_aeic2optimised	orb2orb -v -S state/orb2orb_aeic2optimised -m '.*/pf/orb2dbt.*' $ORB_AEIC $ORB_OPTIMISED
+orbdetect_optimised	orbdetect -pf pf/orbdetect_optimised.pf -out $ORB_OPTIMISED : $DBT_OPTIMISED
+orbassoc_optimised	orbassoc -start NEWEST -select '(/db/detection)' -v -pf orbassoc_optimised $ORB_OPTIMISED $ORB_OPTIMISED grids/grid_??_lo
+orbevproc_optimised		orbevproc  -v -p orbevproc_antelope $ORB $ORB_OPTIMISED $SITE_DB
+orb2dbt_optimised		orb2dbt  -v -state state/orb2dbt_optimised -overwrite -select '(.*/pf/orb2dbt|.*/db/.*)' $ORB_OPTIMISED $DBT_OPTIMISED
 
 # Earthworm event detections
 carlstatrig2dbt carlstatrig2antelope -v -w $WARNINGLOG $DBDETECTIONS
@@ -37,6 +45,14 @@ orbassoc_antelope			yes
 orbevproc_antelope			yes
 orb2dbt_antelope			yes
 
+# Optimised Antelope detections - locate with CWAKE
+orbserver_optimised			yes
+orb2orb_aeic2optimised			yes
+orbdetect_optimised	yes
+orbassoc_optimised			yes
+orbevproc_optimised			yes
+orb2dbt_optimised			yes
+
 # Earthworm event detections
 carlstatrig2dbt				yes
 carlsubtrig2dbt				yes
@@ -60,10 +76,12 @@ Defines &Arr{
 ANTELOPE	PRESERVE
 #ORB      	:6510  
 ORB_ANTELOPE	:6516
+ORB_OPTIMISED	:6520
 ORB_AEIC         kobuk:6517
 ORB_MASTER  	:6565
 DB		db/archive
 DBT_ANTELOPE	events/antelope/events_antelope
+DBT_OPTIMISED	events/optimised/events
 DBT_EARTHWORM	events/earthworm/events_earthworm
 DBT_MASTER	events/unreviewed/events
 DBT_XPICK	events/xpick/events_xpick
@@ -100,6 +118,7 @@ DB               	$DB
 ORB              	$ORB
 DBDETECTIONS		$DBDETECTIONS
 DBT_ANTELOPE       	$DBT_ANTELOPE
+DBT_OPTIMISED		$DBT_OPTIMISED
 DBT_EARTHWORM      	$DBT_EARTHWORM
 DBT_MASTER     		$DBT_MASTER
 DBT_XPICK		$DBT_XPICK
@@ -173,6 +192,7 @@ cleanlogs LOCAL 5,17,29,41,53 * * * * truncate_log -m 200 -r logs/*
 # split event databases into day volumes
 dbsplit2dayvolumes_earthworm UTC 40 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_EARTHWORM
 dbsplit2dayvolumes_antelope UTC 41 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_ANTELOPE
+dbsplit2dayvolumes_optimised UTC 44 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_OPTIMISED
 dbsplit2dayvolumes_xpick UTC 43 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_XPICK 
 dbsplit2dayvolumes_master UTC 42 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_MASTER 
 
@@ -183,12 +203,13 @@ copy_Pffiles UTC 37 * * * * rsync pf/* $INTERNALWEBPRODUCTS/pf # should probably
 
 ######################## XML PRODUCTS FOR GOOGLE MAPS ###################################
 # Seth's admin/map 
-xml_antelope UTC 4,19,34,49 * * * * db2avoxml -o -e 'time>(now()-7*86400)' $DBT_ANTELOPE > $PUBLICWEBPRODUCTS/kml/seismicity_antelope.xml
-xml_unreviewed_avo UTC 5,20,35,50 * * * * db2avoxml -o -e 'auth=~/ew.*/ && time>(now()-7*86400)' $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_unreviewed_avo.xml
-## xml_reviewed_avo UTC 6,21,36,51 * * * * db2avoxml -o -e 'auth=~/AVO:.*/ && time>(now()-7*86400)' $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_avo.xml
-xml_unreviewed_aeic UTC 7,22,37,52 * * * * db2avoxml -o -e '( review!="y" && ( (auth=~/^USGS:[aA][kK]/ && lddate<(time+1000)) || auth=~/^oa.*/) && time>(now()-7*86400 ) )' $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_unreviewed_aeic.xml
-xml_reviewed_aeic UTC 8,23,38,53 * * * * db2avoxml -o -e '(review=="y" || auth=~/^UAF.*/  || (auth=~/^USGS.*/ && lddate>time+999) ) && time>(now()-7*86400)'  $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_aeic.xml
-xml_stations UTC 9 * * * * db2avoxml -s  $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/stations_lastweek.xml
+xml_antelope UTC 4,19,34,49 * * * * db2googlemaps -o -f -e 'time>(now()-7*86400)' $DBT_ANTELOPE > $PUBLICWEBPRODUCTS/kml/seismicity_antelope.xml
+xml_unreviewed_avo UTC 5,20,35,50 * * * * db2googlemaps -o -f -e 'auth=~/ew.*/ && time>(now()-7*86400)' $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_unreviewed_avo.xml
+#xml_reviewed_avo UTC 6,21,36,51 * * * * db2googlemaps -o -f -e 'auth=~/AVO:.*/ && time>(now()-7*86400)' $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_avo.xml
+xml_reviewed_avo UTC 6,21,36,51 * * * * db2googlemaps -o -f -e 'time>(now()-7*86400)' $TOTALDB > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_avo.xml
+xml_unreviewed_aeic UTC 7,22,37,52 * * * * db2googlemaps -o -f -e '( review!="y" && ( (auth=~/^USGS:[aA][kK]/ && lddate<(time+1000)) || auth=~/^oa.*/) && time>(now()-7*86400 ) )' $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_unreviewed_aeic.xml
+xml_reviewed_aeic UTC 8,23,38,53 * * * * db2googlemaps -o -f -e '(review=="y" || auth=~/^UAF.*/  || (auth=~/^USGS.*/ && lddate>time+999) ) && time>(now()-7*86400)'  $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_aeic.xml
+xml_stations UTC 9 * * * * db2googlemaps -s -f $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/stations_lastweek.xml
 # VOLC2
 db2volc2 UTC 29 * * * * db2volc2 $TOTALDB $INTERNALWEBPRODUCTS/volc2/xmlfiles/avo_uaf
 
@@ -264,6 +285,7 @@ dbe_archive	dbe $DB
 dbe_earthworm	dbe $DBT_EARTHWORM 
 dbe_grids	dbe regions/grid_avonew 
 dbe_antelope	dbe $DBT_ANTELOPE 
+dbe_optimised	dbe $DBT_OPTIMISED
 dbe_xpick	dbe $DBT_XPICK
 dbe_master	dbe $DBT_MASTER
 dbe_swarms	dbe $DBSWARM
