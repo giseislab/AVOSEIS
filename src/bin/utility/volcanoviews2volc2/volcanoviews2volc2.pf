@@ -36,3 +36,9 @@ Semisopochnoi 51.9288 179.5977 10
 Little_Sitkin 51.9531 178.5356 10 
 All 55.5 -164.0 5 
 }
+source	VALVE
+valvejsp	http://avosouth.wr.usgs.gov/valve3.4/valve3.jsp
+hypocentersDatabaseName	avo_seismic_hypocenters
+eventdb	/Seis/Kiska4/picks/Total/Total
+stationdb	/avort/oprun/dbmaster/master_stations
+xmldir	/tmp

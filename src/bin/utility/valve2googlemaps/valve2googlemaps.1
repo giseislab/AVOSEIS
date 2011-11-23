@@ -1,0 +1,43 @@
+'\" te
+.TH VALVE2GOOGLEMAPS 1# 
+.SH NAME
+valve2googlemaps \- download hypocenters from VALVE and export to XML
+.SH SYNOPSIS
+.nf
+\fBvalve2googlemaps\fP valvejsp hypocentersdbname minlat maxlat minlon
+maxlon starttime endtime 
+.fi
+.SH DESCRIPTION
+\fBvalve2googlemaps\fP is used to query VALVE for earthquakes within a particular
+geographical range defined by minlat, maxlat, minlon and maxlon, between starttime
+and endtime. If successful, the query results in an XML file which gives the URL
+of a CSV file containing the selected hypocenter data. \fBvalve2googlemaps\fP
+downloads this file too, and then reformats them as XML compatible with the
+PNSN/HVO/AVO program "VOLC2".
+.SH OPTIONS
+None.
+.SH FILES
+Output file is an XML file in VOLC2 format.
+.SH ENVIRONMENT
+$ANTELOPE and $AVOSEIS must be defined.
+.SH PARAMETER FILE
+None.
+.SH EXAMPLE
+.in 2c
+.ft CW
+.nf
+.fi
+.ft R
+.in
+.SH RETURN VALUES
+.SH DIAGNOSTICS
+None.
+.SH "SEE ALSO"
+.nf
+db2googlmaps(1), volcanoviews2volc2(1)
+.fi
+.SH "BUGS AND CAVEATS"
+None known.
+.SH AUTHOR
+Glenn Thompson, Alaska Volcano Observatory at the Geophysical Institute,
+University of Alaska Fairbanks.

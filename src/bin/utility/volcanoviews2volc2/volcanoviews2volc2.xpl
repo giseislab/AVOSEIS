@@ -16,10 +16,10 @@ our $PROG_NAME;
 ($PROG_NAME = $0) =~ s(.*/)();  # PROG_NAME becomes $0 minus any path
 
 # Usage - command line options and arguments
-if ( $#ARGV < 1  ) {
+if ( ! &getopts('') || $#ARGV != -1   ) {
     print STDERR <<"EOU" ;
 
-    Usage: $PROG_NAME 
+    Usage: $PROG_NAME
 
     For more information:
         > man $PROG_NAME

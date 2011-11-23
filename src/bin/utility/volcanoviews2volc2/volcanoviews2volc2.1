@@ -1,24 +1,19 @@
 .TH VOLCANOVIEWS2VOLC2 1 "$Date$"
 .SH NAME
-volcanoeviws2volc2 \- Create XML feeds for the VOLC2 Google Maps application.
+volcanoviews2volc2 \- Create XML feeds for the VOLC2 Google Maps application.
 
 .SH SYNOPSIS
 .nf
-\fBvolcanoviews2volc2\fP  \fIdbname\fP > \fIxml_directory\fP 
+\fBvolcanoviews2volc2\fP  
 .fi
 .SH DESCRIPTION
 \fBvolcanoviews2volc2\fP This script is the interface between a version of the AVO event catalog (that exists in either a CSS3.0 Datascope database or a VALVE Hypocenters table), and the Google Maps application "VOLC2", originally developed by Jon Connolly and Wes Thelen at PNSN. Given a parameter file with a list of volcanoes and corresponding geographic coordinates and zoom levels, \fBvolcanoviews2volc2\fP makes 3 calls to db2googlemaps (for a Datascope database) or valve2volc2 (for a VALVE Hypocenters table). Which of these two modes to use is specified with a command-line switch . This yields 3 XML files for each volcano: origins_$volcano.xml, origins_$volcano_lastweek.xml and stations_$volcano.xml. Origins and stations are selected using a circular geographical filter centred on the given coordinates and with a radius determined by the zoom level.
 
 .SH COMMAND LINE ARGUMENTS
-.IP dbname
-The path to the CSS3.0 Datascope database.
-.IP xml_directory
-The path to the directory to write the XML files to.
+None.
 
 .SH OPTIONS
-.IP "-s SOURCE"
-SOURCE is either "Datascope" or "VALVE". If omitted, it defaults to "VALVE", which
-will assume that the correct VALKVE JSP to use is specified in the parameter file.
+None.
 
 .SH ENVIRONMENT
 $ANTELOPE and $AVOSEIS must be set.
@@ -32,9 +27,16 @@ EVENTDB - the path of the Datascope database containing event lat/lon/depth/magn
 in the default mode where SOURCE=VALVE.
 .PP
 VALVEJSP - the path of the VALVE Java Server Page which services requests to VDX. 
+.PP
+hypocentersDatabaseName - the name of the VALVE3 database containing the hypocenters table. This should match that
+in VDX.config (or is it VALVE.config).
+.PP
+SOURCE - either "Datascope" or "VALVE". If omitted, it defaults to "VALVE".
+.PP
+XMLDIR - the directory to write XML files out to.
 
 .SH EXAMPLE
-volcanoviews2volc2 /Seis/Kiska4/picks/Total/Total /usr/local/mosaic/AVO/internal/avoseis/op/data/VOLC2_xmlfiles 
+volcanoviews2volc2 
  
 .SH SEE ALSO
 db2googlemaps(1)
