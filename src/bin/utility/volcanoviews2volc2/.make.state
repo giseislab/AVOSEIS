@@ -1,0 +1,46 @@
+.MAKE_VERSION:	VERSION-1.0
+.BUILT_LAST_MAKE_RUN:
+/opt/antelope/5.0-64/bin/volcanoviews2volc2:
+	deposit volcanoviews2volc2 /opt/avoseis/5.0-64/bin
+.BUILT_LAST_MAKE_RUN:
+/opt/antelope/5.0-64/data/pf/volcanoviews2volc2.pf:
+	deposit volcanoviews2volc2.pf /opt/avoseis/5.0-64/data/pf
+.BUILT_LAST_MAKE_RUN:
+/opt/antelope/5.0-64/man/man1/volcanoviews2volc2.1:
+	deposit volcanoviews2volc2.1 /opt/avoseis/5.0-64/man/man1
+0@Include:
+	DIRS="`/opt/antelope/5.0-64/include/subdirs `" ;\
+	for i in $DIRS ; do \
+	    if [ -f $i/Makefile -o -f $i/makefile -o -f $i/GNUmakefile ] ; then ( cd $i && make -e Include ; ) ; else if [ -d $i ] ; then echo Error: no Makefile in `pwd`/$i ; fi ; fi ; \
+	        done
+0@install:
+	DIRS="`/opt/antelope/5.0-64/include/subdirs `" ;\
+	for i in $DIRS ; do \
+	    printf "+    %-40s  %s\n" $i "`date`" ; \
+	    if [ -f $i/Makefile -o -f $i/makefile -o -f $i/GNUmakefile ] ; then ( cd $i && make -e install ; ) ; else if [ -d $i ] ; then echo Error: no Makefile in `pwd`/$i ; fi ; fi ; \
+	        done
+BUNDLE:	0@BUNDLE 
+DATA:	0@DATA 
+DEMO:	0@DEMO 
+DLIB:	0@DLIB 
+DOC:	0@DOC 
+EXAMPLE:	0@EXAMPLE 
+INCLUDE:	0@INCLUDE 
+Include:	0@Include 1@Include 
+MAN:	0@MAN 
+SLIB:	0@SLIB 
+WEB:	0@WEB 
+all:	0@all 1@all 
+clean:	0@clean 1@clean 
+.BUILT_LAST_MAKE_RUN:
+install:	0@install 
+installMAN:	0@installMAN 1@installMAN 
+pf:	0@pf 1@pf 
+purge:	0@purge 
+relink:	0@relink 1@relink 
+static:	0@static 
+tags:	0@tags 1@tags 
+uninstall:	0@uninstall 1@uninstall 
+.BUILT_LAST_MAKE_RUN:
+volcanoviews2volc2:
+	produce volcanoviews2volc2
