@@ -212,6 +212,7 @@ xml_reviewed_aeic UTC 8,23,38,53 * * * * db2googlemaps -o -f -e '(review=="y" ||
 xml_stations UTC 9 * * * * db2googlemaps -s -f $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/stations_lastweek.xml
 # VOLC2
 db2volc2 UTC 29 * * * * db2volc2 $TOTALDB $INTERNALWEBPRODUCTS/volc2/xmlfiles/avo_uaf
+volcanoviews2volc2 UTC 59 * * * * volcanoviews2volc2
 
 ########################## MIKE'S WEB PRODUCTS ######################################################
 # KML file of all origins (and stations) currently in the quakes event database

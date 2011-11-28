@@ -4,10 +4,10 @@ db2googlemaps \- Create an xml-formatted version of hypocenter solutions.
 
 .SH SYNOPSIS
 .nf
-\fBdb2googlemaps\fP [-so] \fIdbname\fP > \fIxml_file\fP 
+\fBdb2googlemaps\fP [-sob] [-f] [-x N]  \fIdbname\fP > \fIxml_file\fP 
 .fi
 .SH DESCRIPTION
-\fBdb2googlemaps\fP This script creates a xml file in a format suitable for use with the AVO public Google Maps pages. It uses event or station information extracted from the input database. Either -s or -o must be used or the resulting xml file will be empty. 
+\fBdb2googlemaps\fP This script creates a xml file in a format suitable for use with the AVO public Google Maps pages. It uses event or station information extracted from the input database. Either -s, -b or -o must be used or the resulting xml file will be empty. 
 
 .SH OPTIONS
 .IP -s

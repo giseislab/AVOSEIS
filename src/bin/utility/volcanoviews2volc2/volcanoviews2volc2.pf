@@ -41,4 +41,4 @@ valvejsp	http://avosouth.wr.usgs.gov/valve3.4/valve3.jsp
 hypocentersDatabaseName	avo_seismic_hypocenters
 eventdb	/Seis/Kiska4/picks/Total/Total
 stationdb	/avort/oprun/dbmaster/master_stations
-xmldir	/tmp
+xmldir	internalwebproducts/volc2/xmlfiles/avo_valve

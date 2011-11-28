@@ -8,11 +8,11 @@ valve2googlemaps \- download hypocenters from VALVE and export to XML
 maxlon starttime endtime 
 .fi
 .SH DESCRIPTION
-\fBvalve2googlemaps\fP is used to query VALVE for earthquakes within a particular
+\fBvalve2googlemaps\fP queries a VALVE JavaServerPage for earthquakes within a particular
 geographical range defined by minlat, maxlat, minlon and maxlon, between starttime
 and endtime. If successful, the query results in an XML file which gives the URL
 of a CSV file containing the selected hypocenter data. \fBvalve2googlemaps\fP
-downloads this file too, and then reformats them as XML compatible with the
+downloads this file too, and then writes the hypocenters in the XML format expected by the
 PNSN/HVO/AVO program "VOLC2".
 .SH OPTIONS
 None.
@@ -26,6 +26,8 @@ None.
 .in 2c
 .ft CW
 .nf
+Example: All events with epicenters within the Redoubt geographical filter, between 2011-09-01 and 2011-11-22
+        valve2googlemaps "http://avosouth.wr.usgs.gov/valve3.4/valve3.jsp" avo_seismic_hypocenters 60.2606 60.7094 -153.1967 -152.2873 20110901 20111122  myvolc2.xml
 .fi
 .ft R
 .in
@@ -34,7 +36,7 @@ None.
 None.
 .SH "SEE ALSO"
 .nf
-db2googlmaps(1), volcanoviews2volc2(1)
+db2googlemaps(1), volcanoviews2volc2(1)
 .fi
 .SH "BUGS AND CAVEATS"
 None known.
