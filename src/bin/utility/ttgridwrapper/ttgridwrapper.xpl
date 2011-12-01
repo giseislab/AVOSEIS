@@ -14,12 +14,13 @@ if ( ! &Getopts('e') || ! $#ARGV == 0  ) {
 
         Usage: $PROG_NAME [-e] ttgridpf 
 
-        $PROG_NAME calls ttgrid for all grids described in a ttgrid parameter file
+        $PROG_NAME  does three things:
+	(1) calls ttgrid for all grids described in a ttgrid parameter file
 	Default is to do nothing if a grid file already exists.
 	The -e (ERASE) option overwrites pre-existing grids.
-
-        $PROG_NAME writes a grid regions database for all grids described 
+        (2) writes a grid regions database for all grids described 
 	in a ttgrid parameter file
+	(3) write an orbassoc.pf file
 EOU
         exit 1 ;
 }
