@@ -60,7 +60,7 @@ system("touch $gridregiondb.regions");
 my @db = dbopen_table("$gridregiondb.regions", "r+");
 
 # Load the gridshash from the ttgrid parameter file
-my pfref = &getPf($ttgridpffile);
+my $pfref = &getPf($ttgridpffile);
 my %allvars = %$pfref;
 my $gridsref = $allvars{"grids"};
 my %gridshash = %$gridsref;
