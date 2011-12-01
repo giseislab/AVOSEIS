@@ -28,7 +28,7 @@ orbserver_master		orbserver -p $ORB_MASTER  -r orbserver_master
 orb2orb_antelope2master		orb2orb -S state/orb2orb_antelope2master $ORB_ANTELOPE $ORB_MASTER
 dbt2orbpf_earthworm2master	dbt2orbpf  -v -o "STATE" -S state/dbt2orbpf_earthworm2master $DBT_EARTHWORM $ORB_MASTER
 orb2orb_aeic2master		orb2orb -v -S state/orb2orb_aeic2master -m '.*/pf/orb2dbt.*' $ORB_AEIC $ORB_MASTER
-dbt2orbpf_xpick2master		dbt2orbpf  -V -o "STATE" -S state/dbt2orbpf_xpick2master $DBT_XPICK $ORB_MASTER
+dbt2orbpf_total2master		dbt2orbpf  -V -o "NEW" -S state/dbt2orbpf_total2master $TOTALDB $ORB_MASTER
 orb2dbt_master			orb2dbt  -v -state state/orb2dbt_master -overwrite -select '(.*/pf/orb2dbt|.*/db/.*)' $ORB_MASTER $DBT_MASTER
 
 # Alarms
@@ -60,9 +60,9 @@ carlsubtrig2dbt				yes
 #  Master event database
 orbserver_master			yes
 #orb2orb_antelope2master			no
+dbt2orbpf_total2master			yes
 dbt2orbpf_earthworm2master		yes
 orb2orb_aeic2master			yes
-#dbt2orbpf_xpick2master			no
 orb2dbt_master				yes
 
 # Alarms
@@ -84,7 +84,6 @@ DBT_ANTELOPE	events/antelope/events_antelope
 DBT_OPTIMISED	events/optimised/events
 DBT_EARTHWORM	events/earthworm/events_earthworm
 DBT_MASTER	events/unreviewed/events
-DBT_XPICK	events/xpick/events_xpick
 DBALARM         dbalarm/alarm
 DBSWARM         dbswarm/swarm_metadata
 DBDETECTIONS	detections/earthworm
@@ -121,7 +120,6 @@ DBT_ANTELOPE       	$DBT_ANTELOPE
 DBT_OPTIMISED		$DBT_OPTIMISED
 DBT_EARTHWORM      	$DBT_EARTHWORM
 DBT_MASTER     		$DBT_MASTER
-DBT_XPICK		$DBT_XPICK
 EDITOR			PRESERVE
 DBALARM                 $DBALARM
 DBSWARM                 $DBSWARM
@@ -209,7 +207,7 @@ xml_unreviewed_avo UTC 5,20,35,50 * * * * db2googlemaps -o -f -e 'auth=~/ew.*/ &
 xml_reviewed_avo UTC 6,21,36,51 * * * * db2googlemaps -o -f -e 'time>(now()-7*86400)' $TOTALDB > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_avo.xml
 xml_unreviewed_aeic UTC 7,22,37,52 * * * * db2googlemaps -o -f -e '( review!="y" && ( (auth=~/^USGS:[aA][kK]/ && lddate<(time+1000)) || auth=~/^oa.*/) && time>(now()-7*86400 ) )' $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_unreviewed_aeic.xml
 xml_reviewed_aeic UTC 8,23,38,53 * * * * db2googlemaps -o -f -e '(review=="y" || auth=~/^UAF.*/  || (auth=~/^USGS.*/ && lddate>time+999) ) && time>(now()-7*86400)'  $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_aeic.xml
-xml_stations UTC 9 * * * * db2googlemaps -s -f $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/stations_lastweek.xml
+xml_stations UTC 9 * * * * db2googlemaps -s -f $SITE_DB > $PUBLICWEBPRODUCTS/kml/stations_lastweek.xml
 # VOLC2
 db2volc2 UTC 29 * * * * db2volc2 $TOTALDB $INTERNALWEBPRODUCTS/volc2/xmlfiles/avo_uaf
 volcanoviews2volc2 UTC 59 * * * * volcanoviews2volc2
@@ -287,7 +285,6 @@ dbe_earthworm	dbe $DBT_EARTHWORM
 dbe_grids	dbe regions/grid_avonew 
 dbe_antelope	dbe $DBT_ANTELOPE 
 dbe_optimised	dbe $DBT_OPTIMISED
-dbe_xpick	dbe $DBT_XPICK
 dbe_master	dbe $DBT_MASTER
 dbe_swarms	dbe $DBSWARM
 dbe_alarm  	dbe $DBALARM

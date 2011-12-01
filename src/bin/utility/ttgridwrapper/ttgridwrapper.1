@@ -1,0 +1,23 @@
+.TH TTGRIDWRAPPER 1 "$Date$"
+.SH NAME
+.nf
+ttgridwrapper - Given a ttgrid parameter file, generate a grids database, grid files and an orbassoc parameter file.
+.fi
+.SH SYNOPSIS
+.nf
+ttgridwrapper  matchstr replacestr
+.fi
+.SH DESCRIPTION
+\fBttgridwrapper\fP will produce 3 types of product from a ttgrid parameter file: (1) for each grid specified, it will create a database specifiying the cornes in places1.0 schema. (2) for each grid specified it will create a grid file, including all stations within a 30 km buffer around the grid. i(3) it will also generate an orbassoc parameter file. 
+.PP
+The source parameter file should define all AVO grids. This will generally a local grid for each volcano, and these can optionally be nested inside larger (e.g. regional) grids. The orbassoc parameter file generated will include the same grids. 
+.LP
+.SH OPTIONS
+None.
+.SH CAVEATS
+ttgridwrapper needs to be modified so that it generates orbassoc files consistent with optimised settings.
+It also needs to be tested - the old script ttgridpf2db has been merged into it, and key functionality split 
+to a subroutine.
+.SH AUTHOR
+Glenn Thompson, Alaska Volcano Observatory, Geophysical Institute, University of Alaska Fairbanks
+
