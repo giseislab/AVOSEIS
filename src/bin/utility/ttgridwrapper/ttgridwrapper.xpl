@@ -57,6 +57,13 @@ EOF
 }
 
 # Create blank regions table & open for writing
+if (-e "$gridregiondb.regions") {
+	print "Delete existing $gridregiondb.regions table?\n";
+	if (<STDIN> =~ /n/) {
+		die("Cannot continue\n");
+	}
+	unlink("$gridregiondb.regions");
+}
 system("touch $gridregiondb.regions");
 my @db = dbopen_table("$gridregiondb.regions", "r+");
 
@@ -175,19 +182,23 @@ sub gridhash2vertices {
 
         # Vertex 1
         my ($tmplon, $tmplat) = &move_x($xmin, $strike, $lonr, $latr);
-        ($arrlon[0], $arrlat[0]) = &move_y($ymin, $strike, $tmplon, $tmplat);
+        ($$arrlonref[0], $$arrlatref[0]) = &move_y($ymin, $strike, $tmplon, $tmplat);
 
         # Vertex 2
         ($tmplon, $tmplat) = &move_x($xmax, $strike, $lonr, $latr);
-        ($arrlon[1], $arrlat[1]) = &move_y($ymin, $strike, $tmplon, $tmplat);
+        ($$arrlonref[1], $$arrlatref[1]) = &move_y($ymin, $strike, $tmplon, $tmplat);
 
         # Vertex 3
         ($tmplon, $tmplat) = &move_x($xmax, $strike, $lonr, $latr);
-        ($arrlon[2], $arrlat[2]) = &move_y($ymax, $strike, $tmplon, $tmplat);
+        ($$arrlonref[2], $$arrlatref[2]) = &move_y($ymax, $strike, $tmplon, $tmplat);
 
         # Vertex 4
         ($tmplon, $tmplat) = &move_x($xmin, $strike, $lonr, $latr);
-        ($arrlon[3], $arrlat[3]) = &move_y($ymax, $strike, $tmplon, $tmplat);
+        ($$arrlonref[3], $$arrlatref[3]) = &move_y($ymax, $strike, $tmplon, $tmplat);
+
+	for ($c=0; $c<4; $c++) {
+		print "vertex $c: LAT = ".$$arrlatref[$c]." LON = ".$$arrlonref[$c]."\n";
+	}
 }
 
 
@@ -196,8 +207,8 @@ sub orbassoc_header {
 	$file = $_[0];
 	open(FORB, ">$file");
 	print FORB<<EOF;
-process_time_window        8            # Main detection processing time window
-process_ncycle             8            # how often to do detection processing, in detections
+process_time_window       40            # Main detection processing time window
+process_ncycle            10            # how often to do detection processing, in detections
 process_tcycle           0.0            # how often to do detection processing, in delta time
 process_timeout         60.0            # timeout for processing detections
 grid_params &Arr{
@@ -214,7 +225,7 @@ sub orbassoc_addgrid {
                 nsta_thresh     4       # Minimum allowable number of stations
                 nxd             11      # Number of east-west grid nodes for depth scans
                 nyd             11      # Number of north-south grid nodes for depth scans
-                cluster_twin    3       # Clustering time window 
+                cluster_twin    1.5       # Clustering time window 
                 try_S           no      # yes = Try observations as both P and S
                                         # no  = Observations are P only
                 associate_S     no      # yes = Try to associate observations as both P and S
@@ -308,18 +319,19 @@ EOF2
 }
 
 sub create_gridfile {
-        ($gridbase, $olat, $olon, $minlon, $maxlon, $minlat, $maxlat, $stationdb, $tmppf) = @_;
-        $outgrid = "grids/$gridbase";
+        my ($gridbase, $olat, $olon, $minlon, $maxlon, $minlat, $maxlat, $stationdb, $tmppf) = @_;
+        my $outgrid = "grids/$gridbase";
         if ($opt_e) { # if OPT_ERASE, then erase grid file
                 &runCommand("rm -rf $outgrid", 1) if (-e $outgrid);
         }
+	mkdir("grids");
         unless (-e $outgrid) { # if grid file already exists, skip this part - do not overwrite (to overwrite all, use -e option)
-                $tmpdb = "grids/db$gridbase";
-                #$expr = "deg2km(distance(lat, lon, $olat, $olon)) < 50";
-                $expr = "lon > $minlon && lon < $maxlon && lat > $minlat && lat < $maxlat && offdate == NULL";
-                @dbst = dbopen_table("$stationdb.site", "r");
+                my $tmpdb = "grids/db$gridbase";
+                #my $expr = "deg2km(distance(lat, lon, $olat, $olon)) < 50";
+                my $expr = "lon > $minlon && lon < $maxlon && lat > $minlat && lat < $maxlat && offdate == NULL";
+                my @dbst = dbopen_table("$stationdb.site", "r");
                 @dbst = dbsubset(@dbst, $expr);
-                $nstations = dbquery(@dbst, "dbRECORD_COUNT");
+                my $nstations = dbquery(@dbst, "dbRECORD_COUNT");
                 if ($nstations > 0 ) {
                         dbunjoin(@dbst, $tmpdb);
                         eval {
@@ -333,18 +345,18 @@ sub create_gridfile {
 
 
 sub move_x {
-        ($xdeg, $strike, $lon, $lat) = @_;
-        $newlon = `dbcalc -c "longitude($lat, $lon, $xdeg, $strike)"`; chomp($newlon);
-        $newlat = `dbcalc -c "latitude($lat, $lon, $xdeg, $strike)"`; chomp($newlat);
+        my ($xdeg, $strike, $lon, $lat) = @_;
+        my $newlon = `dbcalc -c "longitude($lat, $lon, $xdeg, $strike)"`; chomp($newlon);
+        my $newlat = `dbcalc -c "latitude($lat, $lon, $xdeg, $strike)"`; chomp($newlat);
         $newlon = sprintf("%.3f", $newlon);
         $newlat = sprintf("%.3f", $newlat);
         return ($newlon, $newlat);
 }
 
 sub move_y {
-        ($ydeg, $strike, $lon, $lat) = @_;
-        $newlon = `dbcalc -c "longitude($lat, $lon, $ydeg, $strike-90.0)"`; chomp($newlon);
-        $newlat = `dbcalc -c "latitude($lat, $lon, $ydeg, $strike-90.0)"`; chomp($newlat);
+        my ($ydeg, $strike, $lon, $lat) = @_;
+        my $newlon = `dbcalc -c "longitude($lat, $lon, $ydeg, $strike-90.0)"`; chomp($newlon);
+        my $newlat = `dbcalc -c "latitude($lat, $lon, $ydeg, $strike-90.0)"`; chomp($newlat);
         $newlon = sprintf("%.3f", $newlon);
         $newlat = sprintf("%.3f", $newlat);
         return ($newlon, $newlat);
@@ -352,7 +364,7 @@ sub move_y {
 
 
 sub orbdetect_stations {
-        my $dbname = "dbmaster/detection_stations";
+        my $dbname = "dbmaster/volcano_stations";
 	open(FDB, ">$dbname");
 	print FDB<<"EOF";
 # Datascope Database Descriptor file
@@ -360,7 +372,7 @@ schema css3.0
 dbpath dbmaster/{master_stations}
 EOF
 	close(FDB);
-        my $orbdetectstations = "pf/orbdetect_stations.pf";
+        my $orbdetectstations = "pf/orbdetect_volcano_stations.pf";
         open(FDET, ">$orbdetectstations");
         &runCommand("cat grids*/dbgrid*.site | sort | uniq > $dbname.site", 1);
         my @db = dbopen_table("$dbname.site", "r");
