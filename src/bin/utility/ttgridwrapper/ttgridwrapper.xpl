@@ -112,8 +112,6 @@ my $buffer = 30 * 360 / 40000; # 30km in decimal degrees
 foreach my $gridname (keys %gridshash) {
 	print "\nGrid = $gridname\n";
 	my $gridref = $gridshash{$gridname};
-#	my %gridhash = %$gridref;
-#	&prettyprint(%gridhash);
 
 	# Return the corners of a rectangle with a buffer around it - this will tell us which stations to use for each grid
 	my (@arrlon, @arrlat);
@@ -127,7 +125,6 @@ foreach my $gridname (keys %gridshash) {
 	
 	# Create a temporary grid parameter file, run ttgrid to create a grid file, and then append to orbassoc.pf
 	my $tmppf = "tmp_".$gridname.".pf";
-#	if(&gridhash2tmppffile(\%gridhash, $gridname, $tmppf)) {
 	if(&gridhash2tmppffile($gridref, $gridname, $tmppf)) {
 		print "SUCCESS\n";
 		&create_gridfile("grid_$gridname", $latr, $lonr, $lonmin, $lonmax, $latmin, $latmax, $stationdb, $tmppf);
@@ -137,12 +134,11 @@ foreach my $gridname (keys %gridshash) {
 	{
 		print "FAILED\n";
 	}
+	unlink($tmppf);
 
 }
 &orbassoc_footer($orbassocfile);
 
-# Update allgrids which contains a site table of all stations used in all grids
-#&runCommand("cat grids*/dbgrid*.site | sort | uniq >  allgrids.site", 1);
 &orbdetect_stations;
 1;
 
@@ -369,20 +365,21 @@ sub orbdetect_stations {
 	print FDB<<"EOF";
 # Datascope Database Descriptor file
 schema css3.0
-dbpath dbmaster/{master_stations}
+dbpath /aerun/sum/run/dbmaster/{master_stations}
 EOF
 	close(FDB);
         my $orbdetectstations = "pf/orbdetect_volcano_stations.pf";
         open(FDET, ">$orbdetectstations");
-        &runCommand("cat grids*/dbgrid*.site | sort | uniq > $dbname.site", 1);
+        &runCommand("cat grids/dbgrid_??_lo.site | sort | uniq > $dbname.site", 1);
         my @db = dbopen_table("$dbname.site", "r");
+        @db = dbsubset(@db, "offdate == NULL");
         my @db2 = dbopen_table("$dbname.sitechan", "r");
         @db2 = dbsubset(@db2, "offdate == NULL");
         @db = dbjoin(@db, @db2);
         @db = dbsubset(@db, "chan =~ /[BES]HZ.*/");
         @db2 = dbopen_table("$dbname.snetsta", "r");
         @db = dbjoin(@db, @db2);
-	dbunjoin(@db, "dborbdetect");
+	#dbunjoin(@db, "dborbdetect");
         my $nstations = dbquery(@db, "dbRECORD_COUNT");
         my $laststa = "DUMM";
 	print FDET "netstachanlocs &Tbl{\n";
@@ -394,5 +391,6 @@ EOF
 	print FDET "}\n";
         close(FDET);
 	unlink("$dbname $dbname.site");
+	dbclose(@db);
         return 1;
 }
