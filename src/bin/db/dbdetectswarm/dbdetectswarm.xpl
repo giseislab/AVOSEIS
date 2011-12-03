@@ -11,6 +11,9 @@
 #		supports overloading of generic parameters.
 #	* Write to a swarm database rather than parameter files for tracking
 #		swarms. 
+# CURRENTLY THIS PROGRAM IS NOT WORKING. IT LOOKS LIKE I ADDED SOME FUNCTIONALITY
+# LIKE GETSWARMLEVEL AND THIS HAS NOT YET BEEN IMPLEMENTED. IT ALSO SEEMS TO REQUIRE
+# THE SWARM DATABASE SCHEMA TO BE EXTENDED.	
 #
 ##############################################################################
 
@@ -92,6 +95,7 @@ printf "Timewindow of $twin minutes from %s to %s\n",epoch2str($startTime, "%Y-%
 $previousSwarmIsOver = 1;
 $current{'swarm_start'} = -1;
 $current{'swarm_end'} = '-1';
+my ($prevMsgTime, $alarmkey);
 
 # assume prev loaded OK
 if ($previousLevel > -1) { 
@@ -313,22 +317,22 @@ sub getParams {
 	$trackfile		= "state/$alarmname.pf";
 
 	# Now read any subnet specific overrides
-	$subnetsref 		= $pfobjectref->{'subnets'};
-	$subnetref 		= $subnetsref->{$volc_code};
-	if defined($subnetref->{'VOLC_NAME'}) {
-        	$volc_name              = $subnetref->{'VOLC_NAME'};
+	my $subnetsref 		= $pfobjectref->{'subnets'};
+	my $subnetref 		= $subnetsref->{$volc_code};
+	if (defined($subnetref->{'VOLC_NAME'})) {
+        	$volc_name              = $$subnetref->{'VOLC_NAME'};
 	}
-	if defined($subnetref->{'auth_subset'}) {
-        	$auth_subset            = $subnetref->{'auth_subset'};
+	if (defined($subnetref->{'auth_subset'})) {
+        	$auth_subset            = $$subnetref->{'auth_subset'};
 	}
-	if defined($subnetref->{'new_alarm'}) {
-        	$newalarmref            = $subnetref->{'new_alarm'};
+	if (defined($subnetref->{'new_alarm'})) {
+        	$newalarmref            = $$subnetref->{'new_alarm'};
 	}
-	if defined($subnetref->{'significant_change'}) {
-        	$significantchangeref   = $subnetref->{'significant_change'};
+	if (defined($subnetref->{'significant_change'})) {
+        	$significantchangeref   = $$subnetref->{'significant_change'};
 	}
-	if defined($subnetref->{'trackfile'}) {
-        	$trackfile              = $subnetref->{'trackfile'};
+	if (defined($subnetref->{'trackfile'})) {
+        	$trackfile              = $$subnetref->{'trackfile'};
 	}
 
 	return ($alarmclass, $alarmname, $msgdir, $msgpfdir, $volc_name, $twin, $auth_subset, $reminders_on, $escalations_on, $swarmend_on, $reminder_time, $newalarmref, $significantchangeref, $trackfile); 
@@ -339,7 +343,7 @@ sub getParams {
 
 
 sub compareLevels {
-	my ($dataref, $thresholdref, $opt_v) = @_;
+	my ($dataref, $thresholdref) = @_;
 	my %data = %{$dataref};
 	my %threshold = %{$thresholdref};
 
