@@ -1,18 +1,7 @@
 use Datascope;
 use Getopt::Std;
-
-#############################################################################################
-$Usage = "
-Usage: avo_hist.pl [-d database -p parameter file]
-
-Perl script to create a weekly histogram plot of earthquakes at all AVO-monitored volcanoes.
-
-See man page for details."
-
-#############################################################################################
 use Env;
 use File::Copy;
-
 
 $public = $ENV{'PUBLICWEBPRODUCTS'};
 $histfig 	= "$public/images/AVO_recentEQ_histogram";
@@ -21,12 +10,11 @@ $dbname 	= "$internal/AVOEQ/db_AVO_recentEQ";
 $AVOEQ = $internal."/AVOEQ";
 chdir($AVOEQ);
 &getopt('pd');          # had to remove error checking, but shouldn't have - MEW
-
+$result = `which psxy`;
+die("GMT does not appear to be installed\n") if ($result=~/Command not found/ || $result=="\n");
 if ( $#ARGV>-1 ) {
         die($Usage);
-} 
-
-else {
+} else {
         # Checks if the user wants to specify a custom database.
         if ($opt_d) {
                 $dbname = $opt_d;
@@ -216,7 +204,7 @@ for ($i=0 ; $i<scalar @volc_name ; $i++){
 # Close the output file for reading/writing
 close(TEMPOUT);
 
-$command = "avo_hist_gmt.csh";
+$command = "avo_hist_gmt";
 print "$command\n";
 system($command);
 $command = "ps2pdf AVO_recent_EQ_hist.ps";
