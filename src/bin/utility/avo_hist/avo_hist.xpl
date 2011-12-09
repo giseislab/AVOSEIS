@@ -11,7 +11,9 @@ $AVOEQ = $internal."/AVOEQ";
 chdir($AVOEQ);
 &getopt('pd');          # had to remove error checking, but shouldn't have - MEW
 $result = `which psxy`;
-die("GMT does not appear to be installed\n") if ($result=~/Command not found/ || $result=="\n");
+print($result);
+chomp($result);
+die("GMT does not appear to be installed\n") unless ($result=~/\/gmt/);
 if ( $#ARGV>-1 ) {
         die($Usage);
 } else {
