@@ -10,9 +10,6 @@
 # To do:
 #	- remove any hard-wired paths
 #	- add HTML content
-#	- currently the opt_d option does nothing, although there is a nice
-#	  print_debug function which should really be brought into Avoseis/SwarmAlarm.pm
-#	  the latter should also be renamed, or broken up into other modules.	
 ##############################################################################
 
 use Datascope;
@@ -39,11 +36,9 @@ EOU
 
 use Avoseis::AlarmManager qw(writeAlarmsRow writeMessage declareDiagnosticAlarm);
 
-use Env qw(HOST DBDETECTIONS DBEVENTS_EARTHWORM DBEVENTS_ANTELOPE DBEVENTMASTER DBEVENTS_XPICK);
+use Env qw(HOST DBT_EARTHWORM DBT_OPTIMISED DBT_MASTER);
 our $HTML_FILE = $opt_h;
 our $HOST = $ENV{"HOST"};
-
-
 
 my ($yyyy, $mm, $dd);
 my $today = 1;
@@ -71,18 +66,32 @@ my $eepoch = now();
 my $sepoch = $eepoch - 86400 * $numdays; 
 my ($outOfDate, $txt, $txtnew, $alarms);
 
-# ************* CHECK EARTHWORM EVENTS ***************
-$dbname = $ENV{DBDETECTIONS}."_".$yyyy."_".$mm."_".$dd;
-($outOfDate, $txtnew) = &check_table($dbname, "detection", $numdays, $timesubset);
-$txt .= $txtnew;
-if ($outOfDate) { 
-	my $logfile = "logs_earthworm/carlstatrig_$yyyy$mm$dd.log";
-	$txt .= "\n".&getFileAgeStr($logfile)."\n";
+# *********** ARE SPECTROGRAMS WORKING ? **********
+my $lastsgram = "/usr/local/mosaic/AVO/avoseis/TreMoR/plots/lastspectrogram.png";
+my $sgramsOff = 1;
+if (-e $lastsgram) {
+	if (-M $lastsgram < 1/24) {
+		$sgramsOff = 0;  
+	}
+}
+if ($sgramsOff) { 
+	$txt .= "\n".&getFileAgeStr($lastsgram)."\n";
 	$alarms++;
-	$txt .= "No new detections in $dbname\n";
+	$txt .= "Spectrograms are off\n";
 }
 
-$dbname = $ENV{DBEVENTS_EARTHWORM};
+# ************* CHECK EARTHWORM EVENTS ***************
+#$dbname = $ENV{DBDETECTIONS}."_".$yyyy."_".$mm."_".$dd;
+#($outOfDate, $txtnew) = &check_table($dbname, "detection", $numdays, $timesubset);
+#$txt .= $txtnew;
+#if ($outOfDate) { 
+#	my $logfile = "logs_earthworm/carlstatrig_$yyyy$mm$dd.log";
+#	$txt .= "\n".&getFileAgeStr($logfile)."\n";
+#	$alarms++;
+#	$txt .= "No new detections in $dbname\n";
+#}
+
+$dbname = $ENV{DBT_EARTHWORM};
 ($outOfDate, $txtnew) = &check_table($dbname, "origin", $numdays, $timesubset);
 $txt .= $txtnew;
 if ($outOfDate) { 
@@ -93,7 +102,7 @@ if ($outOfDate) {
 }
 
 # ************* CHECK ANTELOPE EVENTS ***************
-$dbname = $ENV{DBEVENTS_ANTELOPE}; 
+$dbname = $ENV{DBT_OPTIMISED}; 
 ($outOfDate, $txtnew) = &check_table($dbname, "detection", $numdays, $timesubset );
 if ($outOfDate) { 
 	$txt .= $txtnew;
@@ -108,20 +117,21 @@ if ($outOfDate) {
 	$alarms++;
 }
 
-# **** SWARM TRACKING MODULE RUNNING ? ****
+# **** SWARM TRACKING MODULE RUNNING ? **** Commented out 2011/12/21 because it is off
+if (0) {
 my $logfile = "logs/cron-swarmtracker_antelope";
 if (-e $logfile) {
 	if (-M $logfile > 1/24) {
 		$txt .= &getFileAgeStr($logfile)."\n";
-		&declareDiagnosticAlarm("swarmtracker_antelope not running?", $txt, $alarmdb);
 		$alarms++;
 	}
 }
 else
 {
-		$txt .= "$logfile does not exist: swarmtracker_antelope not running?\n";
+		$txt .= "$logfile does not exist: swarm tracking system not running?\n";
 		$alarms++;
 } 
+}
 
 # **** WATCH ALARMS TABLE MODULE RUNNING ? ****
 my $logfile = "logs/watchalarmstable";
@@ -141,7 +151,7 @@ else
 } 
 
 # ************* CHECK EVENT PROCESSING DB ***************
-$dbname = $ENV{DBEVENTMASTER}; 
+$dbname = $ENV{DBT_MASTER}; 
 ($outOfDate, $txtnew) = &check_table($dbname, "origin", $numdays, "auth=~/ew_.*/");
 if ($outOfDate) { 
 	$txt .= $txtnew;
@@ -164,7 +174,7 @@ if ($outOfDate) {
 }
 
 # *************** CHECK XPICK DATABASE ************
-if 0 {a # Skip test
+if (0) { # Skip test
 	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime();
 	if ($wday > 0 && $wday < 6 && $hour > 16) { # 0 is Sunday, so this checks only after 4pm Mon-Fri
 		$dbname = $ENV{DBEVENTS_XPICK};
@@ -300,7 +310,7 @@ sub print_html {
 
 sub print_html_header {
                my $runtime = epoch2str(now(),"%Y-%m-%d %H:%M");
-               our $HTML_FILE;
+               our ($HTML_FILE);
                open(FHTML, ">$HTML_FILE") or die("Cannot open $HTML_FILE for writing\n");
                print FHTML <<EOF;
 <html>

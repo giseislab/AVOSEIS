@@ -197,6 +197,7 @@ sub writeAlarmcacheRow {
 sub declareDiagnosticAlarm {
 
         my ($subject, $txt, $alarmdb) = @_;
+	our $PROG_NAME;
         my $msgType = "$PROG_NAME";
         my $alarmclass = "diagnostic";
         my $alarmname = "diagnostic";

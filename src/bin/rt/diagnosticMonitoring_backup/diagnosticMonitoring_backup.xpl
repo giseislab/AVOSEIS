@@ -26,17 +26,17 @@ our $PROG_NAME;
 
 use Avoseis::AlarmManager qw(writeAlarmsRow writeMessage declareDiagnosticAlarm);
 my $DBALARM = "dbalarm/alarm";
-foreach $dir ("/avort/oprun", "/avort/devrun") {
+foreach my $dir ("/avort/oprun", "/avort/devrun") {
 	my $logfile = "$dir/logs/cron-diagnostics";
 	if (-e $logfile) {
 		if (-M $logfile > 1/24) {
-			&declareDiagnosticAlarm("diagnosticMonitoring not running?", "$logfile not being updated", $DBALARM);
+			&declareDiagnosticAlarm("diagnosticMonitoring not running on $dir?", "$logfile not being updated", $DBALARM);
 		}
 	}
 	else
 	{
-			&declareDiagnosticAlarm("diagnosticMonitoring not running?", "$logfile does not exist", $DBALARM);
-	}a
+			&declareDiagnosticAlarm("diagnosticMonitoring not running on $dir?", "$logfile does not exist", $DBALARM);
+	}
 } 
 printf("Ran $PROG_NAME at %s\n\n", epoch2str(now(),"%Y-%m-%d %H:%M:%S"));
 
