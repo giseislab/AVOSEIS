@@ -196,8 +196,6 @@ sub runCommand {
      our $PROG_NAME;
 
      print "$0: $cmd\n";
-     system("echo \"$cmd\" >> logs/runCommand.log") if (-e "logs");
-	
      my $result = "";
      $result = `$cmd` if $mode;
      chomp($result);
@@ -205,7 +203,6 @@ sub runCommand {
 
      if ($?) {
          print STDERR "$cmd error $? \n" ;
-	 system("echo \"- error $?\" >> logs/runCommand.log") if (-e "logs");
      	 # unknown error
          exit(1);
      }
@@ -355,14 +352,12 @@ sub composeMessage {
 	my ($msgtype, $currentStatsRef, $startTime, $endTime, $dbname, $stationsref)  = @_;
 
 	my (%current) = %{$currentStatsRef};
-	my ($HOST) = $ENV{'HOST'};
 
 	my ($txt, $txtMeanRate, $txtMedianRate, $txtMinMl, $txtMaxMl, $txtMeanMl, $txtCumMl);
-	my $endTimeUTC    = epoch2str($endTime,'%Y/%m/%d %k:%M UTC');
+	my $endTimeUTC    = epoch2str($endTime,'%Y/%m/%d %k:%M:%S UTC');
 	my $twinStr = sprintf("%2.0f", ($endTime-$startTime)/60 );
 	
-	$txt .= "From $HOST at ";
-	$txt .= "$endTimeUTC\nSpan: $twinStr minutes\n";
+	$txt = "$endTimeUTC\nSpan: $twinStr minutes\n";
 
 
 	if ($current{"mean_rate"} > 0) {

@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/Avoseis-AlarmManager.t
+lib/Avoseis/AlarmManager.pm

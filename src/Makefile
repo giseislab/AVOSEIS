@@ -1,5 +1,7 @@
 #PWD:=$(shell pwd)
-PERLMOD=${PWD}/data/perl/Avoseis-SwarmAlarm
+SWARMTRACKER=${PWD}/data/perl/Avoseis-SwarmTracker
+PERLUTILS=${PWD}/data/perl/Avoseis-Utils
+ALARMMANAGER=${PWD}/data/perl/Avoseis-AlarmManager
 
 include $(AVOSEISMAKE)
 
@@ -11,10 +13,18 @@ DIRS= adm lib bin data
 update:	clean Include install schemas pf_localmods
 
 perlmods:	
-	cd ${PERLMOD}
-	perl ${PERLMOD}/Makefile.PL
-	make -f ${PERLMOD}/Makefile
-	make -f ${PERLMOD}/Makefile install
+	cd ${SWARMTRACKER}
+	perl ${SWARMTRACKER}/Makefile.PL
+	make -f ${SWARMTRACKER}/Makefile
+	make -f ${SWARMTRACKER}/Makefile install
+	cd ${UTILS}
+	perl ${UTILS}/Makefile.PL
+	make -f ${UTILS}/Makefile
+	make -f ${UTILS}/Makefile install
+	cd ${ALARMMANAGER}
+	perl ${ALARMMANAGER}/Makefile.PL
+	make -f ${ALARMMANAGER}/Makefile
+	make -f ${ALARMMANAGER}/Makefile install
 
 schemas:
 	rsync -r data/schemas/* ${AVOSEIS}/data/schemas

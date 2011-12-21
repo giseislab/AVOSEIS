@@ -1,0 +1,6 @@
+Revision history for Perl extension Avoseis::Utils.
+
+0.01  Wed Dec  7 21:52:19 2011
+	- original version; created by h2xs 1.23 with options
+		-AXc -n Avoseis::Utils
+

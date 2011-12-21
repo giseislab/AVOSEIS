@@ -1,7 +1,7 @@
 # alarm class - type of alarm
 ALARMCLASS	swarm
 
-# an identifier for this particular combination of stations/bellwethers/timewindow/timeout parameters
+# an identifier for this particular combination of stations/new_alarm/timewindow/timeout parameters
 ALARMNAME	rapid_onset_RD
 
 # Directory where the email message files will be written
@@ -31,18 +31,6 @@ escalations_on	1	# 0 (off) or 1 (on)
 
 # Control what kind of messages go to cellphones
 cellphones_on	1	# 0 = none, 1 = only new swarm alarms, 2 = include escalations also, 3 = include reminders also	
-
-# List of stations used for counting events and ensuring the events are recorded at Redoubt
-BELLWETHERS &Arr{
-	RSO	8
-	RED	8
-	REF	8
-	RDN	8
-	DFR	8
-	NCT	8
-	RDJH	8
-	RDWB	8	
-}
 
 # new alarm threshold
 new_alarm &Arr{

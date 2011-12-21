@@ -90,6 +90,17 @@ Attribute cum_ml
 	}
 	;
 
+Attribute highestLevel
+	Integer (8)
+	Format ( "%8ld" )
+	Null ( "-1" )
+	Range ( "level >= 0" )
+	Description ( "highest swarm alarm level" )
+	Detail {
+		Records the highest swarm alarm level for a particular swarm. See also level. 
+	}
+	;
+
 Attribute lddate
         Time (17)
         Format ( "%17.5f" )
@@ -114,7 +125,7 @@ Attribute level
 	}
 	;
 
-Attribute num_declared
+Attribute num_quakes
 	Integer (8)
 	Format ( "%8ld" )
 	Null ( "-1" )
@@ -187,21 +198,23 @@ Relation metrics
 		by the swarm alarm system.
 	}
 	;
+
 Relation swarm
-	Fields ( auth time endtime num_declared num_located message_type num_ml min_ml max_ml mean_rate median_rate mean_ml cum_ml lddate )
+	Fields ( auth time endtime highestLevel num_quakes num_located message_type num_ml min_ml max_ml mean_rate median_rate mean_ml cum_ml lddate )
 	Primary ( auth time endtime)
 	Description ( "swarm characterization parameters" )
 	Detail {
-		This table provides a record of parameters that are used
+		This table provides a record of each swarm detected
 		by the swarm alarm system.
 	}
 	;
+
 Relation state
 	Fields ( auth level lddate )
 	Primary ( auth)
 	Description ( "swarm characterization parameters" )
 	Detail {
-		This table provides a record of parameters that are used
-		by the swarm alarm system.
+		This table records the state of level of a particular swarm alarm
+		indexed by its auth, which is the same as its alarm name.
 	}
 	;

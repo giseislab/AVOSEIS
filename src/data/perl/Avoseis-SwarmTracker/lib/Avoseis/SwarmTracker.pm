@@ -1,4 +1,4 @@
-package Avoseis::SwarmAlarm;
+package Avoseis::SwarmTracker;
 
 #use 5.000000;
 use strict;
@@ -12,7 +12,7 @@ our @ISA = qw(Exporter);
 # names by default without a very good reason. Use EXPORT_OK instead.
 # Do not simply export all your public functions/methods/constants.
 
-# This allows declaration	use Avoseis::SwarmAlarm ':all';
+# This allows declaration	use Avoseis::SwarmTracker ':all';
 # If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
 # will save memory.
 our %EXPORT_TAGS = ( 'all' => [ qw(
@@ -24,23 +24,15 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 # subroutines
 our @EXPORT = qw( 
-getPf 
-prettyprint
 countStationHits 
-median 
-runCommand 
 loadEvents 
 swarmStatistics
-getPrevMsgPfPath
 composeMessage
 getSwarmParams
 putSwarmParams
-writeAlarmsRow
-writeAlarmcacheRow
-getMessagePath   
-writeMessage 
-getMessagePfPath 
-watchtable	
+make_swarmdb_descriptor
+readStateTable
+updateStateTable
 );
 
 #our $VERSION = '0.01';
@@ -53,81 +45,6 @@ use POSIX qw(log10 ceil);
 
 
 # Preloaded methods go here.
-
-###############################################################################
-### LOAD PARAMETER FILE                                                      ##
-### ($alarmclass, $alarmname, $msgdir, $msgpfdir, $volc_name, ...            ##  
-###    $volc_code, $twin, $auth_subset, $reminders_on, $escalations_on, ...  ##
-###    $cellphones_on, $reminder_time, $stathresholdsref, $newalarmref, ...  ##
-###    $significantchangeref) = getPf($parameterfile);                       ##
-###                                                                          ##
-### Glenn Thompson, 2009/04/20                                               ##
-###                                                                          ##
-### Load the parameter file for this program, given it's path                ##
-###############################################################################
-sub getPf {
-	my ($PROG_NAME, $opt_p, $opt_v) = @_;
-
-	my ($pfile, $pfobjectref);
-
-	# Get parameter file object reference from all files that match $PROG_NAME.pf along PFPATH cascade
-	my @pfilearr = `pfwhich $PROG_NAME`; # get a list of all pfiles in cascade
-	if ($#pfilearr > -1) {
-		$pfile = $pfilearr[$#pfilearr]; chomp($pfile); # get the last pfile in the cascade
-		if (-e $pfile) { # if pfile exists, read from it
-			$pfobjectref = pfget($pfile, ""); # read all parameters from pfile into a hash ref
-		}
-	}
-
-	# Override with parameters from a parameter file of a different name if -p option used
-	if ($opt_p) {
-	     	$pfile = $opt_p;
-			if (-e $pfile) { # if pfile exists, read from it
-			$pfobjectref = pfget($pfile, ""); # read all parameters from pfile into a hash ref
-		}
-	}
-	
-	# Display parameters if verbose mode is on
-	if ($opt_v) {
-		prettyprint($pfobjectref);
-	} 
- 
-	return $pfobjectref;
-
-}
-
-
-######################################################
-### PRETTY PRINT A HASH                             ##
-### prettyprint(\%myhash);                          ##
-###                                                 ##
-### Glenn Thompson, 2009/05/04 after code from BRTT ##
-###                                                 ##
-######################################################
-sub prettyprint {
-        my $val = shift;
-        my $prefix = "";
-        if (@_) { $prefix = shift ; }
-
-        if (ref($val) eq "HASH") {
-                my @keys = sort ( keys  %$val );
-                my %hash = %$val;
-                foreach my $key (@keys) {
-                        my $newprefix = $prefix . "{". $key . "}" ;
-                        prettyprint ($hash{$key}, $newprefix) ;
-                }
-        } elsif (ref($val) eq "ARRAY") {
-                my $i = 0;
-                my @arr = @$val;
-                foreach my $entry ( @$val ) {
-                        my $newprefix = $prefix . "[". $i . "]" ;
-                        prettyprint ($arr[$i], $newprefix) ;
-                        $i++;
-                }
-        } else {
-                print $prefix, " = ", $val, "\n";
-        }
-}
 
 ###############################################################################
 ### EVENT ARRIVALS PER STATION                                               ##
@@ -158,56 +75,6 @@ sub countStationHits {
 		dbclose(@db);
 	}
 	return (%staHits);
-}
-
-
-##########################################################
-### MEDIAN                                              ##
-### $median = median(@values);                          ##
-###                                                     ##
-### Mike West, 2009/01                                  ##
-###                                                     ##
-### Calculate the median value of a numeric array       ##
-##########################################################
-sub median {
-	#@_ == 1 or die ('Sub usage: $median = median(\@array);');
-	my (@array) = @_;
-	@array = sort { $a <=> $b } @array;
-	my $count = $#array;
-	if ($count % 2) {
-		return ($array[$count/2] + $array[$count/2 - 1]) / 2;  # odd
-	} else {
-		return $array[int($count/2)];	# even no. of elements in array ($count is odd!)
-	}
-} 
-
-#############################################################
-### RUNCOMMAND                                             ##
-### $result = runCommand($cmd, $mode);                     ##
-###                                                        ##
-### Glenn Thompson, 2009/04/20                             ##
-###                                                        ##
-### Run a command safely at Unix shell, and return result. ##
-### mode==0 just echoes the command and is for debugging.  ##
-### mode==1 echoes & runs the command.                     ##
-#############################################################
-sub runCommand {     
-     my ( $cmd, $mode ) = @_ ;
-     our $PROG_NAME;
-
-     print "$0: $cmd\n";
-     my $result = "";
-     $result = `$cmd` if $mode;
-     chomp($result);
-     $result =~ s/\s*//g;
-
-     if ($?) {
-         print STDERR "$cmd error $? \n" ;
-     	 # unknown error
-         exit(1);
-     }
-
-     return $result;
 }
 
 #####################################################################################################
@@ -352,12 +219,14 @@ sub composeMessage {
 	my ($msgtype, $currentStatsRef, $startTime, $endTime, $dbname, $stationsref)  = @_;
 
 	my (%current) = %{$currentStatsRef};
+	my ($HOST) = $ENV{'HOST'};
 
 	my ($txt, $txtMeanRate, $txtMedianRate, $txtMinMl, $txtMaxMl, $txtMeanMl, $txtCumMl);
-	my $endTimeUTC    = epoch2str($endTime,'%Y/%m/%d %k:%M:%S UTC');
+	my $endTimeUTC    = epoch2str($endTime,'%Y/%m/%d %k:%M UTC');
 	my $twinStr = sprintf("%2.0f", ($endTime-$startTime)/60 );
 	
-	$txt = "$endTimeUTC\nSpan: $twinStr minutes\n";
+	$txt .= "From $HOST at ";
+	$txt .= "$endTimeUTC\nSpan: $twinStr minutes\n";
 
 
 	if ($current{"mean_rate"} > 0) {
@@ -415,47 +284,6 @@ sub composeMessage {
 	$txt = $txt."\nEnd.\n";	
 
 	return ($txt);
-}
-
-#####################################################################################
-### GETPREVMSGPFPATH                                                               ##
-### ($dir, $dfile, $msgTime, $alarmkey) = getPrevMsgPfPath($alarmdb, $alarmname);  ##
-###                                                                                ##
-### Glenn Thompson, 2009/04/20                                                     ##
-###                                                                                ##
-### Given an alarm database and an alarm (algorithm) name, get the                 ##
-### directory path, filename and time of the most recent message of that           ##
-### alarm name.                                                                    ##
-#####################################################################################
-sub getPrevMsgPfPath {
-	my ($alarmdb, $alarmname) = @_;
-	my ($alarmid, $dir, $dfile, $msgTime, $alarmkey);
-	$dir = "dummy"; $dfile = "dummy";
-
-	my @dbalarm = dbopen_table($alarmdb.".alarms", "r");
-	@dbalarm = dbsubset( @dbalarm, "alarmname == \"$alarmname\"");
-	my $nrecs = dbquery( @dbalarm, "dbRECORD_COUNT");
-
-	my $lastAlarmTime = 0;
-	if ($nrecs > 0) {
-		$dbalarm[3] = $nrecs - 1;
-		($alarmid, $msgTime, $alarmkey) = dbgetv(@dbalarm, "alarmid", "time", "alarmkey");
-	}
-	dbclose(@dbalarm);
-
-	if ($nrecs > 0) {
-
-		@dbalarm = dbopen_table($alarmdb.".alarmcache", "r");
-		@dbalarm = dbsubset( @dbalarm, "alarmid == \"$alarmid\"");
-		$nrecs = dbquery( @dbalarm, "dbRECORD_COUNT");
-		if ($nrecs > 0) {
-			$dbalarm[3] = $nrecs - 1;
-			($dir, $dfile) = dbgetv(@dbalarm, "dir", "dfile");
-		}
-		dbclose(@dbalarm);
-	}
-
-	return ($dir, $dfile, $msgTime, $alarmkey);
 }
 
 ###################################################################################
@@ -554,172 +382,82 @@ sub putSwarmParams {
 }
 
 ###################################################################################
-### WRITEMESSAGE                                                                 ##
-### ($msgdir, $msgdfile) = writeMessage($mdir, $mdfile, $txt)                    ##
+### make_swarmdb_descriptor                                                      ##
 ###                                                                              ##
-### Glenn Thompson, 2009/04/22                                                   ##
+### Make a descriptor for a blank swarm1.0 database. Also make blank tables, if  ##
+### they do not already exist                                                    ##
 ###                                                                              ##
-### Write the text message to this dir/dfile                                     ##
+### Glenn Thompson, 2011/12/07                                                   ##
 ###################################################################################
-sub writeMessage {
-	my ($mdir, $mdfile, $txt) = @_;
-	unless (-e $mdir) {
-		system("mkdir -p $mdir")
-	}
-	open(FOUT, ">$mdir/$mdfile");
-	print FOUT $txt;
-	close(FOUT);
-	return 1;
-}
-
-
-###################################################################################
-### GETMESSAGEPATH                                                               ##
-### ($msgdir, $msgdfile) = getMessagePath($msgTime, $msgdir, $alarmname)         ##
-###                                                                              ##
-### Glenn Thompson, 2009/04/22                                                   ##
-###                                                                              ##
-### Get the path to write this message file to                                   ##
-###################################################################################
-sub getMessagePath {
-	my ($msgTime, $msgdir, $alarmname)=@_;
-	my ($msgdfile);
-	$msgdir = epoch2str($msgTime, "$msgdir/$alarmname/%Y/%m");
-	$msgdfile = epoch2str($msgTime, '%d%H%M').".txt"; 
-	return ($msgdir, $msgdfile);
-}
-
-###################################################################################
-### GETMESSAGEPFPATH                                                             ##
-### ($msgpfdir, $msgpfdfile) = getMessagePfPath($msgTime, $msgpfdir, $alarmname) ##
-###                                                                              ##
-### Glenn Thompson, 2009/04/22                                                   ##
-###                                                                              ##
-### Get the path to write this message parameter file to                         ##
-###################################################################################
-sub getMessagePfPath {
-	my ($msgTime, $msgpfdir, $alarmname)=@_;
-	my ($msgpfdfile);
-	$msgpfdir = epoch2str($msgTime, "$msgpfdir/$alarmname/%Y/%m");
-	$msgpfdfile = epoch2str($msgTime, '%d%H%M').".pf"; 
-	return ($msgpfdir, $msgpfdfile);
-}
-
-###################################################################################
-### WRITEALARMSROW                                                               ##
-### writeAlarmsRow($dbalarm, $alarmid, $alarmkey, $alarmclass, $alarmname, ...   ##
-###    $alarmtime, $subject, $dir, $dfile)                                       ##
-###                                                                              ##
-### Glenn Thompson, 2009/04/20                                                   ##
-###                                                                              ##
-### Write a row to an alarms table in $dbalarm                                   ##
-###################################################################################
-sub writeAlarmsRow {
-
-	my ($dbalarm,  $alarmid, $alarmkey, $alarmclass, $alarmname, $alarmtime, $subject, $dir, $dfile) = @_;
-	my (@db);
-
-
-	# WRITE FIELD TO ALARMS TABLE
-	@db = dbopen($dbalarm, "r+");
-        @db = dblookup( @db, 0, "alarms", 0, 0 );
-	$db[3] = dbaddnull(@db);
-	print "$0: Writing row for $alarmkey into $dbalarm.alarms\n";
-	dbputv(@db, "alarmid", $alarmid, "alarmkey", $alarmkey, "alarmclass", $alarmclass, "alarmname", $alarmname,
-		"time", $alarmtime, "subject", $subject, "acknowledged", "n", "dir", $dir, "dfile", $dfile);
-	dbclose(@db);
+sub make_swarmdb_descriptor {
+        my $swarmdb = $_[0];
+        unless (-e $swarmdb) {
+                open(FSP,">$swarmdb");
+                print FSP<<"EODES";
+#
+schema swarm1.0
+dblocks local
+EODES
+                close(FSP);
+        }
+        foreach my $table qw(metrics state swarm) {
+                my $file = "$swarmdb.$table";
+                system("touch $file") unless (-e $file);
+        }
 
 	return 1;
 }
 
 ###################################################################################
-### WRITEALARMCACHEROW                                                           ##
-### writeAlarmcacheRow($dbalarm, $alarmid, $dir, $dfile)                         ##
+### readStateTable                                                               ##
 ###                                                                              ##
-### Glenn Thompson, 2009/04/20                                                   ##
+### Read the state table to retrieve the previous level/state for this           ##
+### particular alarm                                                             ##
 ###                                                                              ##
-### Write a row to an alarmcache table in $dbalarm                               ##
+### Glenn Thompson, 2011/12/07                                                   ##
 ###################################################################################
-sub writeAlarmcacheRow {
+sub readStateTable {
+        # return -1 for no rows, 0 for "off", 1 for level 1, 2 for level 2...
+        my ($swarmdb, $alarmname) = @_;
+        my $level = -1;
+        my @dbs = dbopen_table("$swarmdb.state", "r");
+        @dbs = dbsubset(@dbs, "auth =='$alarmname'");
+        my $numrecords = dbquery(@dbs, "dbRECORD_COUNT");
+        if ($numrecords == 1) {
+                $dbs[3] = 0;
+                $level = dbgetv(@dbs, "level");
+        }
+        dbclose(@dbs);
+        return ($level);
+}
 
-	my ($dbalarm, $alarmid, $dir, $dfile) = @_;
-	my (@db);
+###################################################################################
+### updateStateTable                                                             ##
+###                                                                              ##
+### Update the state table with the new level/state for this particular alarm    ##
+###                                                                              ##
+### Glenn Thompson, 2011/12/07                                                   ##
+###################################################################################
+sub updateStateTable {
+        my ($swarmdb, $alarmname, $currentLevel) = @_;
 
-	# WRITE FIELD TO ALARMS TABLE
-	@db = dbopen($dbalarm, "r+");
-        @db = dblookup( @db, 0, "alarmcache", 0, 0 );
-	$db[3] = dbaddnull(@db);
-	print "$0: Writing row for $alarmid $dir/$dfile into $dbalarm.alarmcache\n";
-	dbputv(@db, "alarmid", $alarmid, "dir", $dir, "dfile", $dfile);
-	dbclose(@db);
+        # UPDATE THE STATE TABLE
+        my @dbs = dbopen_table("$swarmdb.state", "r+");
+        @dbs = dbsubset(@dbs, "auth =='$alarmname'");
+        my $numrecords = dbquery(@dbs, "dbRECORD_COUNT");
+        if ($numrecords == -1) {
+                # ADD A NEW ROW HERE (THIS ALARM NAME HAS NOT BEEN RECORDED BEFORE)
+                $dbs[3] = 0;
+                dbaddv(@dbs, "level", $currentLevel);
+        } else {
+                # AMEND EXISTING ROW (THIS ALARM NAME HAS BEEN RECORDED BEFORE)
+                dbputv(@dbs, "level", $currentLevel);
+        }
+        dbclose(@dbs);
 
 	return 1;
 }
 
-##########################################################################################################
-### WATCHTABLE                                                                                          ##
-### ($row_to_start_at, $numnewrows) = &watchtable($database, $table, $last_row_only, $opt_v, $trackpf)  ##
-###                                                                                                     ##
-### Glenn Thompson, 2009/05/13 based on dbwatchtable                                                    ##
-###                                                                                                     ##
-### Watch a database table, returning row to start at and number of new rows                            ##
-##########################################################################################################
-sub watchtable {
-
-	use File::stat;
-	use Avoseis::SwarmAlarm;
-
-	my ($database, $table, $last_row_only, $opt_v, $trackpf) = @_;
-	my $nrowsprev = 0;
-	my $mtimeprev = 0;
-	if (-e $trackpf) {
-		$nrowsprev = pfget($trackpf, "nrowsprev");
-		$mtimeprev = pfget($trackpf, "mtimeprev");
-	}
-	my $row_to_start_at = $nrowsprev + 1;
-
-	my $nrowsnow = 0;
-  	my $numnewrows = 0;
-
-	my $watchfile = "$database.$table"; 
-	my $inode = stat("$watchfile");
-	my $mtimenow = $inode->mtime ; # when was origin table last modified?
-	if ($mtimenow > $mtimeprev) {
-		my $mtimestr = epoch2str($mtimenow,"%Y-%m-%d %H:%M:%S");
-		print "$watchfile has changed: modification time $mtimestr\n" if $opt_v;
-		$nrowsnow = &counttablerows($database, $table);
-		$numnewrows =  ($nrowsnow - $nrowsprev);
-		print "Number of table rows now is $nrowsnow, previously had $nrowsprev\n" if $opt_v;
-
-		if ($numnewrows > 0) {
-			printf "Detected %d new rows added to $watchfile\n",$numnewrows;
-
-			# Get to row to start at, which is either the first new row, or the last row, depending
-			# on the value of $last_row_only in the parameter file
-			$row_to_start_at = $nrowsnow if ($last_row_only);
-			# note db[3] should be set to row_to_start_at - 1
-		}
-	}
-
-	if (open(FOUT, ">$trackpf")) {
-		printf FOUT "nrowsprev\t$nrowsnow\n";
-		printf FOUT "mtimeprev\t$mtimenow\n";
-		close(FOUT);
-	}
-
-	return ($row_to_start_at, $numnewrows);
-}
-# count the rows in the table of the database
-sub counttablerows {
-	our $opt_v;
-	my ($database, $table) = @_;
-	print "Counting rows in $database.$table\n" if $opt_v;
-	my @db     = dbopen( $database, "r" ) ;
-	@db    = dblookup(@db, "", $table, "", "" ) ;
-	my $nrows  = dbquery( @db, "dbRECORD_COUNT") ; # number of records in table
-	dbclose(@db);
-	return $nrows;
-}
 
 1;
 __END__
@@ -727,25 +465,22 @@ __END__
 
 =head1 NAME
 
-Avoseis::SwarmAlarm - Perl extension for the AVOSeis swarm alarm system
+Avoseis::SwarmTracker - Perl extension for the AVOSeis swarm tracker system
 
 =head1 SYNOPSIS
 
-  use Avoseis::SwarmAlarm;
+  use Avoseis::SwarmTracker;
 
 
 =head1 DESCRIPTION
 
-Avoseis::SwarmAlarm was created with h2xs -AXc -n Avoseis::Swarmalarm. 
+Avoseis::SwarmTracker was created with h2xs -AXc -n Avoseis::SwarmTracker. 
 
 =head2 EXPORT
 
 None by default.
 
 =head2 FUNCTIONS
-
-# read the program parameter file
-($alarmclass, $alarmname, $msgdir, $msgpfdir, $volc_name, $volc_code, $twin, $auth_subset, $reminders_on, $escalations_on, $cellphones_on, $reminder_time, $stathresholdsref, $newalarmref, $significantchangeref) = getPf($parameterfile);
 
 # how many hits per station?                               
 %staHits = countStationHits($dbname, @stations, $startTime, $endTime); 
@@ -754,42 +489,23 @@ None by default.
 loadEvents($dbname, $starttime, $endtime, $auth_subset, \@eventtime, \@Ml, \%currentStats);   
 
 # compute statistics for this timewindow
-swarmStatistics(@eventTime, @Ml, $timewindow, \%currentStats);   
-
-# get the path to the last message of this alarmname
-($dir, $dfile, $msgTime) = getPrevMsgPfPath($alarmdb, $alarmname);  
+swarmStatistics(@eventTime, @Ml, $timewindow, \%currentStats);  
+ 
+# Compose a message for sending by the alarm manager
+$txt = composeMessage($msgType, \%currentStats, $startTime, $endTime, $dbname, \@stations);   
 
 # read the message pf
 %prev = getSwarmParams($dir, $dfile);
 
-# compose the message to send
-$txt = composeMessage($msgType, \%currentStats,  $startTime, $endTime, $dbname, \@stations);   
+# create a descriptor for a swarm1.0 database and blank tables too
+$success = make_swarmdb_descriptor($swarmdb);
 
-# get the path to put this message to
-($dir, $dfile) = getMessagePath($msgTime, $msgdir, $alarmname);
+# Read state table
+$previousLevel = readStateTable($swarmdb, $alarmname);
 
-# get the path to put this message pf to
-($dir, $dfile) = getMessagePfPath($msgTime, $msgpfdir, $alarmname);
+# Update state table
+$success = updateStateTable($swarmdb, $alarmname, $currentLevel);
 
-# write out the message pf
-putSwarmParams($dir, $dfile, %current);                                                    
-
-# write the alarms row
-writeAlarmsRow($dbalarm, $alarmid, $alarmkey, $alarmclass, $alarmname, ...    
-    $alarmtime, $subject, $dir, $dfile);  
-
-# write the alarmcache row
-writeAlarmscacheRow($dbalarm, $alarmid, $dir, $dfile);
-
-# compute the median
-$median = median(@values);                          
-
-# run a command at the command line
-$result = runCommand($cmd, $mode);  
-
-# watch a database table
-($row_to_start_at, $numnewrows) = watchtable($database, $table, $last_row_only, $opt_v, $trackpf);    
-               
 =head2 DATA STRUCTURES
 
 %prev & %current have keys min_ml, mean_ml, max_ml, cum_ml, mean_rate, median_rate, ...   
