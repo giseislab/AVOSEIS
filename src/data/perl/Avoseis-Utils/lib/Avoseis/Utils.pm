@@ -30,6 +30,7 @@ median
 floorMinute
 runCommand 
 watchtable	
+print_debug
 );
 
 #our $VERSION = '0.01';
@@ -246,6 +247,15 @@ sub counttablerows {
 	return $nrows;
 }
 
+sub print_debug {
+       my ($message, $debug_level) = @_;
+       our ($opt_d);
+
+       if ($opt_d >= $debug_level) {
+               print "$message\n";
+       }
+}
+
 1;
 __END__
 # Below is stub documentation for your module. You'd better edit it!
@@ -285,7 +295,9 @@ $floorEpoch = floorMinute($epoch, $interval);
 $result = runCommand($cmd, $mode);  
 
 # watch a database table
-($row_to_start_at, $numnewrows) = watchtable($database, $table, $last_row_only, $opt_v, $trackpf);    
+($row_to_start_at, $numnewrows) = watchtable($database, $table, $last_row_only, $opt_v, $trackpf);
+
+print_debug($message, $debug_level);    
                
 =head2 DATA STRUCTURES
 

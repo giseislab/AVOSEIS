@@ -37,7 +37,7 @@ EOU
 # End of  GT Antelope Perl header
 #################################################################
 
-use Avoseis::AlarmManager qw(writeAlarmsRow writeMessage);
+use Avoseis::AlarmManager qw(writeAlarmsRow writeMessage declareDiagnosticAlarm);
 
 use Env qw(HOST DBDETECTIONS DBEVENTS_EARTHWORM DBEVENTS_ANTELOPE DBEVENTMASTER DBEVENTS_XPICK);
 our $HTML_FILE = $opt_h;
@@ -230,34 +230,6 @@ if ($alarms>0) {
 printf("Ran $PROG_NAME at %s\n\n", epoch2str(now(),"%Y-%m-%d %H:%M:%S"));
 1;
 ###################################### SUBROUTINES FOLLOW ###################################
-
-sub declareDiagnosticAlarm {
-
-	my ($subject, $txt, $alarmdb) = @_;
-	my $msgType = "$PROG_NAME";
-	my $alarmclass = "diagnostic";
-	my $alarmname = "diagnostic";
-
-	$txt = "$subject\n$txt\n";
-
-	eval {
-		# addAlarmsRow
-		my $alarmid = `dbnextid $alarmdb alarmid`; 
-		chomp($alarmid);
-		my $alarmkey = $alarmid;
-		my $alarmtime = now(); 
-		my $mdir = "dbalarm/alarmaudit/diagnostic";
-		my $mdfile = $alarmtime;
-		# writeMessage file
-		&writeMessage($mdir, $mdfile, $txt);
-
-		&writeAlarmsRow($alarmdb, $alarmid, $alarmkey, $alarmclass, $alarmname, $alarmtime, $subject, $mdir, $mdfile);
-	};
-	if ($@) {
-		system("echo \"$PROG_NAME failed to write diagnostic alarm to $alarmdb\n$txt\" | mailx -s \"Alarm write failed\" gthompson\@alaska.edu");
-	}
-
-}
 
 sub check_table {
 	my ($dbname, $table, $ageLimit, $subset_expr) = @_;

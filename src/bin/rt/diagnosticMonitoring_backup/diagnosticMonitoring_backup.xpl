@@ -24,7 +24,7 @@ our $PROG_NAME;
 # End of  GT Antelope Perl header
 #################################################################
 
-use Avoseis::AlarmManager qw(writeAlarmsRow writeMessage);
+use Avoseis::AlarmManager qw(writeAlarmsRow writeMessage declareDiagnosticAlarm);
 my $DBALARM = "dbalarm/alarm";
 foreach $dir ("/avort/oprun", "/avort/devrun") {
 	my $logfile = "$dir/logs/cron-diagnostics";
@@ -39,34 +39,4 @@ foreach $dir ("/avort/oprun", "/avort/devrun") {
 	}a
 } 
 printf("Ran $PROG_NAME at %s\n\n", epoch2str(now(),"%Y-%m-%d %H:%M:%S"));
-###################################### SUBROUTINES FOLLOW ###################################
-
-sub declareDiagnosticAlarm {
-
-	my ($subject, $txt, $alarmdb) = @_;
-	my $msgType = "$PROG_NAME";
-	my $alarmclass = "diagnostic";
-	my $alarmname = "diagnostic";
-
-	$txt = "$subject\n$txt\n";
-
-	eval {
-		# addAlarmsRow
-		my $alarmid = `dbnextid $alarmdb alarmid`; 
-		chomp($alarmid);
-		my $alarmkey = $alarmid;
-		my $alarmtime = now(); 
-		my $mdir = "dbalarm/alarmaudit/diagnostic";
-		my $mdfile = $alarmtime;
-
-		# writeMessage file
-		&writeMessage($mdir, $mdfile, $txt);
-
-		&writeAlarmsRow($alarmdb, $alarmid, $alarmkey, $alarmclass, $alarmname, $alarmtime, $subject, $mdir, $mdfile);
-	};
-	if ($@) {
-		system("echo \"$PROG_NAME failed to write diagnostic alarm to $alarmdb\n$txt\" | rtmail -s \"Alarm write failed\" gthompson\@alaska.edu");
-	}
-
-}
 

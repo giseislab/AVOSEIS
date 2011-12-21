@@ -30,6 +30,7 @@ writeAlarmcacheRow
 getMessagePath   
 writeMessage 
 getMessagePfPath 
+declareDiagnosticAlarm
 );
 
 #our $VERSION = '0.01';
@@ -192,6 +193,36 @@ sub writeAlarmcacheRow {
 	return 1;
 }
 
+
+sub declareDiagnosticAlarm {
+
+        my ($subject, $txt, $alarmdb) = @_;
+        my $msgType = "$PROG_NAME";
+        my $alarmclass = "diagnostic";
+        my $alarmname = "diagnostic";
+
+        $txt = "$subject\n$txt\n";
+
+        eval {
+                # addAlarmsRow
+                my $alarmid = `dbnextid $alarmdb alarmid`;
+                chomp($alarmid);
+                my $alarmkey = $alarmid;
+                my $alarmtime = now();
+                my $mdir = "dbalarm/alarmaudit/diagnostic";
+                my $mdfile = $alarmtime;
+                # writeMessage file
+                &writeMessage($mdir, $mdfile, $txt);
+
+                &writeAlarmsRow($alarmdb, $alarmid, $alarmkey, $alarmclass, $alarmname, $alarmtime, $subject, $mdir, $mdfile);
+        };
+        if ($@) {
+                system("echo \"$PROG_NAME failed to write diagnostic alarm to $alarmdb\n$txt\" | mailx -s \"Alarm write failed\" gthompson\@alaska.edu");
+        }
+
+}
+
+
 1;
 __END__
 # Below is stub documentation for your module. You'd better edit it!
@@ -230,6 +261,8 @@ writeAlarmsRow($dbalarm, $alarmid, $alarmkey, $alarmclass, $alarmname, ...
 
 # write the alarmcache row
 writeAlarmscacheRow($dbalarm, $alarmid, $dir, $dfile);
+
+declareDiagnosticAlarm($subject, $txt, $alarmdb);
 
 =head2 DATA STRUCTURES
 
