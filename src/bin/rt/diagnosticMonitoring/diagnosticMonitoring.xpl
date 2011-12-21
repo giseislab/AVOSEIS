@@ -193,14 +193,18 @@ my %hostips = ("chinook" => 107, "humpy" => 117, "raven" => 139, "muskox" => 98,
 while ( my ($host, $value) = each %hostips) {
 	print "Processing $host\n";
 	my $ipaddress = "137.229.32.".$value;
-	my $p = Net::Ping->new();
-	if ($p->ping($ipaddress)) {
+	#my $p = Net::Ping->new();
+	my $p = `ping $ipaddress`; chomp($p);
+	#if ($p->ping($ipaddress)) {
+	if ($p =~ /alive/) {
 		print "$host ($ipaddress) is alive (1st attempt).\n";
 	}
 	else
 	{
 		# 2nd attempt
-		if ($p->ping($ipaddress)) {
+		#if ($p->ping($ipaddress)) {
+		$p = `ping $ipaddress`; chomp($p);
+		if ($p =~ /alive/) {
 			print "$host ($ipaddress) is alive (2nd attempt).\n";
 		}
 		else
@@ -210,7 +214,7 @@ while ( my ($host, $value) = each %hostips) {
 			$txt .= "Cannot ping $host ($ipaddress)\n";
 		}
 	}
-	$p->close();
+	#$p->close();
 		
 }			
 
