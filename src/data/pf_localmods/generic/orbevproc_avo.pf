@@ -45,15 +45,15 @@ mlrichter_params &Arr{
 	ATTU	.*
 	}
 	update_time		10.0
-#	maximum_wait_time	30.0
-	maximum_wait_time	300.0
+#	maximum_wait_time	300.0
+	maximum_wait_time	60.0
 	maximum_bad_fraction	0.2
 	auth_accept		.*
         station_number_minimum 	3
 #        station_percentage_minimum 0.0
         uncertainty_maximum   	1.0
 	output_magtype		ml
-	output_auth		orbml
+	output_auth		evproc
 	output_stamag		yes
 	output_wfmeas		no
 }
