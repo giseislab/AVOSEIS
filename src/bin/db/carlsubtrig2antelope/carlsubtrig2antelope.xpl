@@ -33,7 +33,7 @@ EOU
 
 # End of  GT Antelope Perl header
 #################################################################
-use Avoseis::SwarmAlarm;
+use Avoseis::Utils qw(getPf runCommand);
 
 printf("\n**************************************\n\nRunning $PROG_NAME at %s\n\n", epoch2str(now(),"%Y-%m-%d %H:%M:%S")); 
 

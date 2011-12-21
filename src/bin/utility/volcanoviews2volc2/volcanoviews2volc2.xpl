@@ -35,7 +35,7 @@ EOU
 
 # End of  GT Antelope Perl header
 #################################################################
-use Avoseis::SwarmAlarm qw(getPf);
+use Avoseis::Utils qw(getPf);
 my $epochtime_1weekago = (time() + 8 * 60 * 60) - 7 * 24 * 60 * 60;
 my $epochtime_1yearago = (time() + 8 * 60 * 60) - 365 * 24 * 60 * 60;
 

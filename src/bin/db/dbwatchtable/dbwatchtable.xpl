@@ -39,8 +39,8 @@ EOU
 
 #use File::Copy;
 use File::stat;
-use English;
-use Avoseis::SwarmAlarm;
+#use English;
+use Avoseis::Utils qw(getPf runCommand);
 
 my ($database, $table) = @ARGV;
 

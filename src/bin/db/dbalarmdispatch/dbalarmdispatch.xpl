@@ -34,7 +34,7 @@ EOU
 
 # End of  GT Antelope Perl header
 #################################################################
-use Avoseis::SwarmAlarm;
+use Avoseis::Utils qw(prettyprint getPf runCommand);
 my (%record, $database);
 
 print "\n************\n$PROG_NAME @ARGV\n\n";

@@ -26,7 +26,7 @@ EOU
 }
 use File::Basename;
 use List::Util qw[min max];
-use Avoseis::SwarmAlarm qw(runCommand getPf prettyprint );
+use Avoseis::Utils qw(runCommand getPf prettyprint );
 my $ttgridpffile = $ARGV[0];
 my $stationdb = "dbmaster/master_stations";
 #use Env;

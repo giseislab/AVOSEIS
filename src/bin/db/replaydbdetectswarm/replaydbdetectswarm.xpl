@@ -42,7 +42,7 @@ EOU
 # End of  GT Antelope Perl header
 ##############################################################################
 
-use Avoseis::SwarmAlarm;
+use Avoseis::Utils qw(runCommand);
 
 my ($eventdbroot, $alarmdb, $starttime, $endtime, $timestep, $pf) = @ARGV;
 

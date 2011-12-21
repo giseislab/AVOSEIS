@@ -37,7 +37,7 @@ EOU
 # End of  GT Antelope Perl header
 #################################################################
 
-use Avoseis::SwarmAlarm;
+use Avoseis::AlarmManager qw(writeAlarmsRow writeMessage);
 
 use Env qw(HOST DBDETECTIONS DBEVENTS_EARTHWORM DBEVENTS_ANTELOPE DBEVENTMASTER DBEVENTS_XPICK);
 our $HTML_FILE = $opt_h;

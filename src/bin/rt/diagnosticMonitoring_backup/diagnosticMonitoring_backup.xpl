@@ -24,7 +24,7 @@ our $PROG_NAME;
 # End of  GT Antelope Perl header
 #################################################################
 
-use Avoseis::SwarmAlarm;
+use Avoseis::AlarmManager qw(writeAlarmsRow writeMessage);
 my $DBALARM = "dbalarm/alarm";
 foreach $dir ("/avort/oprun", "/avort/devrun") {
 	my $logfile = "$dir/logs/cron-diagnostics";

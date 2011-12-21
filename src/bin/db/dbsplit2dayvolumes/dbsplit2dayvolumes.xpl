@@ -48,7 +48,7 @@ EOU
 
 # End of  GT Antelope Perl header
 #################################################################
-use Avoseis::SwarmAlarm;
+use Avoseis::Utils qw(runCommand);
 use File::Basename;
 use Cwd;
 our $cwd= getcwd();
