@@ -189,7 +189,7 @@ if (0) { # Skip test
 
 # ****** PING SERVERS CHECK *******
 use Net::Ping;
-my %hostips = ("chinook" => 107, "humpy" => 117, "raven" => 139, "muskox" => 98, "badger" => 44);
+my %hostips = ("chinook" => 107, "humpy" => 117, "raven" => 139, "muskox" => 98, "badger" => 44, "bronco" => 240);
 while ( my ($host, $value) = each %hostips) {
 	print "Processing $host\n";
 	my $ipaddress = "137.229.32.".$value;
