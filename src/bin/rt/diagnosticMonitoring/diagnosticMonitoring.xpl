@@ -1,8 +1,3 @@
-: # use perl
-eval 'exec $ANTELOPE/bin/perl -S $0 "$@"'
-if 0;
-
-use lib "$ENV{ANTELOPE}/data/perl" ;
 
 ##############################################################################
 # Author: Glenn Thompson (GT) 2010
