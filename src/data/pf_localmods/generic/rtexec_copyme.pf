@@ -14,7 +14,7 @@ orb2dbt_optimised	orb2dbt -v -state state/orb2dbt_optimised -overwrite -select '
 
 # Earthworm event detections
 carlstatrig2dbt	carlstatrig2antelope  -v -w $WARNINGLOG $DBDETECTIONS
-carlsubtrig2dbt	carlsubtrig2antelope -v -c $DBT_EARTHWORM
+carlsubtrig2dbt	carlsubtrig2antelope  -v -c $DBT_EARTHWORM
 
 #  Master event database
 orbserver_master		orbserver -p $ORB_MASTER  -r orbserver_master
@@ -25,7 +25,7 @@ dbt2orbpf_total2master		dbt2orbpf  -V -o "NEW" -S state/dbt2orbpf_total2master $
 orb2dbt_master	orb2dbt  -v -pf orb2dbt_optimised -state state/orb2dbt_master -overwrite -select '(.*/pf/orb2dbt|.*/db/.*)' $ORB_MASTER $DBT_MASTER
 
 # Alarms
-watchalarmstable	dbwatchtable -v -p pf/dbwatchtable_newalarm.pf $DBALARM alarms
+watchalarmstable	dbwatchtable  -v -p pf/dbwatchtable_newalarm.pf $DBALARM alarms
 
 }
 
@@ -180,7 +180,7 @@ dbsplit2dayvolumes_master UTC 42 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_MAST
 ################# SWARM ALARM SYSTEM #####################
 # watchalarmstable MUST ALSO BE RUNNING, ELSE ALARMS WILL NOT BE SENT
 dbdetectswarm_wrapper LOCAL 0,5,10,15,20,25,30,35,40,45,50,55 * * * * dbdetectswarm_wrapper $DBT_OPTIMISED $DBALARM $DBSWARM pf/dbdetectswarm_fast.pf
-copy_Pffiles UTC 37 * * * * rsync -d --delete pf/* $INTERNALWEBPRODUCTS/pf 
+copy_Pffiles UTC 37 * * * * rsync --delete pf/* $INTERNALWEBPRODUCTS/pf 
 
 ######################## XML PRODUCTS FOR GOOGLE MAPS ###################################
 # Seth's admin/map 
