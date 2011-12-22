@@ -1,3 +1,8 @@
+: # use perl
+eval 'exec $ANTELOPE/bin/perl -S $0 "$@"'
+if 0;
+
+use lib "$ENV{ANTELOPE}/data/perl" ;
 
 ##############################################################################
 # Author: Glenn Thompson (GT) 2010
@@ -189,22 +194,22 @@ if (0) { # Skip test
 
 # ****** PING SERVERS CHECK *******
 use Net::Ping;
-my %hostips = ("chinook" => 107, "humpy" => 117, "raven" => 139, "muskox" => 98, "badger" => 44, "bronco" => 240);
+my %hostips = ("bronco" => 240, "earthworm" => 23, "chinook" => 107, "humpy" => 117, "raven" => 139, "muskox" => 98, "badger" => 44);
 while ( my ($host, $value) = each %hostips) {
 	print "Processing $host\n";
 	my $ipaddress = "137.229.32.".$value;
-	#my $p = Net::Ping->new();
-	my $p = `ping $ipaddress`; chomp($p);
-	#if ($p->ping($ipaddress)) {
-	if ($p =~ /alive/) {
+	my $p = Net::Ping->new();
+	#my $p = `ping -c 4 $ipaddress`; chomp($p);
+	if ($p->ping($ipaddress, 4)) {
+	#if ($p =~ /alive/ || !($p =~ /100% packet loss/)) {
 		print "$host ($ipaddress) is alive (1st attempt).\n";
 	}
 	else
 	{
 		# 2nd attempt
-		#if ($p->ping($ipaddress)) {
-		$p = `ping $ipaddress`; chomp($p);
-		if ($p =~ /alive/) {
+		#if ($p->ping($ipaddress, 4)) {
+		my $pu = `ping -c 1 $ipaddress`; chomp($p);
+		if ($pu =~ /alive/ || !($pu =~ /100% packet loss/)) {
 			print "$host ($ipaddress) is alive (2nd attempt).\n";
 		}
 		else
@@ -214,12 +219,12 @@ while ( my ($host, $value) = each %hostips) {
 			$txt .= "Cannot ping $host ($ipaddress)\n";
 		}
 	}
-	#$p->close();
+	$p->close();
 		
 }			
 
 # **** PROCESSES CHECK *********
-my @cmds = qw(rtexec orbdetect orbassoc carlsubtrig2antelope carlstatrig2antelope dbwatchtable);
+my @cmds = qw(rtexec orbdetect orbassoc orb2dbt carlsubtrig2antelope carlstatrig2antelope dbwatchtable);
 eval {
 	foreach my $cmd (@cmds) {
 		my $wc = `ps -ef | grep $cmd | grep -v grep | wc -l`;
