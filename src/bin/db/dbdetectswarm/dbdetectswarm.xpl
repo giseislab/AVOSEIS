@@ -264,8 +264,8 @@ sub declareAlarm {
 	chomp($alarmid);
 	$alarmkey = $alarmid if ($msgType eq "start" || $msgType eq "test");
 	print "Writing alarms row\n" if $opt_v;
-	my $alarmtime = $startTime;
-	$alarmtime = $endTime if ($msgType eq "end");
+	#my $alarmtime = $startTime;
+	#$alarmtime = $endTime if ($msgType eq "end");
 	&writeAlarmsRow($alarmdb, $alarmid, $alarmkey, $alarmclass, $alarmname, $endTime, $subject, $mdir, $mdfile);
 
 	# getMessagePfPath
@@ -426,7 +426,7 @@ sub changeThreshold {
 	return %newthreshold;
 }
 
-sub getPreviousAlarmMessagexxLastSwarm {
+sub getLastSwarm {
 prev    &Arr{
     cum_ml      1.19
     events_declared     2
