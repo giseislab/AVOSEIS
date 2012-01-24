@@ -63,7 +63,15 @@ if ($#ARGV == 0) {
 	if (-e $statefile) {
 		$statetime = &read_statefile($statefile);
 	}
-	&runCommand("mkdir -p $carlsubtriglogdir",1);
+	eval {
+		unless (-e $carlsubtriglogdir) { 
+			&runCommand("mkdir -p $carlsubtriglogdir",1);
+		};
+	};
+	if ($@) {
+		# could not create directory
+		die("Could not create $carlsubtriglogdir\n");
+	};
 }
 
 my $previous_event = 0; # has there been a previous event?
