@@ -45,7 +45,7 @@ while (length($STARTTIME)<17) {
 while (length($ENDTIME)<17) {
 	$ENDTIME .= "0";
 }
-my $VALVEURL = $VALVEJSP."?a=rawData&o=csv&tz=GMT&src.0=avo_seismic_hypocenters&st.0=$STARTTIME&et.0=$ENDTIME&north.0=$MAXLAT&south.0=$MINLAT&east.0=$MAXLON&west.0=$MINLON&rk.0=10"; # note rank=10 are finalized solutions
+my $VALVEURL = $VALVEJSP."?a=rawData&o=csv&tz=GMT&src.0=avo_seismic_hypocenters&st.0=$STARTTIME&et.0=$ENDTIME&north.0=$MAXLAT&south.0=$MINLAT&east.0=$MAXLON&west.0=$MINLON&rk.0=2"; # note rank=10 are finalized solutions, but somehow in BVALVE URL this is tranlsated to rank=2
 print $VALVEURL."\n";
 
 use LWP::Simple; # includes the get module which acts like wget
