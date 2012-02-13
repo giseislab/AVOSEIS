@@ -67,7 +67,7 @@ my $sepoch = $eepoch - 86400 * $numdays;
 my ($outOfDate, $txt, $txtnew, $alarms);
 
 # *********** ARE SPECTROGRAMS WORKING ? **********
-my $lastsgram = "/usr/local/mosaic/AVO/avoseis/TreMoR/plots/lastspectrogram.png";
+my $lastsgram = "/usr/local/mosaic/AVO/avoseis/TreMoR/plots/spectrograms/lastspectrogram.png";
 my $sgramsOff = 1;
 if (-e $lastsgram) {
 	if (-M $lastsgram < 1/24) {
