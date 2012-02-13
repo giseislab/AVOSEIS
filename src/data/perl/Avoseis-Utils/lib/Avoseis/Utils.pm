@@ -193,7 +193,7 @@ sub runCommand {
 sub watchtable {
 
 	use File::stat;
-	use Avoseis::SwarmAlarm;
+	#use Avoseis::SwarmAlarm;
 
 	my ($database, $table, $last_row_only, $opt_v, $trackpf) = @_;
 	my $nrowsprev = 0;
