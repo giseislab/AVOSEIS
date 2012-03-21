@@ -1,0 +1,51 @@
+Functions in dbdetectswarm
+
+main
+- make_swarmdb_descriptor
+- getParams
+- floorMinute
+- readStateTable
+- computereadSwarmTable
+- loadEvents
+- swarmStatistics
+- prettyprint
+- declareAlarm
+- compareLevels
+- updateStateTable
+
+
+declareAlarm 
+- composeMessage
+- getMessagePath
+- writeMessage
+- writeAlarmsRow
+- getMessagePfPath
+- writeAlarmcacheRow
+- putSwarmParams
+
+getParams % loads the dbdetectswarm.pf into a hash
+
+compareLevels
+
+changeThreshold
+
+getLastSwarm % return a hash array describing last swarm at this volcano from the .swarm table
+
+updateStateTable % records the current swarm alarm level for each alarm name in .state table
+
+updateSwarmTable % swarm table is a summary of swarm statistics, but is not used for alarming. These statistics should be similar to those produced by CATALOG/EVENTRATE.
+- loadEvents % loads currentMetrics, Ml, eventTime given eventdb, starttime, endtime, author
+- swarmStatistics
+- prettyprint
+
+MODULE ONE
+Compute real-time metrics, and store them in database.
+
+MODULE TWO
+Read metrics from database, read state from database, compute new state, write back new state to database.
+
+MODULE THREE
+Look for changes in state table. Upon change, declare alarm. Can be swarm start, swarm end, escalation, or de-escalation alarm. 
+
+
+

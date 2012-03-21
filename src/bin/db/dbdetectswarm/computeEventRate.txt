@@ -1,0 +1,31 @@
+Functions in computeEventRate
+
+main
+- make_swarmdb_descriptor
+- getParams
+- floorMinute
+- loadEvents
+- swarmStatistics
+- prettyprint
+
+
+declareAlarm 
+- composeMessage
+- getMessagePath
+- writeMessage
+- writeAlarmsRow
+- getMessagePfPath
+- writeAlarmcacheRow
+- putSwarmParams
+
+getParams % loads the dbdetectswarm.pf into a hash
+
+compareLevels
+
+changeThreshold
+
+getLastSwarm % return a hash array describing last swarm at this volcano from the .swarm table
+
+updateStateTable % records the current swarm alarm level for each alarm name in .state table
+
+
