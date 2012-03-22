@@ -81,6 +81,7 @@ if ($sgramsOff) {
 }
 
 # ************* CHECK EARTHWORM EVENTS ***************
+if (0) {
 #$dbname = $ENV{DBDETECTIONS}."_".$yyyy."_".$mm."_".$dd;
 #($outOfDate, $txtnew) = &check_table($dbname, "detection", $numdays, $timesubset);
 #$txt .= $txtnew;
@@ -99,6 +100,7 @@ if ($outOfDate) {
 	$txt .= "\n".&getFileAgeStr($logfile)."\n";
 	$alarms++;
 	$txt .= "No new origins in $dbname\n";
+}
 }
 
 # ************* CHECK ANTELOPE EVENTS ***************
