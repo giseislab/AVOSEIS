@@ -45,7 +45,7 @@ while (length($STARTTIME)<17) {
 while (length($ENDTIME)<17) {
 	$ENDTIME .= "0";
 }
-my $VALVEURL = $VALVEJSP."?a=rawData&o=csv&tz=GMT&src.0=avo_seismic_hypocenters&st.0=$STARTTIME&et.0=$ENDTIME&north.0=$MAXLAT&south.0=$MINLAT&east.0=$MAXLON&west.0=$MINLON&rk.0=2"; # note rank=10 are finalized solutions, but somehow in BVALVE URL this is tranlsated to rank=2
+my $VALVEURL = $VALVEJSP."?a=rawData&o=csv&tz=GMT&src.0=avo_seismic_hypocenters&st.0=$STARTTIME&et.0=$ENDTIME&north.0=$MAXLAT&south.0=$MINLAT&east.0=$MAXLON&west.0=$MINLON&rk.0=2&minDepth.0=20&maxDepth.0=-800"; # note rank=10 are finalized solutions, but somehow in BVALVE URL this is tranlsated to rank=2
 print $VALVEURL."\n";
 
 use LWP::Simple; # includes the get module which acts like wget
@@ -139,7 +139,7 @@ sub xmlwriterecords {
 		my $datestr = pop(@datestr);
 		my $lat = pop(@lat);
 		my $lon = pop(@lon);
-		my $depth = pop(@depth);
+		my $depth = (-1) * pop(@depth);
 		my $magnitude = pop(@mag);
 		my $year = substr($datestr, 0, 4);
 		my $month = substr($datestr, 5, 2);
