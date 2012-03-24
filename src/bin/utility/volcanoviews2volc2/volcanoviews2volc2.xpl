@@ -50,7 +50,7 @@ foreach my $volcanoview (@$volcanoviewsref) {
 		my $lat = $fields[1];
 		my $lon = $fields[2];
 		my $zoom = $fields[3];
-		my $dist = (2.0 ** (12 - $zoom)) * 5.0;
+		my $dist = (2.0 ** (12 - $zoom)) * 10.0;
 		print "volcano = $volcano, lat = $lat, lon = $lon, zoom = $zoom, distance = $dist\n";
 		my $lastweekxml = "$XMLDIR/origins_$volcano"."_lastweek.xml";
 		my $lastyearxml = "$XMLDIR/origins_$volcano.xml";

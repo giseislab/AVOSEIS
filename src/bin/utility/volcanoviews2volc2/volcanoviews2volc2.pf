@@ -1,10 +1,11 @@
 volcanoviews &Tbl{
+All 55.5 -164.0 5 
 Wrangell 62.0057 -144.0194 8 
 COOK_INLET 60.0 -152.5 7 
 Spurr 61.2989 -152.2539 9 
 Redoubt 60.4852 -152.7438 10 
 Iliamna 60.0319 -153.0918 10 
-Augustine 59.3626 -153.435 11 
+Augustine 59.3626 -153.435 12 
 Fourpeaked 58.7703 -153.6738 10 
 KATMAI_REGION 58.3 -154.8 8 
 Snowy 58.3336 -154.6859 10 
@@ -31,10 +32,9 @@ Korovin 52.3817 -174.1653 10
 Great_Sitkin 52.0765 -176.1109 10 
 Kanaga 51.9242 -177.1623 10 
 Tanaga 51.884 -178.143 10 
-Gareloi 51.7892 -178.796 10 
+Gareloi 51.7892 -178.796 11 
 Semisopochnoi 51.9288 179.5977 10 
 Little_Sitkin 51.9531 178.5356 10 
-All 55.5 -164.0 5 
 }
 source	VALVE
 valvejsp	http://avosouth.wr.usgs.gov/valve3.4/valve3.jsp

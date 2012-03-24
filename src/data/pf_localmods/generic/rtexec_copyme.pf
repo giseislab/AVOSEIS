@@ -40,8 +40,8 @@ orbevproc_optimised			yes
 orb2dbt_optimised			yes
 
 # Earthworm event detections
-carlstatrig2dbt				yes
-carlsubtrig2dbt				yes
+carlstatrig2dbt				no
+carlsubtrig2dbt				no
 
 #  Master event database
 orbserver_master			yes
