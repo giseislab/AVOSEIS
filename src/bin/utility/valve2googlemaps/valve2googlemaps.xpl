@@ -45,8 +45,9 @@ while (length($STARTTIME)<17) {
 while (length($ENDTIME)<17) {
 	$ENDTIME .= "0";
 }
-my $VALVEURL = $VALVEJSP."?a=rawData&o=csv&tz=GMT&src.0=avo_seismic_hypocenters&st.0=$STARTTIME&et.0=$ENDTIME&north.0=$MAXLAT&south.0=$MINLAT&east.0=$MAXLON&west.0=$MINLON&rk.0=2&minDepth.0=20&maxDepth.0=-800"; # note rank=10 are finalized solutions, but somehow in BVALVE URL this is tranlsated to rank=2
-print $VALVEURL."\n";
+my $VALVEURL = $VALVEJSP."?a=rawData&o=csv&tz=GMT&src.0=avo_seismic_hypocenters&st.0=$STARTTIME&et.0=$ENDTIME&north.0=$MAXLAT&south.0=$MINLAT&east.0=$MAXLON&west.0=$MINLON&rk.0=2&minDepth.0=20&maxDepth.0=-800"; # note rank=10 are finalized solutions, but somehow in VALVE URL this is tranlsated to rank=2
+print "$PROG_NAME: region = [$MINLON $MAXLON $MINLAT $MAXLAT], time = [$STARTTIME $ENDTIME], depth = [20 -800]\n";
+print "$PROG_NAME: valve url is:\n".$VALVEURL."\n";
 
 use LWP::Simple; # includes the get module which acts like wget
 our $xmlstr = ""; # Use this to store XML output
@@ -61,7 +62,7 @@ if ($#typelines==0) { # there should only be 1 type line!
 	$type =~ s/<type>//g; # remove lead <type> tag
 	$type =~ s/<\/type>//g; # remove trailing </type> tag
 	$type =~ s/\s+//g; # remove spaces
-	print "Type of URL returned: $type\n";
+	print "$PROG_NAME: Type of URL returned: $type\n";
 	if ($type eq "rawData") {
 
 		# get csv - I make no attempt here to parse the XML, I simply use a Unix grep
@@ -71,12 +72,12 @@ if ($#typelines==0) { # there should only be 1 type line!
 			$url =~ s/<url>//g; # remove lead <url> tag
 			$url =~ s/<\/url>//g; # remove trailing </url> tag
 			$url =~ s/\s+//g; # remove spaces
-			print "URL to CSV file: $url\n";
+			print "$PROG_NAME: URL to CSV file: $url\n";
 
 			# Now we have the url for the CSV file, need to download the CSV file
 			# Use LWP::Simple::get again
 			my @csvlines = split('\n',get($url));
-			printf "CSV file has %d lines\n", ($#csvlines+1); # this includes a few header lines
+			printf "$PROG_NAME: CSV file has %d lines\n", ($#csvlines+1); # this includes a few header lines
 
 			# parse the CSV
 			foreach my $line (@csvlines){ # process each line in the CSV file
@@ -98,15 +99,15 @@ if ($#typelines==0) { # there should only be 1 type line!
 			&xmlwriterecords;
 		
 		} else {
-			printf("%d lines found with a url tag. Confused. Will write no data.\n", $#lines+1);
+			printf("$PROG_NAME: %d lines found with a url tag. Confused. Will write no data.\n", $#lines+1);
 		}
 	} else {
-		print "rawData was not returned. Will write no data.\n";
+		print "$PROG_NAME: rawData was not returned. Will write no data.\n";
 	}
 		
 
 } else {
-	printf("%d lines found with a type tag. Confused. Will write no data.\n", $#typelines+1);
+	printf("$PROG_NAME: %d lines found with a type tag. Confused. Will write no data.\n", $#typelines+1);
 }
 &xmlfinish;
 

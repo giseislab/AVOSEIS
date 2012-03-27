@@ -35,28 +35,35 @@ EOU
 
 # End of  GT Antelope Perl header
 #################################################################
-use Avoseis::Utils qw(getPf);
+use Avoseis::Utils qw(getPf runCommand);
 my $epochtime_1weekago = (time() + 8 * 60 * 60) - 7 * 24 * 60 * 60;
 my $epochtime_1yearago = (time() + 8 * 60 * 60) - 365 * 24 * 60 * 60;
+my $epochstr_1weekago = epoch2str($epochtime_1weekago, "%Y/%m/%d %H:%M:%S");
+my $epochstr_1yearago = epoch2str($epochtime_1yearago, "%Y/%m/%d %H:%M:%S");
+print "\n\n************** $PROG_NAME ****************\n";
+print "\n\n*** 1 week ago: $epochstr_1weekago ***\n";
+print "\n\n*** 1 year ago: $epochstr_1yearago ***\n";
 
 my ($EVENTDB, $STATIONDB, $XMLDIR, $VALVEJSP, $HYPOCENTERSDBNAME, $SOURCE, $volcanoviewsref) = &getParams(); 
 system("mkdir -p $XMLDIR");
 open(FOUT,">$XMLDIR/volcanoviews.xml") or die $!; 
 print FOUT "<volcanoes>\n";
 foreach my $volcanoview (@$volcanoviewsref) {
-	print "$volcanoview\n";
+	print "\n\n******************************\n$PROG_NAME: line from parameter file is: $volcanoview\n";
 		my @fields = split(/ /, $volcanoview);
 		my $volcano = $fields[0];
 		my $lat = $fields[1];
 		my $lon = $fields[2];
 		my $zoom = $fields[3];
 		my $dist = (2.0 ** (12 - $zoom)) * 10.0;
-		print "volcano = $volcano, lat = $lat, lon = $lon, zoom = $zoom, distance = $dist\n";
+		print "$PROG_NAME: split this line as: volcano = $volcano, lat = $lat, lon = $lon, zoom = $zoom, distance = $dist\n";
 		my $lastweekxml = "$XMLDIR/origins_$volcano"."_lastweek.xml";
 		my $lastyearxml = "$XMLDIR/origins_$volcano.xml";
 		unless ($SOURCE eq "VALVE") {
-			system("db2googlemaps -x 2 -b -f -e \"time>$epochtime_1weekago && deg2km(distance($lat, $lon, lat, lon))<$dist\" $EVENTDB  > $lastweekxml");
-			system("db2googlemaps -x 2 -b -f -e \"time>$epochtime_1yearago && deg2km(distance($lat, $lon, lat, lon))<$dist\" $EVENTDB  > $lastyearxml");
+			print "\n";
+			runCommand("db2googlemaps -x 2 -b -f -e \"time>$epochtime_1weekago && deg2km(distance($lat, $lon, lat, lon))<$dist\" $EVENTDB  > $lastweekxml",1);
+			print "\n";
+			runCommand("db2googlemaps -x 2 -b -f -e \"time>$epochtime_1yearago && deg2km(distance($lat, $lon, lat, lon))<$dist\" $EVENTDB  > $lastyearxml",1);
 		} else {
 			my $nowstr = `epoch '+%Y%m%d%H%M%S' now`; chomp($nowstr);
 			my $weekagostr = `epoch '+%Y%m%d%H%M%S' $epochtime_1weekago`; chomp($weekagostr);
@@ -66,11 +73,15 @@ foreach my $volcanoview (@$volcanoviewsref) {
 			my $maxlat = $lat + $distDegrees;
 			my $minlon = $lon - $distDegrees / cos($lat * 3.1416 / 180);
 			my $maxlon = $lon + $distDegrees / cos($lat * 3.1416 / 180);
-			system("valve2googlemaps $VALVEJSP $HYPOCENTERSDBNAME $minlat $maxlat $minlon $maxlon $weekagostr $nowstr $lastweekxml");
-			system("valve2googlemaps $VALVEJSP $HYPOCENTERSDBNAME $minlat $maxlat $minlon $maxlon $yearagostr $nowstr $lastyearxml");
+			print "\n";
+			runCommand("valve2googlemaps $VALVEJSP $HYPOCENTERSDBNAME $minlat $maxlat $minlon $maxlon $weekagostr $nowstr $lastweekxml",1);
+			print "\n";
+			runCommand("valve2googlemaps $VALVEJSP $HYPOCENTERSDBNAME $minlat $maxlat $minlon $maxlon $yearagostr $nowstr $lastyearxml",1);
 		}
-		system("db2googlemaps  -x 2 -s -f -e \"deg2km(distance($lat, $lon, lat, lon))<$dist\" $STATIONDB  > $XMLDIR/stations_$volcano.xml");
+		print "\n";
+		runCommand("db2googlemaps  -x 2 -s -f -e \"deg2km(distance($lat, $lon, lat, lon))<$dist\" $STATIONDB  > $XMLDIR/stations_$volcano.xml",1);
 		print FOUT "<volcano name=\"$volcano\" lat=\"$lat\" lon=\"$lon\" zoomlevel=\"$zoom\" />\n";
+	print "$PROG_NAME: finished with $volcano\n";
 }
 print FOUT "</volcanoes>\n";
 close(FOUT);
