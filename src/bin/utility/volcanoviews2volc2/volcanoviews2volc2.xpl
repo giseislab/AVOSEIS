@@ -55,31 +55,40 @@ foreach my $volcanoview (@$volcanoviewsref) {
 		my $lat = $fields[1];
 		my $lon = $fields[2];
 		my $zoom = $fields[3];
-		my $dist = (2.0 ** (12 - $zoom)) * 10.0;
+		my $dist = (2.0 ** (12 - $zoom)) * 6.93;
 		print "$PROG_NAME: split this line as: volcano = $volcano, lat = $lat, lon = $lon, zoom = $zoom, distance = $dist\n";
 		my $lastweekxml = "$XMLDIR/origins_$volcano"."_lastweek.xml";
 		my $lastyearxml = "$XMLDIR/origins_$volcano.xml";
+		my $distDegrees = $dist * 360 / 40008; 
+		my $minlat = $lat - $distDegrees;
+		my $maxlat = $lat + $distDegrees;
+		my $minlon = $lon - $distDegrees / cos($lat * 3.1416 / 180);
+		my $maxlon = $lon + $distDegrees / cos($lat * 3.1416 / 180);
+		printf "$PROG_NAME: lat = [%.3f %.3f], lon = [%.3f %.3f]\n",$minlat,$maxlat,$minlon,$maxlon;
 		unless ($SOURCE eq "VALVE") {
-			print "\n";
-			runCommand("db2googlemaps -x 2 -b -f -e \"time>$epochtime_1weekago && deg2km(distance($lat, $lon, lat, lon))<$dist\" $EVENTDB  > $lastweekxml",1);
-			print "\n";
-			runCommand("db2googlemaps -x 2 -b -f -e \"time>$epochtime_1yearago && deg2km(distance($lat, $lon, lat, lon))<$dist\" $EVENTDB  > $lastyearxml",1);
+			print "ORIGINS - LAST WEEK\n";
+			#runCommand("db2googlemaps -x 2 -b -f -e \"time>$epochtime_1weekago && deg2km(distance($lat, $lon, lat, lon))<$dist\" $EVENTDB  > $lastweekxml",1);
+			#runCommand("db2googlemaps -x 2 -b -f -e \"time>$epochtime_1weekago && lat > $minlat && lat < $maxlat && lon > $minlon && lon < $maxlon\" $EVENTDB  > $lastweekxml",1);
+			system("db2googlemaps -x 2 -b -f -e \"time>$epochtime_1weekago && lat > $minlat && lat < $maxlat && lon > $minlon && lon < $maxlon\" $EVENTDB  > $lastweekxml");
+			print "ORIGINS - LAST YEAR\n";
+			#runCommand("db2googlemaps -x 2 -b -f -e \"time>$epochtime_1yearago && deg2km(distance($lat, $lon, lat, lon))<$dist\" $EVENTDB  > $lastyearxml",1);
+			#runCommand("db2googlemaps -x 2 -b -f -e \"time>$epochtime_1yearago && lat > $minlat && lat < $maxlat && lon > $minlon && lon < $maxlon\" $EVENTDB  > $lastyearxml",1);
+			system("db2googlemaps -x 2 -b -f -e \"time>$epochtime_1yearago && lat > $minlat && lat < $maxlat && lon > $minlon && lon < $maxlon\" $EVENTDB  > $lastyearxml");
 		} else {
 			my $nowstr = `epoch '+%Y%m%d%H%M%S' now`; chomp($nowstr);
 			my $weekagostr = `epoch '+%Y%m%d%H%M%S' $epochtime_1weekago`; chomp($weekagostr);
 			my $yearagostr = `epoch '+%Y%m%d%H%M%S' $epochtime_1yearago`; chomp($yearagostr);
-			my $distDegrees = $dist * 360 / 40008; 
-			my $minlat = $lat - $distDegrees;
-			my $maxlat = $lat + $distDegrees;
-			my $minlon = $lon - $distDegrees / cos($lat * 3.1416 / 180);
-			my $maxlon = $lon + $distDegrees / cos($lat * 3.1416 / 180);
-			print "\n";
-			runCommand("valve2googlemaps $VALVEJSP $HYPOCENTERSDBNAME $minlat $maxlat $minlon $maxlon $weekagostr $nowstr $lastweekxml",1);
-			print "\n";
-			runCommand("valve2googlemaps $VALVEJSP $HYPOCENTERSDBNAME $minlat $maxlat $minlon $maxlon $yearagostr $nowstr $lastyearxml",1);
+			print "ORIGINS - LAST WEEK\n";
+			#runCommand("valve2googlemaps $VALVEJSP $HYPOCENTERSDBNAME $minlat $maxlat $minlon $maxlon $weekagostr $nowstr $lastweekxml",1);
+			system("valve2googlemaps $VALVEJSP $HYPOCENTERSDBNAME $minlat $maxlat $minlon $maxlon $weekagostr $nowstr $lastweekxml");
+			print "ORIGINS - LAST YEAR\n";
+			#runCommand("valve2googlemaps $VALVEJSP $HYPOCENTERSDBNAME $minlat $maxlat $minlon $maxlon $yearagostr $nowstr $lastyearxml",1);
+			system("valve2googlemaps $VALVEJSP $HYPOCENTERSDBNAME $minlat $maxlat $minlon $maxlon $yearagostr $nowstr $lastyearxml");
 		}
-		print "\n";
-		runCommand("db2googlemaps  -x 2 -s -f -e \"deg2km(distance($lat, $lon, lat, lon))<$dist\" $STATIONDB  > $XMLDIR/stations_$volcano.xml",1);
+		print "STATIONS\n";
+		#runCommand("db2googlemaps  -x 2 -s -f -e \"deg2km(distance($lat, $lon, lat, lon))<$dist\" $STATIONDB  > $XMLDIR/stations_$volcano.xml",1);
+		#runCommand("db2googlemaps  -x 2 -s -f -e \"lat > $minlat && lat < $maxlat && lon > $minlon && lon < $maxlon\" $STATIONDB  > $XMLDIR/stations_$volcano.xml",1);
+		system("db2googlemaps  -x 2 -s -f -e \"lat > $minlat && lat < $maxlat && lon > $minlon && lon < $maxlon\" $STATIONDB  > $XMLDIR/stations_$volcano.xml");
 		print FOUT "<volcano name=\"$volcano\" lat=\"$lat\" lon=\"$lon\" zoomlevel=\"$zoom\" />\n";
 	print "$PROG_NAME: finished with $volcano\n";
 }

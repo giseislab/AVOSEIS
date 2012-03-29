@@ -38,6 +38,10 @@ if ( $#ARGV !=8  ) {
 EOU
     exit 1 ;
 }
+
+our $mindepth = -5;
+our $maxdepth = 800;
+
 my ($VALVEJSP, $HYPOCENTERSDBNAME, $MINLAT, $MAXLAT, $MINLON, $MAXLON, $STARTTIME, $ENDTIME, $XMLFILE) = @ARGV;
 while (length($STARTTIME)<17) {
 	$STARTTIME .= "0";
@@ -45,8 +49,9 @@ while (length($STARTTIME)<17) {
 while (length($ENDTIME)<17) {
 	$ENDTIME .= "0";
 }
-my $VALVEURL = $VALVEJSP."?a=rawData&o=csv&tz=GMT&src.0=avo_seismic_hypocenters&st.0=$STARTTIME&et.0=$ENDTIME&north.0=$MAXLAT&south.0=$MINLAT&east.0=$MAXLON&west.0=$MINLON&rk.0=2&minDepth.0=20&maxDepth.0=-800"; # note rank=10 are finalized solutions, but somehow in VALVE URL this is tranlsated to rank=2
-print "$PROG_NAME: region = [$MINLON $MAXLON $MINLAT $MAXLAT], time = [$STARTTIME $ENDTIME], depth = [20 -800]\n";
+my $VALVEURL = $VALVEJSP."?a=rawData&o=csv&tz=GMT&src.0=avo_seismic_hypocenters&st.0=$STARTTIME&et.0=$ENDTIME&north.0=$MAXLAT&south.0=$MINLAT&east.0=$MAXLON&west.0=$MINLON&rk.0=2&minDepth.0=$mindepth&maxDepth.0=$maxdepth"; # note rank=10 are finalized solutions, but somehow in VALVE URL this is tranlsated to rank=2
+printf "$PROG_NAME: XML file is $XMLFILE\n";
+printf "$PROG_NAME: region = [%.3f %.3f %.3f %.3f], time = [%s %s], depth = [$mindepth $maxdepth]\n", $MINLON, $MAXLON, $MINLAT, $MAXLAT, $STARTTIME, $ENDTIME;
 print "$PROG_NAME: valve url is:\n".$VALVEURL."\n";
 
 use LWP::Simple; # includes the get module which acts like wget
@@ -92,6 +97,8 @@ if ($#typelines==0) { # there should only be 1 type line!
 					push @lon, $field[3];
 					push @depth, $field[4];
 					push @mag, $field[5];
+					# ALso save a file of origins as listed in CSV file
+					print "$line\n";
 				}	
 			}
 
