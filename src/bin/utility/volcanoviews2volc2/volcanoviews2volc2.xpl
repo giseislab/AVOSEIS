@@ -46,7 +46,8 @@ print "\n\n*** 1 year ago: $epochstr_1yearago ***\n";
 
 my ($EVENTDB, $STATIONDB, $XMLDIR, $VALVEJSP, $HYPOCENTERSDBNAME, $SOURCE, $volcanoviewsref) = &getParams(); 
 system("mkdir -p $XMLDIR");
-open(FOUT,">$XMLDIR/volcanoviews.xml") or die $!; 
+#open(FOUT,">$XMLDIR/volcanoviews.xml") or die $!; 
+open(FOUT,">/tmp/volcanoviews.xml") or die $!; 
 print FOUT "<volcanoes>\n";
 foreach my $volcanoview (@$volcanoviewsref) {
 	print "\n\n******************************\n$PROG_NAME: line from parameter file is: $volcanoview\n";
@@ -94,6 +95,7 @@ foreach my $volcanoview (@$volcanoviewsref) {
 }
 print FOUT "</volcanoes>\n";
 close(FOUT);
+system("mv /tmp/volcanoviews.xml $XMLDIR/volcanoviews.xml" ) or die $!; 
 
 
 sub getParams {

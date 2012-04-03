@@ -41,6 +41,8 @@ EOU
 
 our $mindepth = -5;
 our $maxdepth = 800;
+#our $mindepth = -800;
+#our $maxdepth = 5;
 
 my ($VALVEJSP, $HYPOCENTERSDBNAME, $MINLAT, $MAXLAT, $MINLON, $MAXLON, $STARTTIME, $ENDTIME, $XMLFILE) = @ARGV;
 while (length($STARTTIME)<17) {
@@ -147,7 +149,7 @@ sub xmlwriterecords {
 		my $datestr = pop(@datestr);
 		my $lat = pop(@lat);
 		my $lon = pop(@lon);
-		my $depth = (-1) * pop(@depth);
+		my $depth = pop(@depth);
 		my $magnitude = pop(@mag);
 		my $year = substr($datestr, 0, 4);
 		my $month = substr($datestr, 5, 2);
