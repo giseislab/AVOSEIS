@@ -82,25 +82,25 @@ if ($sgramsOff) {
 
 # ************* CHECK EARTHWORM EVENTS ***************
 if (0) {
-#$dbname = $ENV{DBDETECTIONS}."_".$yyyy."_".$mm."_".$dd;
-#($outOfDate, $txtnew) = &check_table($dbname, "detection", $numdays, $timesubset);
-#$txt .= $txtnew;
-#if ($outOfDate) { 
-#	my $logfile = "logs_earthworm/carlstatrig_$yyyy$mm$dd.log";
-#	$txt .= "\n".&getFileAgeStr($logfile)."\n";
-#	$alarms++;
-#	$txt .= "No new detections in $dbname\n";
-#}
+	$dbname = $ENV{DBDETECTIONS}."_".$yyyy."_".$mm."_".$dd;
+	($outOfDate, $txtnew) = &check_table($dbname, "detection", $numdays, $timesubset);
+	$txt .= $txtnew;
+	if ($outOfDate) { 
+		my $logfile = "logs_earthworm/carlstatrig_$yyyy$mm$dd.log";
+		$txt .= "\n".&getFileAgeStr($logfile)."\n";
+		$alarms++;
+		$txt .= "No new detections in $dbname\n";
+	}
 
-$dbname = $ENV{DBT_EARTHWORM};
-($outOfDate, $txtnew) = &check_table($dbname, "origin", $numdays, $timesubset);
-$txt .= $txtnew;
-if ($outOfDate) { 
-	my $logfile = "logs_earthworm/carlsubtrig85.log_$yyyy$mm$dd";
-	$txt .= "\n".&getFileAgeStr($logfile)."\n";
-	$alarms++;
-	$txt .= "No new origins in $dbname\n";
-}
+	$dbname = $ENV{DBT_EARTHWORM};
+	($outOfDate, $txtnew) = &check_table($dbname, "origin", $numdays, $timesubset);
+	$txt .= $txtnew;
+	if ($outOfDate) { 
+		my $logfile = "logs_earthworm/carlsubtrig85.log_$yyyy$mm$dd";
+		$txt .= "\n".&getFileAgeStr($logfile)."\n";
+		$alarms++;
+		$txt .= "No new origins in $dbname\n";
+	}
 }
 
 # ************* CHECK ANTELOPE EVENTS ***************
@@ -221,7 +221,8 @@ while ( my ($host, $value) = each %hostips) {
 }			
 
 # **** PROCESSES CHECK *********
-my @cmds = qw(rtexec orbdetect orbassoc orb2dbt carlsubtrig2antelope carlstatrig2antelope dbwatchtable);
+#my @cmds = qw(rtexec orbdetect orbassoc orb2dbt carlsubtrig2antelope carlstatrig2antelope dbwatchtable);
+my @cmds = qw(rtexec orbdetect orbassoc orb2dbt dbwatchtable);
 eval {
 	foreach my $cmd (@cmds) {
 		my $wc = `ps -ef | grep $cmd | grep -v grep | wc -l`;
