@@ -154,11 +154,13 @@ else
 
 # ************* CHECK EVENT PROCESSING DB ***************
 $dbname = $ENV{DBT_MASTER}; 
+if (0) {
 ($outOfDate, $txtnew) = &check_table($dbname, "origin", $numdays, "auth=~/ew_.*/");
 if ($outOfDate) { 
 	$txt .= $txtnew;
 	$alarms++;
 	$txt .= "No new Earthworm origins in $dbname\n";
+}
 }
 
 ($outOfDate, $txtnew) = &check_table($dbname, "origin", $numdays, "auth=~/oa_.*/");
