@@ -56,7 +56,7 @@ if ($#ARGV == 3) {
 	$URL = "http://www.avo.alaska.edu/admin/catalog/catalogResults.php";
 }
 my $OUTFILE = "results.hyp";
-system("aqmswebsrvc2hypoinverse $STARTDATE $ENDDATE $OUTFILE $URL");
+system("aqms2hypoinverse $STARTDATE $ENDDATE $OUTFILE $URL");
 my $firstid = &getfirstid($STARTDATE);
 print("hypoinverse2db -f $firstid -p hypoinverse2db $DBNAME\n");
 system("hypoinverse2db -f $firstid -p hypoinverse2db $DBNAME");
