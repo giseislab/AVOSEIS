@@ -1,0 +1,12 @@
+bulletins	&Arr{
+    HYPOINVERSE	&Arr{
+        auth	AV
+        extractor	HYPOSHA
+        file	results.hyp
+        #linestart	[0-9]
+        method	file
+        parser	HYPOSHA
+        src	flatfile
+    }
+}
+pf_revision_time	1295038538
