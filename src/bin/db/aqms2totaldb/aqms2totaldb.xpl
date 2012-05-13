@@ -31,9 +31,13 @@ if (-e $monthdb) {
 }
 system("aqms2db \"$startdate\" \"$enddate\" $monthdb");
 if (-e $dir) {
-	print "Copying $monthdb to $dir/$monthdb\n");
+	print "Copying $monthdb to $dir/$monthdb\n";
+	if (-e "$dir/$monthdb") {
+		unlink("$dir/$monthdb*");
+	}
 	system("dbcp $monthdb $dir/$monthdb");
+	unlink("$monthdb*");
 } else { 
-	print "$dir does not exist\n");
+	print "$dir does not exist\n";
 }
-system("make_total_db");
+system("make_total_database");
