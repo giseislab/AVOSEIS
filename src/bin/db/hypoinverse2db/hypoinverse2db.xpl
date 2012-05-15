@@ -12,7 +12,7 @@ use lib ".";
 
 use Getopt::Std ;
 
-our ( $opt_1, $opt_s, $opt_p, $opt_v, $opt_V, $opt_f ) ; 
+our ( $opt_p, $opt_v, $opt_V, $opt_f ) ; 
 our %magnitude_info =  () ; 
 our %parsed_info =  () ; 
 our %bulletins =  () ; 
@@ -28,12 +28,10 @@ elog_init ( $pgm, @ARGV) ;
 my $cmd = "\n$0 @ARGV" ;
 
 if ( ! getopts('1p:s:vVf:') || @ARGV < 1 || @ARGV > 1) { 
-    die ( "Usage: $0 [-p pf] [-s secs] [-vV] [-f firstid] dbname \n" ) ; 
+    die ( "Usage: $0 [-p pf] [-vV] [-f firstid] dbname \n" ) ; 
 }
 
 elog_notify($cmd);
-
-$opt_s = 600 if ! $opt_s ;
 
 $opt_v = "1" if $opt_V ;
 
@@ -45,8 +43,6 @@ $t = time();
 $t = strtime($t);
 
 elog_notify("\nStarting $pgm at: $t");
-
-elog_notify ("\t *** User selected single execution of bulletin collection rather than daemon mode *** .\n") if $opt_1 ;
 
 # get pf info to see what bulletins will be collected
 
@@ -353,6 +349,8 @@ sub addevent2db  { # &addevent2db() ;
   my $ml = ( defined $magnitude_info{'ml'} ) ? $magnitude_info{'ml'} : "-999.0" ;
   my $mb = ( defined $magnitude_info{'mb'} ) ? $magnitude_info{'mb'} : "-999.0" ;
   my $ms = ( defined $magnitude_info{'ms'} ) ? $magnitude_info{'ms'} : "-999.0" ;
+	$commid = dbnextid(@remark, "commid"),
+
 
   push(@origin_record,
   		"lat",          $parsed_info{lat},
@@ -384,11 +382,14 @@ sub addevent2db  { # &addevent2db() ;
 		"msid",         $msid,
 		"mlid",         $mlid,
 		"auth",         $parsed_info{auth},
-		"algorithm",    $parsed_info{algorithm}
+		"algorithm",    $parsed_info{algorithm},
+		"commid", $commid
 	);
 
   elog_notify("origin_record:\n\t@origin_record\n") if ($opt_V);
   $origin[3] = dbaddv(@origin,@origin_record);
+  $parsed_info{comment} = $parsed_info{auth};
+  &addremark2db();
 
 }
 

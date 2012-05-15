@@ -49,6 +49,7 @@ EOU
 }
 
 my ($STARTDATE, $ENDDATE, $OUTFILE) = @ARGV;
+my $TMPFILE = "$OUTFILE.tmp";
 my $URL;
 if ($#ARGV == 3) {
 	$URL = $ARGV[3];
@@ -60,12 +61,15 @@ print "opt_f = $opt_f\n" if ($opt_v);
 
 my $querystring = "from=$STARTDATE&to=$ENDDATE&volcano=Any&radius=50&review=F&format=$opt_f&result=display";
 $URL .= "?".$querystring;
-print("wget --no-check-certificate --user=internalavo --password=volcs4avo --output-document=$OUTFILE \"$URL\"\n");
-system("wget --no-check-certificate --user=internalavo --password=volcs4avo --output-document=$OUTFILE \"$URL\"");
-open(FIN, $OUTFILE) or die("$OUTFILE not created\n"); 
+print("wget --no-check-certificate --user=internalavo --password=volcs4avo --output-document=$TMPFILE \"$URL\"\n");
+system("wget --no-check-certificate --user=internalavo --password=volcs4avo --output-document=$TMPFILE \"$URL\"");
+open(FIN, $TMPFILE) or die("$TMPFILE not downloaded\n"); 
+open(FOUT, $OUTFILE) or die("$OUTFILE not created\n"); 
  
 while(my $line=<FIN>) {
 	$line =~ s|<.+?>||g;
-	print "$line" if ($opt_v);
+	print FOUT "$line" if ($opt_v);
 }
 close(FIN);
+close(FOUT);
+system("rm $TMPFILE");

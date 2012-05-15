@@ -26,18 +26,23 @@ if ($mm == 13) {
 }
 my $enddate = "$yyyy/$mm/01";
 if (-e $monthdb) {
-	unlink($monthdb);
-	unlink("$monthdb.*");
+	print "Deleting $monthdb\n";
+	system("rm -f $monthdb*");
+	if (-e $monthdb) {
+		die('Could not delete');
+	}
 }
+print("aqms2db \"$startdate\" \"$enddate\" $monthdb\n");
 system("aqms2db \"$startdate\" \"$enddate\" $monthdb");
 if (-e $dir) {
 	print "Copying $monthdb to $dir/$monthdb\n";
 	if (-e "$dir/$monthdb") {
-		unlink("$dir/$monthdb*");
+		system("rm -f $dir/$monthdb*");
 	}
 	system("dbcp $monthdb $dir/$monthdb");
-	unlink("$monthdb*");
+	system("rm $monthdb*");
 } else { 
 	print "$dir does not exist\n";
 }
+print("make_total_database\n");
 system("make_total_database");
