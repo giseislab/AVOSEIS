@@ -64,11 +64,11 @@ $URL .= "?".$querystring;
 print("wget --no-check-certificate --user=internalavo --password=volcs4avo --output-document=$TMPFILE \"$URL\"\n");
 system("wget --no-check-certificate --user=internalavo --password=volcs4avo --output-document=$TMPFILE \"$URL\"");
 open(FIN, $TMPFILE) or die("$TMPFILE not downloaded\n"); 
-open(FOUT, $OUTFILE) or die("$OUTFILE not created\n"); 
+open(FOUT, ">$OUTFILE") or die("$OUTFILE not created\n"); 
  
 while(my $line=<FIN>) {
 	$line =~ s|<.+?>||g;
-	print FOUT "$line" if ($opt_v);
+	print FOUT "$line";
 }
 close(FIN);
 close(FOUT);
