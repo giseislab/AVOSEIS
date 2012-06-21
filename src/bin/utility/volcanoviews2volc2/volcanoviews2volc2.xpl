@@ -1,3 +1,4 @@
+##############################################################################
 # Author: Glenn Thompson (GT) 2011
 #         ALASKA VOLCANO OBSERVATORY
 #
@@ -36,6 +37,7 @@ EOU
 # End of  GT Antelope Perl header
 #################################################################
 use Avoseis::Utils qw(getPf runCommand);
+my $TMPVIEWS = "/tmp/volcanoviews.xml"; 
 my $epochtime_1weekago = (time() + 8 * 60 * 60) - 7 * 24 * 60 * 60;
 my $epochtime_1yearago = (time() + 8 * 60 * 60) - 365 * 24 * 60 * 60;
 my $epochstr_1weekago = epoch2str($epochtime_1weekago, "%Y/%m/%d %H:%M:%S");
@@ -46,8 +48,7 @@ print "\n\n*** 1 year ago: $epochstr_1yearago ***\n";
 
 my ($EVENTDB, $STATIONDB, $XMLDIR, $VALVEJSP, $HYPOCENTERSDBNAME, $SOURCE, $volcanoviewsref) = &getParams(); 
 system("mkdir -p $XMLDIR");
-#open(FOUT,">$XMLDIR/volcanoviews.xml") or die $!; 
-open(FOUT,">/tmp/volcanoviews.xml") or die $!; 
+open(FOUT,">$TMPVIEWS") or die $!; 
 print FOUT "<volcanoes>\n";
 foreach my $volcanoview (@$volcanoviewsref) {
 	print "\n\n******************************\n$PROG_NAME: line from parameter file is: $volcanoview\n";
@@ -95,7 +96,8 @@ foreach my $volcanoview (@$volcanoviewsref) {
 }
 print FOUT "</volcanoes>\n";
 close(FOUT);
-system("mv /tmp/volcanoviews.xml $XMLDIR/volcanoviews.xml" ) or die $!; 
+system("mv $TMPVIEWS $XMLDIR/volcanoviews.xml" ); 
+1;
 
 
 sub getParams {

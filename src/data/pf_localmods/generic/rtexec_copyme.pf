@@ -40,15 +40,15 @@ orbevproc_optimised			yes
 orb2dbt_optimised			yes
 
 # Earthworm event detections
-carlstatrig2dbt				no
-carlsubtrig2dbt				no
+#carlstatrig2dbt				no
+#carlsubtrig2dbt				no
 
 #  Master event database
-orbserver_master			yes
-dbt2orbpf_total2master			yes
-dbt2orbpf_earthworm2master		yes
-orb2orb_aeic2master			yes
-orb2dbt_master				yes
+#orbserver_master			no
+#dbt2orbpf_total2master			no
+#dbt2orbpf_earthworm2master		no
+#orb2orb_aeic2master			no
+#orb2dbt_master				no
 
 # Alarms
 watchalarmstable       			yes 
@@ -65,13 +65,13 @@ ORB_OPTIMISED	:6520
 ORB_AEIC         kobuk:6517
 ORB_MASTER  	:6565
 DB		db/archive
-DBT_ANTELOPE	events/antelope/events_antelope
+#DBT_ANTELOPE	events/antelope/events_antelope
 DBT_OPTIMISED	events/optimised/events
-DBT_EARTHWORM	events/earthworm/events_earthworm
-DBT_MASTER	events/unreviewed/events
+#DBT_EARTHWORM	events/earthworm/events_earthworm
+#DBT_MASTER	events/unreviewed/events
 DBALARM         dbalarm/alarm
 DBSWARM         dbswarm/swarm_metadata
-DBDETECTIONS	detections/earthworm
+#DBDETECTIONS	detections/earthworm
 ELOG_MAXMSG 	0
 WARNINGLOG      logs/warnings.log       # This is for diagnostic messages for email, alarms, webpage etc. See carlstatrig2antelope.
 INTERNALWEBPRODUCTS	PRESERVE
@@ -101,11 +101,11 @@ SITE_DB                 dbmaster/master_stations
 PERL5LIB                PRESERVE
 DB               	$DB
 #ORB              	$ORB
-DBDETECTIONS		$DBDETECTIONS
-DBT_ANTELOPE       	$DBT_ANTELOPE
+#DBDETECTIONS		$DBDETECTIONS
+#DBT_ANTELOPE       	$DBT_ANTELOPE
 DBT_OPTIMISED		$DBT_OPTIMISED
-DBT_EARTHWORM      	$DBT_EARTHWORM
-DBT_MASTER     		$DBT_MASTER
+#DBT_EARTHWORM      	$DBT_EARTHWORM
+#DBT_MASTER     		$DBT_MASTER
 EDITOR			PRESERVE
 DBALARM                 $DBALARM
 DBSWARM                 $DBSWARM
@@ -173,9 +173,9 @@ patches LOCAL 4 3 * * 0 # antelope_update -l -n -v -m $LOGNAME
 
 ##################### EVENT DATABASES #####################
 # split event databases into day volumes
-dbsplit2dayvolumes_earthworm UTC 40 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_EARTHWORM
+#dbsplit2dayvolumes_earthworm UTC 40 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_EARTHWORM
 dbsplit2dayvolumes_optimised UTC 44 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_OPTIMISED
-dbsplit2dayvolumes_master UTC 42 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_MASTER 
+#dbsplit2dayvolumes_master UTC 42 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_MASTER 
 
 ################# SWARM ALARM SYSTEM #####################
 # watchalarmstable MUST ALSO BE RUNNING, ELSE ALARMS WILL NOT BE SENT
@@ -185,19 +185,17 @@ copy_Pffiles UTC 37 * * * * rsync --delete pf/* $INTERNALWEBPRODUCTS/pf
 ######################## XML PRODUCTS FOR GOOGLE MAPS ###################################
 # Seth's admin/map 
 xml_optimised UTC 4,19,34,49 * * * * db2googlemaps -o -f -e 'time>(now()-7*86400)' $DBT_OPTIMISED > $PUBLICWEBPRODUCTS/kml/seismicity_antelope.xml
-xml_unreviewed_avo UTC 5,20,35,50 * * * * db2googlemaps -o -f -e 'auth=~/ew.*/ && time>(now()-7*86400)' $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_unreviewed_avo.xml
-xml_reviewed_avo UTC 6,21,36,51 * * * * db2googlemaps -o -f -e 'time>(now()-7*86400)' $TOTALDB > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_avo.xml
-xml_unreviewed_aeic UTC 7,22,37,52 * * * * db2googlemaps -o -f -e '( review!="y" && ( (auth=~/^USGS:[aA][kK]/ && lddate<(time+1000)) || auth=~/^oa.*/) && time>(now()-7*86400 ) )' $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_unreviewed_aeic.xml
-xml_reviewed_aeic UTC 8,23,38,53 * * * * db2googlemaps -o -f -e '(review=="y" || auth=~/^UAF.*/  || (auth=~/^USGS.*/ && lddate>time+999) ) && time>(now()-7*86400)'  $DBT_MASTER > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_aeic.xml
+xml_total UTC 6,21,36,51 * * * * db2googlemaps -o -f -e 'time>(now()-7*86400)' $TOTALDB > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_avo.xml
+xml_regionals UTC 8,23,38,53 * * * * db2googlemaps -o -f -e '(review=="y" || auth=~/^UAF.*/  || (auth=~/^USGS.*/ && lddate>time+999) ) && time>(now()-7*86400)'  $DBT_OPTIMISED > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_aeic.xml
 xml_stations UTC 9 * * * * db2googlemaps -s -f $SITE_DB > $PUBLICWEBPRODUCTS/kml/stations_lastweek.xml
 #
 # Update the VOLC2 XML data feeds
-volc2_datascope UTC 29 * * * * volcanoviews2volc2 -p pf/volcanoviews2volc2_datascope.pf
+#volc2_datascope UTC 29 * * * * volcanoviews2volc2 -p pf/volcanoviews2volc2_datascope.pf
 volc2_valve UTC 59 * * * * volcanoviews2volc2
 
 ########################## MIKE'S WEB PRODUCTS ######################################################
 # KML file of all origins (and stations) currently in the quakes event database
-kml_origins UTC 7,17,27,37,47,57 * * * * bin/db2kml_west_gtedits -sb $DBT_OPTIMISED > $PUBLICWEBPRODUCTS/rtdev/dbrt.kml
+kml_optimised UTC 7,17,27,37,47,57 * * * * bin/db2kml_west_gtedits -sb $DBT_OPTIMISED > $PUBLICWEBPRODUCTS/rtdev/dbrt.kml
 
 # Extract recently located AVO events & make the following products:
 # Public - Google Earth and Google Maps + event histogram:
@@ -217,7 +215,8 @@ make_recent_event_list LOCAL 30 * * * * make_recent_event_list
 avo_event_histogram LOCAL 35 * * * * avo_hist
 #
 # Re-create the complete AVO catalog in Datascope CSS3.0
-total_db UTC 15 * * * * make_total_database
+#total_db UTC 15 * * * * make_total_database
+aqms2totaldb UTC 15 * * * * aqms2totaldb
 #
 # Diagnostic monitoring - check databases, processes, connectivity etc
 diagnostics UTC 15 * * * * diagnosticMonitoring
@@ -266,16 +265,16 @@ run      .     20   1  log files,dbquakes database
 }
 
 Buttons &Tbl{         # Use {} instead of '' to conform to tcl's quoting
-dbe_archive	dbe $DB 
-dbe_earthworm	dbe $DBT_EARTHWORM 
+waveforms	dbe $DB 
+#dbe_earthworm	dbe $DBT_EARTHWORM 
 dbe_grids	dbe regions/grid_avonew 
 dbe_optimised	dbe $DBT_OPTIMISED
-dbe_master	dbe $DBT_MASTER
-dbe_swarms	dbe $DBSWARM
-dbe_alarm  	dbe $DBALARM
+#dbe_master	dbe $DBT_MASTER
+#dbe_swarms	dbe $DBSWARM
+#dbe_alarm  	dbe $DBALARM
 ORB_Clients  	xterm -geometry 132x25 -e orbstat -c : 30
 ORB_Sources  	xterm -geometry 132x60 -e orbstat -s : 30
-dbevents     	warp dbevents -show_detections $DBT_ANTELOPE 
+#dbevents     	warp dbevents -show_detections $DBT_OPTIMISED
 # To add grids:
 #grid_SP      	displayttgrid -shownames dbmaster/grid_SP lo_SP
 }

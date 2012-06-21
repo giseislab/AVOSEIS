@@ -81,6 +81,7 @@ if ($sgramsOff) {
 }
 
 # ************* CHECK EARTHWORM EVENTS ***************
+# Switched off!
 if (0) {
 	$dbname = $ENV{DBDETECTIONS}."_".$yyyy."_".$mm."_".$dd;
 	($outOfDate, $txtnew) = &check_table($dbname, "detection", $numdays, $timesubset);
@@ -121,18 +122,18 @@ if ($outOfDate) {
 
 # **** SWARM TRACKING MODULE RUNNING ? **** Commented out 2011/12/21 because it is off
 if (0) {
-my $logfile = "logs/cron-swarmtracker_antelope";
-if (-e $logfile) {
-	if (-M $logfile > 1/24) {
-		$txt .= &getFileAgeStr($logfile)."\n";
-		$alarms++;
+	my $logfile = "logs/cron-swarmtracker_antelope";
+	if (-e $logfile) {
+		if (-M $logfile > 1/24) {
+			$txt .= &getFileAgeStr($logfile)."\n";
+			$alarms++;
+		}
 	}
-}
-else
-{
+	else
+	{
 		$txt .= "$logfile does not exist: swarm tracking system not running?\n";
 		$alarms++;
-} 
+	} 
 }
 
 # **** WATCH ALARMS TABLE MODULE RUNNING ? ****
@@ -155,26 +156,26 @@ else
 # ************* CHECK EVENT PROCESSING DB ***************
 $dbname = $ENV{DBT_MASTER}; 
 if (0) {
-($outOfDate, $txtnew) = &check_table($dbname, "origin", $numdays, "auth=~/ew_.*/");
-if ($outOfDate) { 
-	$txt .= $txtnew;
-	$alarms++;
-	$txt .= "No new Earthworm origins in $dbname\n";
-}
-}
+	($outOfDate, $txtnew) = &check_table($dbname, "origin", $numdays, "auth=~/ew_.*/");
+	if ($outOfDate) { 
+		$txt .= $txtnew;
+		$alarms++;
+		$txt .= "No new Earthworm origins in $dbname\n";
+	}
 
-($outOfDate, $txtnew) = &check_table($dbname, "origin", $numdays, "auth=~/oa_.*/");
-if ($outOfDate) { 
-	$txt .= $txtnew;
-	$alarms++;
-	$txt .= "No new AEIC automated origins in $dbname\n";
-}
+	($outOfDate, $txtnew) = &check_table($dbname, "origin", $numdays, "auth=~/oa_.*/");
+	if ($outOfDate) { 
+		$txt .= $txtnew;
+		$alarms++;
+		$txt .= "No new AEIC automated origins in $dbname\n";
+	}
 
-($outOfDate, $txtnew) = &check_table($dbname, "origin", $numdays, "auth=~/USGS.*/");
-if ($outOfDate) { 
-	$txt .= $txtnew;
-	$alarms++;
-	$txt .= "No new USGS origins in $dbname\n";
+	($outOfDate, $txtnew) = &check_table($dbname, "origin", $numdays, "auth=~/USGS.*/");
+	if ($outOfDate) { 
+		$txt .= $txtnew;
+		$alarms++;
+		$txt .= "No new USGS origins in $dbname\n";
+	}
 }
 
 # *************** CHECK XPICK DATABASE ************
