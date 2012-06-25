@@ -5,16 +5,7 @@
 #
 # History:
 #	2009-04-17: Created by GT, based on dbswarmdetect, a static threshold swarm detection module
-#	
-# To do:
-#	* Modify to work with a parameter file that describes all subnets, and
-#		supports overloading of generic parameters.
-#	* Write to a swarm database rather than parameter files for tracking
-#		swarms. 
-# CURRENTLY THIS PROGRAM IS NOT WORKING. IT LOOKS LIKE I ADDED SOME FUNCTIONALITY
-# LIKE GETSWARMLEVEL AND THIS HAS NOT YET BEEN IMPLEMENTED. IT ALSO SEEMS TO REQUIRE
-# THE SWARM DATABASE SCHEMA TO BE EXTENDED.	
-# 2011/12/07 began implementing changes. new schema was created (swarms1.0).
+# ADD FUNCTION TO READ CURRENT METRICS FORM metrics TABLE	
 # need to add functionality to update swarm table.(see last function)
 # also need to complete functionality to update state table.
 # am I already reading the state table?
@@ -36,10 +27,10 @@ our $PROG_NAME;
 
 # Usage - command line options and arguments
 our ($opt_p, $opt_t, $opt_e, $opt_v, $opt_d, $opt_r); 
-if ( ! &getopts('p:t:evdr') || $#ARGV < 3  ) {
+if ( ! &getopts('p:t:evdr') || $#ARGV !=2  ) {
     print STDERR <<"EOU" ;
 
-    Usage: $PROG_NAME [-p pffile] [-e] [-t endtime] [-d] [-v] [-r] eventdb alarmdb swarmdb volc_code
+    Usage: $PROG_NAME [-p pffile] [-e] [-t endtime] [-d] [-v] [-r] alarmdb swarmdb volc_code
 
     For more information:
 	> man $PROG_NAME	 
@@ -49,32 +40,19 @@ EOU
 
 # End of  GT Antelope Perl header
 #################################################################
-use Avoseis::SwarmTracker;
+use Avoseis::SwarmTracker qw(readStateTable);
 use Avoseis::Utils qw(getPf prettyprint floorMinute);
-use Avoseis::AlarmManager;
+#use Avoseis::AlarmManager;
 
 printf("\n**************************************\n\nRunning $PROG_NAME at %s\n\n", epoch2str(now(),"%Y-%m-%d %H:%M:%S")); 
 
 #### COMMAND LINE ARGUMENTS
-my ($eventdb, $alarmdb, $swarmdb, $volc_code) = @ARGV;
-
-&make_swarmdb_descriptor($swarmdb);
-
-my ($endTime); # end of timewindow to examine
+my ($alarmdb, $swarmdb, $volc_code) = @ARGV;
 
 # read parameter file
 print "Reading parameter file for $PROG_NAME\n" if $opt_v;
 my ($alarmclass, $alarmname, $msgdir, $msgpfdir, $volc_name, $twin, $auth_subset, $reminders_on, $escalation_on, $swarmend_on, $reminder_time, $newalarmref, $significantchangeref, $trackfile) = &getParams($PROG_NAME, $opt_p, $opt_v, $volc_code);
 
-
-# read end epoch time or set to now
-if ($opt_t) {
-	$endTime = $opt_t;
-}
-else
-{
-	$endTime = floorMinute(now(),60);
-}
 
 # dereference refs to hash arrays
 my %new_alarm = %$newalarmref;
@@ -100,6 +78,15 @@ print "Previous swarm state / alarm level for $alarmname is $previousLevel\n" if
 my ($previousSwarmIsOver, %currentMetrics, %previousMetrics, $agePreviousMessage);
 
 # START TIME
+my ($endTime); # end of timewindow to examine
+# read end epoch time or set to now
+if ($opt_t) {
+        $endTime = $opt_t;
+}
+else
+{
+        $endTime = floorMinute(now(),60);
+}
 my $startTime = $endTime - ( 60 * $twin);
 printf "Timewindow of $twin minutes from %s to %s\n",epoch2str($startTime, "%Y-%m-%d %H:%M:%S"), epoch2str($endTime, "%Y-%m-%d %H:%M:%S");
 
@@ -137,27 +124,10 @@ else
 }
 print "Previous Swarm Over: $previousSwarmIsOver\n" if $opt_v;
 
-
-# LOAD EVENT TIMES AND MAGNITUDES
-my (@eventTime, @Ml);
-printf("Load events from database $eventdb from %s to %s for author $auth_subset\n", epoch2str($startTime, "%Y-%m-%d %H:%M:%S"), epoch2str($endTime, "%Y-%m-%d %H:%M:%S")) if $opt_v;
-loadEvents($eventdb, $startTime, $endTime, $auth_subset, \@eventTime, \@Ml, \%currentMetrics);
-printf("Loaded %d events (Ml: @Ml)\n", $#Ml+1);
-
-# GET STATISTICS FOR CURRENT TIME WINDOW
-swarmStatistics(\@eventTime, \@Ml, $twin, \%currentMetrics);
-print "\nStats for current time window\n" if $opt_v;
+my $eventdb; # needed for alarm delcarations
 prettyprint(\%currentMetrics) if $opt_v;
 
-# UPDATE METRICS TABLE
-if ($currentMetrics{'mean_rate'} > 0) {
-	my @dbsp = dbopen_table($swarmdb.".metrics","r+");
-	print "Adding row to $swarmdb for $auth_subset\n";
-	dbaddv(@dbsp, "auth", $auth_subset, "timewindow_starttime", $startTime, "timewindow_endtime", $endTime, "mean_rate", $currentMetrics{'mean_rate'}, "median_rate", $currentMetrics{'median_rate'}, "mean_ml", $currentMetrics{'mean_ml'}, "cum_ml", $currentMetrics{'cum_ml'});
-	dbclose(@dbsp);
-}
-
-# So far we have computed metrics and saved them. And we've established the previous level or state of this swarm name / author. But we have not yet attempted to
+# So far we have loaded the previous level or state of this swarm name / author. But we have not yet attempted to
 # see if the swarm state/level has changed based on the new metrics we have computed.
 ########################################################
 
@@ -327,7 +297,7 @@ sub getParams {
 	my $subnetsref 		= $pfobjectref->{'subnets'};
 	my $subnetref 		= $subnetsref->{$volc_code};
 	if (defined($subnetref->{'VOLC_NAME'})) {
-        	$volc_name              = $$subnetref->{'VOLC_NAME'};
+        	$volc_name              = $subnetref->{'VOLC_NAME'};
 	}
 	if (defined($subnetref->{'auth_subset'})) {
         	$auth_subset            = $$subnetref->{'auth_subset'};
@@ -355,6 +325,8 @@ sub compareLevels {
 	my %threshold = %{$thresholdref};
 
 	my $triggered = 0;
+	print $data{'mean_rate'}, "\n";
+	print $threshold{'mean_rate'}, "\n";
 	if (   $data{'mean_rate'} >= $threshold{'mean_rate'}  ) {
 		$triggered = 1;
 	
@@ -427,22 +399,22 @@ sub changeThreshold {
 }
 
 sub getLastSwarm {
-prev    &Arr{
-    cum_ml      1.19
-    events_declared     2
-    events_located      2
-    max_ml      0.99
-    mean_ml     0.98
-    mean_rate   2
-    median_rate 0
-    message_type        end
-    min_ml      0.98
-    num_ml      2
-    swarm_end   1277303400.58837
-    swarm_start 1277286000.46597
-    timewindow_end      1277303400.58837
-    timewindow_start    1277299800.58837
-}
+#prev    &Arr{
+#    cum_ml      1.19
+#    events_declared     2
+#    events_located      2
+#    max_ml      0.99
+#    mean_ml     0.98
+#    mean_rate   2
+#    median_rate 0
+#    message_type        end
+#    min_ml      0.98
+#    num_ml      2
+#    swarm_end   1277303400.58837
+#    swarm_start 1277286000.46597
+#    timewindow_end      1277303400.58837
+#    timewindow_start    1277299800.58837
+#}
 
 	# return hash array describing last swarm
 	my ($swarmdb, $alarmname) = @_;
@@ -542,10 +514,12 @@ sub updateSwarmTable {
 		$previousMetrics{'mean_ml'} = $mean_ml;
 		$previousMetrics{'cum_ml'} = $cum_ml;
 		$previousMetrics{'mean_rate'} = $mean_rate;
+	}
+
 	# UPDATE THE SWARM TABLE
-	my @dbs = dbopen_table("$swarmdb.swarm", "r+");
+	@dbs = dbopen_table("$swarmdb.swarm", "r+");
 	@dbs = dbsubset(@dbs, "auth =='$alarmname'");
-	my $numrecords = dbquery(@dbs, "dbRECORD_COUNT");
+	$numrecords = dbquery(@dbs, "dbRECORD_COUNT");
 	if ($numrecords == -1) {	
 		# ADD A NEW ROW HERE (THIS ALARM NAME HAS NOT BEEN RECORDED BEFORE)
 		$dbs[3] = 0;

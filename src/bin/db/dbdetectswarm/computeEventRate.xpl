@@ -32,14 +32,17 @@ EOU
 
 # End of  GT Antelope Perl header
 #################################################################
-#use Avoseis::SwarmTracker;
-#use Avoseis::Utils qw(getPf prettyprint floorMinute);
+use POSIX qw(ceil);
+#use Avoseis::SwarmTracker qw(make_swarmdb_descriptor loadEvents swarmStatistics);
+use Avoseis::SwarmTracker qw(make_swarmdb_descriptor);
+use Avoseis::Utils qw(getPf prettyprint floorMinute median);
 #use Avoseis::AlarmManager;
 
 printf("\n**************************************\n\nRunning $PROG_NAME at %s\n\n", epoch2str(now(),"%Y-%m-%d %H:%M:%S")); 
 
 #### COMMAND LINE ARGUMENTS
 my ($eventdb, $swarmdb, $volc_code) = @ARGV;
+print "eventdb = $eventdb, swarmdb = $swarmdb, volc_code=$volc_code\n"; 
 
 &make_swarmdb_descriptor($swarmdb);
 
@@ -60,8 +63,6 @@ else
 }
 
 # dereference refs to hash arrays
-my %new_alarm = %$newalarmref;
-my %significant_change = %$significantchangeref;
 my (%currentMetrics);
 
 # START TIME
@@ -83,11 +84,12 @@ prettyprint(\%currentMetrics) if $opt_v;
 if ($currentMetrics{'mean_rate'} > 0) {
 	my @dbsp = dbopen_table($swarmdb.".metrics","r+");
 	print "Adding row to $swarmdb for $auth_subset\n";
-	dbaddv(@dbsp, "auth", $auth_subset, "timewindow_starttime", $startTime, "timewindow_endtime", $endTime, "mean_rate", $currentMetrics{'mean_rate'}, "median_rate", $currentMetrics{'median_rate'}, "mean_ml", $currentMetrics{'mean_ml'}, "cum_ml", $currentMetrics{'cum_ml'});
+	dbaddv(@dbsp, "auth", $auth_subset, "time", $startTime, "endtime", $endTime, "mean_rate", $currentMetrics{'mean_rate'}, "median_rate", $currentMetrics{'median_rate'}, "mean_ml", $currentMetrics{'mean_ml'}, "cum_ml", $currentMetrics{'cum_ml'});
 	dbclose(@dbsp);
 }
 
 # Success
+print "$PROG_NAME: Complete\n";
 1;
 
 ###############################################################################
@@ -105,7 +107,7 @@ sub getParams {
 
 	my ($PROG_NAME, $opt_p, $opt_v, $volc_code) = @_;
 	my $pfobjectref = &getPf($PROG_NAME, $opt_p, $opt_v);
-
+print "opt_p = $opt_p\n";
      
 	my ($alarmclass, $alarmname, $msgdir, $msgpfdir, $volc_name, $twin, $auth_subset, $reminders_on, $escalations_on, $swarmend_on, $reminder_time, $newalarmref, $significantchangeref, $trackfile); 
 
@@ -115,7 +117,7 @@ sub getParams {
  	$msgdir			= $pfobjectref->{'MESSAGE_DIR'};
  	$msgpfdir		= $pfobjectref->{'MESSAGE_PFDIR'};
 	$volc_name		= "unknown";
-	$auth_subset		= $volc_code."_lo";
+	$auth_subset		= $volc_code."_loMl";
 	$twin			= $pfobjectref->{'TIMEWINDOW'};
 	$reminders_on		= $pfobjectref->{'reminders_on'};
 	$escalations_on		= $pfobjectref->{'escalations_on'};
@@ -129,7 +131,7 @@ sub getParams {
 	my $subnetsref 		= $pfobjectref->{'subnets'};
 	my $subnetref 		= $subnetsref->{$volc_code};
 	if (defined($subnetref->{'VOLC_NAME'})) {
-        	$volc_name              = $$subnetref->{'VOLC_NAME'};
+       # addthisback 	$volc_name              = $$subnetref->{'VOLC_NAME'};
 	}
 	if (defined($subnetref->{'auth_subset'})) {
         	$auth_subset            = $$subnetref->{'auth_subset'};
@@ -145,5 +147,109 @@ sub getParams {
 	}
 
 	return ($alarmclass, $alarmname, $msgdir, $msgpfdir, $volc_name, $twin, $auth_subset, $reminders_on, $escalations_on, $swarmend_on, $reminder_time, $newalarmref, $significantchangeref, $trackfile); 
+}
+
+sub loadEvents {
+        my ($dbname, $starttime, $endtime, $auth_subset, $eventtimeref, $Mlref, $currentStatsRef)  = @_;
+        my (@db, @dbt, $recnum, $eventsDeclared, $eventsLocated);
+
+        # Open and subset database
+        @db = dbopen( $dbname , "r" );
+        @db = dblookup(@db,"","origin","","");
+        @db = dbsubset(@db,"(time<$endtime) && (time>$starttime)");
+        @dbt = dblookup(@db,"","event","","");
+        @db = dbjoin(@db,@dbt);
+        @db = dbsubset(@db,"orid==prefor");
+        $eventsDeclared = dbquery(@db,"dbRECORD_COUNT");
+        my $subExp = '/.*'.$auth_subset.'.*/';
+        @db = dbsubset(@db,"auth=~$subExp");            # revise for grid names
+        $eventsLocated = dbquery(@db,"dbRECORD_COUNT");
+
+        # Load events
+        my ($sumEnergy, $energy, $cumMl, $minMl, $maxMl, $meanMl, $numMl, $sumMl, $lastTime, $nextTime, @timeDiff);
+        for ($db[3]=0 ; $db[3]<$eventsLocated ; $db[3]++) {
+                (${$eventtimeref}[$db[3]], ${$Mlref}[$db[3]]) = dbgetv(@db,"origin.time","ml");
+        }
+
+        # Close database
+        dbclose(@db);
+
+        # Populate %currentStats
+        ${$currentStatsRef}{"events_declared"}  = $eventsDeclared;
+        ${$currentStatsRef}{"events_located"}   = $eventsLocated;
+        ${$currentStatsRef}{"timewindow_start"} = $starttime;
+        ${$currentStatsRef}{"timewindow_end"}   = $endtime;
+
+        return 1;
+}
+
+sub swarmStatistics {
+        my ($eventtimeref, $Mlref, $timewindow, $currentStatsRef)  = @_;
+
+        # INCIDENTAL PARAMETERS
+        my ($sumEnergy, $energy, $numMl, $sumMl, $lastTime, $nextTime, @timeDiff);
+
+        # RETURN PARAMETERS
+        my ($meanRate, $medianRate, $cumMl, $minMl, $maxMl, $meanMl);
+
+        # INITIALISE
+        my $inf = 99999999.0;
+        $minMl =  $inf;
+        $maxMl = -$inf;
+        $sumMl = 0;
+        $numMl =   0;
+        $cumMl = -$inf;
+        $sumEnergy = 0;
+        $lastTime = 0;
+        $meanRate = 0;
+        $medianRate = 0;
+        $meanMl = -$inf;
+
+        # PROCESS EVENTS (compute numMl, minMl, maxMl, sumEnergy, timeDiff)
+        for (my $c=0 ; $c < ${$currentStatsRef}{"events_located"} ; $c++) {
+                push( @timeDiff, ${$eventtimeref}[$c] - $lastTime );
+                $lastTime = ${$eventtimeref}[$c];
+                if ( (${$Mlref}[$c] > -2) && (${$Mlref}[$c] < 8) ) {
+                        $numMl++;
+                        $sumMl = $sumMl + ${$Mlref}[$c];
+                        if (${$Mlref}[$c] < $minMl) {
+                                $minMl = ${$Mlref}[$c];
+                        }
+                        if (${$Mlref}[$c] > $maxMl) {
+                                $maxMl = ${$Mlref}[$c];
+                        }
+
+                        $energy = 10**(1.5 * ${$Mlref}[$c]); # cumulative magnitude computation verified with MATLAB
+                        $sumEnergy += $energy;
+                }
+        }
+        shift(@timeDiff);
+
+        # COMPUTE medianRate, cumMl, meanMl, meanRate
+        if ($numMl > 0) {
+                if ($#timeDiff > 4) {
+                        my ($medianDiff) = &median(@timeDiff);
+                        $medianRate = POSIX::ceil(3600.0 / $medianDiff);
+                }
+
+                if ($sumEnergy > 0 ) {
+                        $cumMl = sprintf("%.2f", POSIX::log10($sumEnergy) /1.5);
+                }
+
+                $meanMl = sprintf("%.2f", $sumMl / $numMl);
+                $meanRate = ($numMl / $timewindow) * 60;
+        }
+
+        # APPEND ALL THE PARAMETERS COMPUTED TO THE currentStats HASH
+        ${$currentStatsRef}{'mean_rate'} = $meanRate;
+        ${$currentStatsRef}{'median_rate'} = $medianRate;
+        ${$currentStatsRef}{'min_ml'} = $minMl;
+        ${$currentStatsRef}{'mean_ml'} = $meanMl;
+        ${$currentStatsRef}{'max_ml'} = $maxMl;
+        ${$currentStatsRef}{'cum_ml'} = $cumMl;
+        ${$currentStatsRef}{'num_ml'} = $numMl;
+
+        return 1;
+
 }
 

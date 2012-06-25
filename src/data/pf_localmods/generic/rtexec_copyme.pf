@@ -70,7 +70,7 @@ DBT_OPTIMISED	events/optimised/events
 #DBT_EARTHWORM	events/earthworm/events_earthworm
 #DBT_MASTER	events/unreviewed/events
 DBALARM         dbalarm/alarm
-DBSWARM         dbswarm/swarm_metadata
+DBSWARM         dbswarm/swarmtracking
 #DBDETECTIONS	detections/earthworm
 ELOG_MAXMSG 	0
 WARNINGLOG      logs/warnings.log       # This is for diagnostic messages for email, alarms, webpage etc. See carlstatrig2antelope.
@@ -179,7 +179,8 @@ dbsplit2dayvolumes_optimised UTC 44 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_O
 
 ################# SWARM ALARM SYSTEM #####################
 # watchalarmstable MUST ALSO BE RUNNING, ELSE ALARMS WILL NOT BE SENT
-dbdetectswarm_wrapper LOCAL 0,5,10,15,20,25,30,35,40,45,50,55 * * * * dbdetectswarm_wrapper $DBT_OPTIMISED $DBALARM $DBSWARM pf/dbdetectswarm_fast.pf
+#dbdetectswarm_wrapper LOCAL 0,5,10,15,20,25,30,35,40,45,50,55 * * * * dbdetectswarm_wrapper $DBT_OPTIMISED $DBALARM $DBSWARM pf/dbdetectswarm_fast.pf
+swarmtracker_wrapper LOCAL 0,5,10,15,20,25,30,35,40,45,50,55 * * * * swarmtracker_wrapper $DBT_OPTIMISED $DBALARM $DBSWARM pf/dbdetectswarm_fast.pf
 copy_Pffiles UTC 37 * * * * rsync --delete pf/* $INTERNALWEBPRODUCTS/pf 
 
 ######################## XML PRODUCTS FOR GOOGLE MAPS ###################################

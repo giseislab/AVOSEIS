@@ -1,0 +1,115 @@
+ALARMCLASS      swarm_fast
+MESSAGE_DIR     dbalarm/alarmaudit/message
+MESSAGE_PFDIR   dbalarm/alarmaudit/messagepf
+REMINDER_TIME   5760
+TIMEWINDOW      1440
+swarmend_on     1
+escalations_on  1
+new_alarm       &Arr{
+    mean_rate   12
+    median_rate	20 
+}
+pf_revision_time        1241137954
+reminders_on    1
+significant_change      &Arr{
+    mean_rate_pcchange  100
+    median_rate_pcchange        100
+}
+subnets &Arr{
+	AK	&Arr{
+		#ALARMNAME	$ALARMCLASS_$SC
+		#AUTH_SUBSET	$SC_lo
+		#VOLC_CODE	$SC	
+		VOLC_NAME	Akutan
+		#trackfile state/$ALARMNAME.pf
+		#new_alarm       &Arr{
+		#    mean_rate   5
+		#    median_rate 12
+		#}
+		#significant_change      &Arr{
+		#    mean_rate_pcchange  100
+		#    median_rate_pcchange        100
+		#}
+	}
+	AN	&Arr{
+		VOLC_NAME	Aniakchak
+	}
+	AU	&Arr{
+		VOLC_NAME	Augustine
+	}
+	DU	&Arr{
+		VOLC_NAME	Dutton
+	}
+	FO	&Arr{
+		VOLC_NAME	Fourpeaked
+	}
+	GA	&Arr{
+		VOLC_NAME	Gareloi
+	}
+	GR	&Arr{
+		VOLC_NAME	Griggs
+	}
+	GS	&Arr{
+		VOLC_NAME	GreatSitkin
+	}
+	IL	&Arr{
+		VOLC_NAME	Iliamna
+	}
+	KA	&Arr{
+		VOLC_NAME	Katmai
+	}
+	KN	&Arr{
+		VOLC_NAME	Kanaga
+	}
+	KO	&Arr{
+		VOLC_NAME	Korovin
+	}
+	LS	&Arr{
+		VOLC_NAME	LittleSitkin
+	}
+	MA	&Arr{
+		VOLC_NAME	Makushin
+	}
+	MG	&Arr{
+		VOLC_NAME	Mageik
+	}
+	OK	&Arr{
+		VOLC_NAME	Okmok
+	}
+	PA	&Arr{
+		VOLC_NAME	Pavlof
+	}
+	PL	&Arr{
+		VOLC_NAME	Peulik
+	}
+	RD	&Arr{
+		VOLC_NAME	Redoubt
+	}
+	SH	&Arr{
+		VOLC_NAME	Shishaldin
+	}
+	SN	&Arr{
+		VOLC_NAME	Snowy
+	}
+	SP	&Arr{
+		VOLC_NAME	Spurr
+	}
+	SS	&Arr{
+		VOLC_NAME	Semisopochnoi
+	}
+	TA	&Arr{
+		VOLC_NAME	Tanaga
+	}
+	TR	&Arr{
+		VOLC_NAME	Trident
+	}
+	VE	&Arr{
+		VOLC_NAME	Veniaminof
+	}
+	WE	&Arr{
+		VOLC_NAME	Westdahl
+	}
+	WR	&Arr{
+		VOLC_NAME	Wrangell
+	}
+}
