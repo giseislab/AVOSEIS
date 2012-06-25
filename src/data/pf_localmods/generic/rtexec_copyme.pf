@@ -191,8 +191,8 @@ xml_regionals UTC 8,23,38,53 * * * * db2googlemaps -o -f -e '(review=="y" || aut
 xml_stations UTC 9 * * * * db2googlemaps -s -f $SITE_DB > $PUBLICWEBPRODUCTS/kml/stations_lastweek.xml
 #
 # Update the VOLC2 XML data feeds
-#volc2_datascope UTC 29 * * * * volcanoviews2volc2 -p pf/volcanoviews2volc2_datascope.pf
-volc2_valve UTC 59 * * * * volcanoviews2volc2
+volc2_datascope UTC 29 * * * * volcanoviews2volc2 -p pf/volcanoviews2volc2_datascope.pf
+#volc2_valve UTC 59 * * * * volcanoviews2volc2
 
 ########################## MIKE'S WEB PRODUCTS ######################################################
 # KML file of all origins (and stations) currently in the quakes event database
@@ -266,13 +266,13 @@ run      .     20   1  log files,dbquakes database
 }
 
 Buttons &Tbl{         # Use {} instead of '' to conform to tcl's quoting
-waveforms	dbe $DB 
+dbe_archive	dbe $DB 
 #dbe_earthworm	dbe $DBT_EARTHWORM 
 dbe_grids	dbe regions/grid_avonew 
 dbe_optimised	dbe $DBT_OPTIMISED
 #dbe_master	dbe $DBT_MASTER
-#dbe_swarms	dbe $DBSWARM
-#dbe_alarm  	dbe $DBALARM
+dbe_swarms	dbe $DBSWARM
+dbe_alarm  	dbe $DBALARM
 ORB_Clients  	xterm -geometry 132x25 -e orbstat -c : 30
 ORB_Sources  	xterm -geometry 132x60 -e orbstat -s : 30
 #dbevents     	warp dbevents -show_detections $DBT_OPTIMISED
