@@ -190,8 +190,8 @@ xml_total UTC 6,21,36,51 * * * * db2googlemaps -o -f -e 'time>(now()-7*86400)' $
 xml_regionals UTC 8,23,38,53 * * * * db2googlemaps -o -f -e '(review=="y" || auth=~/^UAF.*/  || (auth=~/^USGS.*/ && lddate>time+999) ) && time>(now()-7*86400)'  $DBT_OPTIMISED > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_aeic.xml
 xml_stations UTC 9 * * * * db2googlemaps -s -f $SITE_DB > $PUBLICWEBPRODUCTS/kml/stations_lastweek.xml
 #
-# Update the VOLC2 XML data feeds
-volc2_datascope UTC 29 * * * * volcanoviews2volc2 -p pf/volcanoviews2volc2_datascope.pf
+# Update the VOLC2 XML data feeds - the datascope update is now called by aqms2totaldb
+#volc2_datascope UTC 29 * * * * volcanoviews2volc2 -p pf/volcanoviews2volc2_datascope.pf
 #volc2_valve UTC 59 * * * * volcanoviews2volc2
 
 ########################## MIKE'S WEB PRODUCTS ######################################################
@@ -217,7 +217,7 @@ avo_event_histogram LOCAL 35 * * * * avo_hist
 #
 # Re-create the complete AVO catalog in Datascope CSS3.0
 #total_db UTC 15 * * * * make_total_database
-aqms2totaldb UTC 15 * * * * aqms2totaldb
+aqms2totaldb UTC 1 * * * * aqms2totaldb
 #
 # Diagnostic monitoring - check databases, processes, connectivity etc
 diagnostics UTC 15 * * * * diagnosticMonitoring

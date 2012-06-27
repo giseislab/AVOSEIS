@@ -46,3 +46,4 @@ if (-e $dir) {
 }
 print("make_total_database\n");
 system("make_total_database");
+system("volcanoviews2volc2 -p pf/volcanoviews2volc2_datascope.pf");
