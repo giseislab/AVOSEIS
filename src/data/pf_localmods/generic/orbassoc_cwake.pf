@@ -1,0 +1,539 @@
+process_time_window       40            # Main detection processing time window
+process_ncycle            10            # how often to do detection processing, in detections
+process_tcycle           0.0            # how often to do detection processing, in delta time
+process_timeout         60.0            # timeout for processing detections
+grid_params &Arr{
+        FO_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            FO_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        SH_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            SH_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        GS_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            GS_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        IL_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            IL_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        SS_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            SS_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        VE_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            VE_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        KO_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            KO_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        TR_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            TR_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        GR_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            GR_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        KA_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            KA_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        PA_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            PA_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        AU_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            AU_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        LS_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            LS_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        TA_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            TA_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        GA_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            GA_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        RD_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            RD_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        PL_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            PL_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        OK_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            OK_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        WR_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            WR_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        MA_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            MA_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        SN_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            SN_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        KN_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            KN_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        AN_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            AN_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        DU_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            DU_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        SP_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            SP_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        WE_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            WE_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        MG_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            MG_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+        AK_lo &Arr{
+                nsta_thresh     4       # Minimum allowable number of stations
+                nxd             11      # Number of east-west grid nodes for depth scans
+                nyd             11      # Number of north-south grid nodes for depth scans
+                cluster_twin    1.5       # Clustering time window 
+                try_S           no      # yes = Try observations as both P and S
+                                        # no  = Observations are P only
+                associate_S     no      # yes = Try to associate observations as both P and S
+                reprocess_S     no      # yes = Reprocess when new S-associations found
+                # phase_sifter  l       # Iphase value for phase sifting, match to iphase in dbdetect.pf
+                auth            AK_lo   # Set auth field in origin table
+                algorithm       orbassoc        # Override algorithm field in origin table
+                priority        5       # Grid priority - higher value selects this grid over lower priority grids
+                use_dwt         no      # yes = Use source receiver distance weighting factor (or no)
+                dwt_dist_near   2.0
+                dwt_wt_near     1.0
+                dwt_dist_far    6.0
+                dwt_wt_far      0.1
+        }
+}
+pf_revision_time 1155927041
