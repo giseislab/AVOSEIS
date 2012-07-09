@@ -7,9 +7,9 @@ Processes &Tbl{
 # Optimised Antelope event detections - and locate with CWAKE models
 orbserver_optimised	orbserver -p $ORB_OPTIMISED orbserver_optimised
 orb2orb_aeic2optimised	orb2orb -v -S state/orb2orb_aeic2optimised -m '.*/pf/orb2dbt.*' $ORB_AEIC $ORB_OPTIMISED
-orbdetect_optimised	orbdetect  -pf pf/orbdetect_optimised.pf -out $ORB_OPTIMISED : $DBT_OPTIMISED
-orbassoc_cwake	orbassoc -start NEWEST -select '(/db/detection)' -v -pf orbassoc_cwake $ORB_OPTIMISED $ORB_OPTIMISED grids/grid_??_lo
-orbevproc_optimised	orbevproc -v -p orbevproc_optimised -dbwf db/archive : $ORB_OPTIMISED $SITE_DB
+orbdetect_optimised	orbdetect  -pf pf/orbdetect_optimised.pf -out $ORB_OPTIMISED $ORBWF $DBT_OPTIMISED
+orbassoc_cwake	orbassoc  -start NEWEST -select '(/db/detection)' -v -pf orbassoc_cwake $ORB_OPTIMISED $ORB_OPTIMISED grids/grid_??_lo
+orbevproc_optimised	orbevproc -v -p orbevproc_optimised -dbwf db/archive $ORBWF $ORB_OPTIMISED $SITE_DB
 orb2dbt_optimised	orb2dbt -v -state state/orb2dbt_optimised -overwrite -select '(.*/pf/orb2dbt|.*/db/.*)' $ORB_OPTIMISED $DBT_OPTIMISED
 
 # Earthworm event detections
@@ -25,17 +25,17 @@ dbt2orbpf_total2master		dbt2orbpf  -V -o "NEW" -S state/dbt2orbpf_total2master $
 orb2dbt_master	orb2dbt  -v -pf orb2dbt_optimised -state state/orb2dbt_master -overwrite -select '(.*/pf/orb2dbt|.*/db/.*)' $ORB_MASTER $DBT_MASTER
 
 # Alarms
-watchalarmstable	dbwatchtable  -v -p pf/dbwatchtable_newalarm.pf $DBALARM alarms
+watchalarmstable	dbwatchtable -v -p pf/dbwatchtable_newalarm.pf $DBALARM alarms
 
 }
 
 Run     &Arr{
 
 # Optimised Antelope detections - locate with CWAKE
-orbserver_optimised			yes
+orbserver_optimised	yes
 orb2orb_aeic2optimised			yes
 orbdetect_optimised	yes
-orbassoc_cwake			yes
+orbassoc_cwake	yes
 orbevproc_optimised			yes
 orb2dbt_optimised			yes
 
@@ -59,7 +59,7 @@ Pf_restart      &Tbl{
 
 Defines &Arr{
 ANTELOPE	PRESERVE
-#ORB      	:6510  
+ORBWF      	:6510  
 ORB_ANTELOPE	:6516
 ORB_OPTIMISED	:6520
 ORB_AEIC         kobuk:6517
@@ -100,7 +100,7 @@ SHELL			PRESERVE
 SITE_DB                 dbmaster/master_stations
 PERL5LIB                PRESERVE
 DB               	$DB
-#ORB              	$ORB
+#ORBWF              	$ORBWF
 #DBDETECTIONS		$DBDETECTIONS
 #DBT_ANTELOPE       	$DBT_ANTELOPE
 DBT_OPTIMISED		$DBT_OPTIMISED
@@ -181,7 +181,7 @@ dbsplit2dayvolumes_optimised UTC 44 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_O
 # watchalarmstable MUST ALSO BE RUNNING, ELSE ALARMS WILL NOT BE SENT
 #dbdetectswarm_wrapper LOCAL 0,5,10,15,20,25,30,35,40,45,50,55 * * * * dbdetectswarm_wrapper $DBT_OPTIMISED $DBALARM $DBSWARM pf/dbdetectswarm_fast.pf
 swarmtracker_wrapper LOCAL 0,5,10,15,20,25,30,35,40,45,50,55 * * * * swarmtracker_wrapper $DBT_OPTIMISED $DBALARM $DBSWARM pf/dbdetectswarm_fast.pf
-copy_Pffiles UTC 37 * * * * rsync --delete pf/* $INTERNALWEBPRODUCTS/pf 
+copy_Pffiles UTC 37 * * * * rsync pf/* $INTERNALWEBPRODUCTS/pf 
 
 ######################## XML PRODUCTS FOR GOOGLE MAPS ###################################
 # Seth's admin/map 
@@ -217,7 +217,7 @@ avo_event_histogram LOCAL 35 * * * * avo_hist
 #
 # Re-create the complete AVO catalog in Datascope CSS3.0
 #total_db UTC 15 * * * * make_total_database
-aqms2totaldb UTC 1 * * * * aqms2totaldb
+aqms2totaldb UTC 5 * * * * aqms2totaldb
 #
 # Diagnostic monitoring - check databases, processes, connectivity etc
 diagnostics UTC 15 * * * * diagnosticMonitoring
@@ -273,8 +273,8 @@ dbe_optimised	dbe $DBT_OPTIMISED
 #dbe_master	dbe $DBT_MASTER
 dbe_swarms	dbe $DBSWARM
 dbe_alarm  	dbe $DBALARM
-ORB_Clients  	xterm -geometry 132x25 -e orbstat -c : 30
-ORB_Sources  	xterm -geometry 132x60 -e orbstat -s : 30
+ORB_Clients  	xterm -geometry 132x25 -e orbstat -c $ORBWF 30
+ORB_Sources  	xterm -geometry 132x60 -e orbstat -s $ORBWF 30
 #dbevents     	warp dbevents -show_detections $DBT_OPTIMISED
 # To add grids:
 #grid_SP      	displayttgrid -shownames dbmaster/grid_SP lo_SP
