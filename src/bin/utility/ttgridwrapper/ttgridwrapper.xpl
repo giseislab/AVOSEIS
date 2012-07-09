@@ -203,6 +203,7 @@ sub orbassoc_header {
 	$file = $_[0];
 	open(FORB, ">$file");
 	print FORB<<EOF;
+schema css3.0
 process_time_window       40            # Main detection processing time window
 process_ncycle            10            # how often to do detection processing, in detections
 process_tcycle           0.0            # how often to do detection processing, in delta time
