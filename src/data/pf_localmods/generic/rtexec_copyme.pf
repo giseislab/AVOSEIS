@@ -12,18 +12,6 @@ orbassoc_cwake	orbassoc  -start NEWEST -select '(/db/detection)' -v -pf orbassoc
 orbevproc_optimised	orbevproc -v -p orbevproc_optimised -dbwf db/archive $ORBWF $ORB_OPTIMISED $SITE_DB
 orb2dbt_optimised	orb2dbt -v -state state/orb2dbt_optimised -overwrite -select '(.*/pf/orb2dbt|.*/db/.*)' $ORB_OPTIMISED $DBT_OPTIMISED
 
-# Earthworm event detections
-carlstatrig2dbt	carlstatrig2antelope  -v -w $WARNINGLOG $DBDETECTIONS
-carlsubtrig2dbt	carlsubtrig2antelope  -v -c $DBT_EARTHWORM
-
-#  Master event database
-orbserver_master		orbserver -p $ORB_MASTER  -r orbserver_master
-orb2orb_optimised2master		orb2orb -S state/orb2orb_optimised2master $ORB_OPTIMISED $ORB_MASTER
-dbt2orbpf_earthworm2master	dbt2orbpf  -v -o "STATE" -S state/dbt2orbpf_earthworm2master $DBT_EARTHWORM $ORB_MASTER
-orb2orb_aeic2master		orb2orb -v -S state/orb2orb_aeic2master -m '.*/pf/orb2dbt.*' $ORB_AEIC $ORB_MASTER
-dbt2orbpf_total2master		dbt2orbpf  -V -o "NEW" -S state/dbt2orbpf_total2master $TOTALDB $ORB_MASTER
-orb2dbt_master	orb2dbt  -v -pf orb2dbt_optimised -state state/orb2dbt_master -overwrite -select '(.*/pf/orb2dbt|.*/db/.*)' $ORB_MASTER $DBT_MASTER
-
 # Alarms
 watchalarmstable	dbwatchtable -v -p pf/dbwatchtable_newalarm.pf $DBALARM alarms
 
@@ -39,17 +27,6 @@ orbassoc_cwake	yes
 orbevproc_optimised			yes
 orb2dbt_optimised			yes
 
-# Earthworm event detections
-#carlstatrig2dbt				no
-#carlsubtrig2dbt				no
-
-#  Master event database
-#orbserver_master			no
-#dbt2orbpf_total2master			no
-#dbt2orbpf_earthworm2master		no
-#orb2orb_aeic2master			no
-#orb2dbt_master				no
-
 # Alarms
 watchalarmstable       			yes 
 }
@@ -60,25 +37,17 @@ Pf_restart      &Tbl{
 Defines &Arr{
 ANTELOPE	PRESERVE
 ORBWF      	:6510  
-ORB_ANTELOPE	:6516
 ORB_OPTIMISED	:6520
 ORB_AEIC         kobuk:6517
-ORB_MASTER  	:6565
 DB		db/archive
-#DBT_ANTELOPE	events/antelope/events_antelope
-DBT_OPTIMISED	events/optimised/events
-#DBT_EARTHWORM	events/earthworm/events_earthworm
-#DBT_MASTER	events/unreviewed/events
+DBT_OPTIMISED	PRESERVE
 DBALARM         dbalarm/alarm
 DBSWARM         dbswarm/swarmtracking
-#DBDETECTIONS	detections/earthworm
 ELOG_MAXMSG 	0
 WARNINGLOG      logs/warnings.log       # This is for diagnostic messages for email, alarms, webpage etc. See carlstatrig2antelope.
 INTERNALWEBPRODUCTS	PRESERVE
 PUBLICWEBPRODUCTS  	PRESERVE
 TOTALDB         /Seis/Kiska4/picks/Total/Total
-
-
 }
 
 # /usr/sfw/bin			required for convert and ps2pdf called by make_recent_event_list
@@ -97,15 +66,11 @@ DISPLAY                 PRESERVE || :0
 SCHEMA_DEFAULT          css3.0
 SCHEMA_DIR		PRESERVE
 SHELL			PRESERVE
-SITE_DB                 dbmaster/master_stations
 PERL5LIB                PRESERVE
 DB               	$DB
 #ORBWF              	$ORBWF
-#DBDETECTIONS		$DBDETECTIONS
-#DBT_ANTELOPE       	$DBT_ANTELOPE
 DBT_OPTIMISED		$DBT_OPTIMISED
-#DBT_EARTHWORM      	$DBT_EARTHWORM
-#DBT_MASTER     		$DBT_MASTER
+SITE_DB     		$SITE_DB
 EDITOR			PRESERVE
 DBALARM                 $DBALARM
 DBSWARM                 $DBSWARM
@@ -128,8 +93,6 @@ Failure_retry_period    	3600    # 1 hour
 
 Shutdown_order &Tbl{
 dbwatchtable
-carlstatrig2antelope
-carlsubtrig2antelope
 dbt2orbpf
 orb2dbt
 orbevproc
@@ -173,13 +136,10 @@ patches LOCAL 4 3 * * 0 # antelope_update -l -n -v -m $LOGNAME
 
 ##################### EVENT DATABASES #####################
 # split event databases into day volumes
-#dbsplit2dayvolumes_earthworm UTC 40 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_EARTHWORM
 dbsplit2dayvolumes_optimised UTC 44 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_OPTIMISED
-#dbsplit2dayvolumes_master UTC 42 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_MASTER 
 
 ################# SWARM ALARM SYSTEM #####################
 # watchalarmstable MUST ALSO BE RUNNING, ELSE ALARMS WILL NOT BE SENT
-#dbdetectswarm_wrapper LOCAL 0,5,10,15,20,25,30,35,40,45,50,55 * * * * dbdetectswarm_wrapper $DBT_OPTIMISED $DBALARM $DBSWARM pf/dbdetectswarm_fast.pf
 swarmtracker_wrapper LOCAL 0,5,10,15,20,25,30,35,40,45,50,55 * * * * swarmtracker_wrapper $DBT_OPTIMISED $DBALARM $DBSWARM pf/dbdetectswarm_fast.pf
 copy_Pffiles UTC 37 * * * * rsync pf/* $INTERNALWEBPRODUCTS/pf 
 
@@ -189,10 +149,6 @@ xml_optimised UTC 4,19,34,49 * * * * db2googlemaps -o -f -e 'time>(now()-7*86400
 xml_total UTC 6,21,36,51 * * * * db2googlemaps -o -f -e 'time>(now()-7*86400)' $TOTALDB > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_avo.xml
 xml_regionals UTC 8,23,38,53 * * * * db2googlemaps -o -f -e '(review=="y" || auth=~/^UAF.*/  || (auth=~/^USGS.*/ && lddate>time+999) ) && time>(now()-7*86400)'  $DBT_OPTIMISED > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_aeic.xml
 xml_stations UTC 9 * * * * db2googlemaps -s -f $SITE_DB > $PUBLICWEBPRODUCTS/kml/stations_lastweek.xml
-#
-# Update the VOLC2 XML data feeds - the datascope update is now called by aqms2totaldb
-#volc2_datascope UTC 29 * * * * volcanoviews2volc2 -p pf/volcanoviews2volc2_datascope.pf
-#volc2_valve UTC 59 * * * * volcanoviews2volc2
 
 ########################## MIKE'S WEB PRODUCTS ######################################################
 # KML file of all origins (and stations) currently in the quakes event database
@@ -216,8 +172,7 @@ make_recent_event_list LOCAL 30 * * * * make_recent_event_list
 avo_event_histogram LOCAL 35 * * * * avo_hist
 #
 # Re-create the complete AVO catalog in Datascope CSS3.0
-#total_db UTC 15 * * * * make_total_database
-aqms2totaldb UTC 5 * * * * aqms2totaldb
+#aqms2totaldb UTC 5 * * * * aqms2totaldb
 #
 # Diagnostic monitoring - check databases, processes, connectivity etc
 diagnostics UTC 15 * * * * diagnosticMonitoring
@@ -267,10 +222,9 @@ run      .     20   1  log files,dbquakes database
 
 Buttons &Tbl{         # Use {} instead of '' to conform to tcl's quoting
 dbe_archive	dbe $DB 
-#dbe_earthworm	dbe $DBT_EARTHWORM 
 dbe_grids	dbe regions/grid_avonew 
 dbe_optimised	dbe $DBT_OPTIMISED
-#dbe_master	dbe $DBT_MASTER
+dbe_site	dbe $SITE_DB
 dbe_swarms	dbe $DBSWARM
 dbe_alarm  	dbe $DBALARM
 ORB_Clients  	xterm -geometry 132x25 -e orbstat -c $ORBWF 30
