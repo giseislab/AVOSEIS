@@ -254,7 +254,7 @@ orb2orb_optimised
 orbevproc_optimised
 }
 
-title		AVO Real-Time Products   # alternate location to specify rtm title
+title		AVO Real-Time Products on $HOST   # alternate location to specify rtm title
 network_code    AV		# network code for rtreport and rtsys
 
 # following are used by rtreport
