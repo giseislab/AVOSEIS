@@ -107,8 +107,8 @@ foreach my $table qw( arrival assoc event netmag origin stamag detection wfrms) 
 # split the database between the start and end dates
 printf "Will create $outputdb by splitting out rows from database $inputdb %s to %s\n",epoch2str($epochstartdate, "%Y-%m-%d"),epoch2str($epochenddate, "%Y-%m-%d");
 if ($opt_d) { # Permanently delete the selected records from the input database, and move them to the output database
-	&runCommand("dbsplit -dkv -p $cwd/pf/dbsplit_detection.pf -s \"time > $epochstartdate && time < $epochenddate\" $inputdb $outputdb",1);
-	&runCommand("dbsplit -dkv -p $cwd/pf/dbsplit.pf -s \"time > $epochstartdate && time < $epochenddate\" $inputdb $outputdb",1);
+	&runCommand("dbsplit -dfv -p $cwd/pf/dbsplit_detection.pf -s \"time > $epochstartdate && time < $epochenddate\" $inputdb $outputdb",1);
+	&runCommand("dbsplit -dfv -p $cwd/pf/dbsplit.pf -s \"time > $epochstartdate && time < $epochenddate\" $inputdb $outputdb",1);
 }
 else
 { # Copy the selected records from the input database to the output database

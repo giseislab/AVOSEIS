@@ -43,6 +43,7 @@ DB		db/archive
 DBT_OPTIMISED	PRESERVE
 DBALARM         dbalarm/alarm
 DBSWARM         dbswarm/swarmtracking
+SITE_DB		PRESERVE
 ELOG_MAXMSG 	0
 WARNINGLOG      logs/warnings.log       # This is for diagnostic messages for email, alarms, webpage etc. See carlstatrig2antelope.
 INTERNALWEBPRODUCTS	PRESERVE
@@ -132,11 +133,11 @@ cleartmp LOCAL 5 1 * * * cleartmp -n -v $PWD/logs 7
 # keep all files in logs directory to less than 200 kB
 cleanlogs LOCAL 5,17,29,41,53 * * * * truncate_log -m 200 -r logs/*
 # Show a list of needed patches
-patches LOCAL 4 3 * * 0 # antelope_update -l -n -v -m $LOGNAME 
+patches LOCAL 4 3 * * 0  antelope_update -l -n -v -m $LOGNAME 
 
 ##################### EVENT DATABASES #####################
 # split event databases into day volumes
-dbsplit2dayvolumes_optimised UTC 44 0 * * * dbsplit2dayvolumes -d -v -n 7 $DBT_OPTIMISED
+dbsplit2dayvolumes_optimised UTC 44 0 * * * dbsplit2dayvolumes -d -v -n 3 $DBT_OPTIMISED
 
 ################# SWARM ALARM SYSTEM #####################
 # watchalarmstable MUST ALSO BE RUNNING, ELSE ALARMS WILL NOT BE SENT

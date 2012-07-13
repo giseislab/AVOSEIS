@@ -13,7 +13,10 @@ chdir($AVOEQ);
 $result = `which psxy`;
 print($result);
 chomp($result);
-die("GMT does not appear to be installed\n") unless ($result=~/\/gmt/);
+unless ($result=~/\/gmt/) {
+	print "GMT does not appear to be installed\n";
+	exit;
+}
 if ( $#ARGV>-1 ) {
         die($Usage);
 } else {
