@@ -242,9 +242,30 @@ eval {
 
 
 if ($alarms>0) { 
-	$txt = "$alarms alarms\n\n$txt";	
-	&declareDiagnosticAlarm("$PROG_NAME: ".$ENV{HOST}, $txt, $alarmdb) if $alarms;
+	$txt = "$alarms alarms\n\n$txt";
 	print "$txt\n";
+	my $STATEFILE = "state/diagnosticMonitoring.txt";
+	my $lasttxt = "";
+	{
+  		local $/ = undef;
+		if (-e $STATEFILE) {
+  			open FILE, $STATEFILE or die "Couldn't open file: $!";
+  			binmode FILE;
+  			$lasttxt = <FILE>;
+  			close FILE;
+		}
+	}
+	if ($txt ne $lasttxt) {
+		print "Differs from last message - sending alarm\n";
+		&declareDiagnosticAlarm("$PROG_NAME: ".$ENV{HOST}, $txt, $alarmdb) if $alarms;
+		open FSTATE, ">$STATEFILE";
+		print FSTATE "$txt";
+		close FSTATE;
+	} else {
+		print "Same as last message - no alarm will be sent\n";
+		system("touch $STATEFILE");
+	}
+
 }
 
 &print_html_footer() if $opt_h;
