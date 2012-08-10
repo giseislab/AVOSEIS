@@ -168,13 +168,22 @@ kml_optimised UTC 7,17,27,37,47,57 * * * * bin/db2kml_west_gtedits -sb $DBT_OPTI
 # - AVOEQ/update_time.txt - when it last ran?
 # - AVOEQ/responses.html - list of stations and links to their response files
 make_recent_event_list LOCAL 30 * * * * make_recent_event_list
-#
+
 # GMT is not installed on raven, so this will fail
 avo_event_histogram LOCAL 35 * * * * avo_hist
-#
+
 # Re-create the complete AVO catalog in Datascope CSS3.0
-#aqms2totaldb UTC 5 * * * * aqms2totaldb
-#
+aqms2totaldb UTC 5 * * * * aqms2totaldb
+
+# Summarise this database
+summarise_counts_analystdb UTC 25 0,4,8,12,16,20 * * * weeklysummarycounts2html /Seis/Kiska4/picks/Total/Total 'AVO analyst-reviewed catalog'
+
+# Create a total database version of the optimised database
+optimisedtotal UTC 35 0,4,8,12,16,20 * * * daily2totaldb events/optimised/events_????_??_?? events/optimised/Total events/optimised/events
+
+# Summarise this database
+summarise_counts_realtimedb UTC 45 0,4,8,12,16,20 * * * weeklysummarycounts2html events/optimised/Total 'AVO realtime catalog'
+
 # Diagnostic monitoring - check databases, processes, connectivity etc
 diagnostics UTC 15 * * * * diagnosticMonitoring
 diagnostics_backup UTC 19 * * * * diagnosticMonitoring_backup
