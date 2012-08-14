@@ -65,7 +65,7 @@ def plot_binnedtime_counts(ax, dictorigin, x_locator, x_formatter, binsize, ylab
 	return
 
 def read_volcanoes():
-	dbplacespath = 'volcanoes'
+	dbplacespath = 'places/volcanoes'
 	dbhandle = datascope.dbopen( dbplacespath, 'r')
 	dbptr = dbhandle.lookup( table = 'places' )
 	n = dbptr.nrecs()

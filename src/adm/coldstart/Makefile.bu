@@ -2,12 +2,14 @@ install: coldstart
 
 coldstart: .FORCED
 ifdef ANTELOPE
-	AVOSEIS=/opt/avoseis/`getid id`; export AVOSEIS; \
-	AVOSEISMAKE=/opt/avoseis/`getid id`/include/avoseismake; export AVOSEISMAKE; \
-	( cd ../setup; make install ) ; \
-	( cd ../../lib/makerules; make install ) ; \
-	( cd ../..; make Include ) ; \
-	mkdir /opt/avoseis/`getid id`/man ; \
+	AVOSEIS=/opt/avoseis/`getid id`; 
+	export AVOSEIS; 
+	AVOSEISMAKE=/opt/avoseis/`getid id`/include/avoseismake; 
+	export AVOSEISMAKE; 
+	( cd ../setup; make install ) ; 
+	( cd ../../lib/makerules; make install ) ; 
+	( cd ../..; make Include ) ; 
+	mkdir /opt/avoseis/`getid id`/man ; 
 	( cd ../..; make install )
 else
 	@echo ""

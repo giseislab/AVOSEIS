@@ -14,7 +14,10 @@ targetdb = sys.argv[2]
 datascope.dbcreate(targetdb, "css3.0")
 for table in ['origin', 'event', 'assoc', 'arrival', 'netmag', 'stamag']:
 	destination = open("%s.%s" % (targetdb, table), 'wb')
+	print "SOURCE = " + sourcedbpattern + "." + table
+	print "TARGET = " + targetdb + "." + table + '\n'
 	for filename in glob.glob("%s.%s" % (sourcedbpattern, table)):
+		print filename
 		if os.path.islink(filename):
 			print "%s is a link - skipping" % filename
 		else:
