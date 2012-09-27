@@ -26,10 +26,11 @@ if ($mm == 13) {
 }
 my $enddate = "$yyyy/$mm/01";
 if (-e $monthdb) {
-	print "Deleting $monthdb\n";
-	system("rm -f $monthdb*");
+	print "Moving $monthdb\n";
+	system("rm -f old$monthdb*");
+	system("renamefiles $monthdb old$monthdb");
 	if (-e $monthdb) {
-		die('Could not delete');
+		die('Could not move');
 	}
 }
 print("aqms2db \"$startdate\" \"$enddate\" $monthdb\n");
@@ -39,8 +40,9 @@ if (-e $dir) {
 	if (-e "$dir/$monthdb") {
 		system("rm -f $dir/$monthdb*");
 	}
-	system("dbcp $monthdb $dir/$monthdb");
-	system("rm $monthdb*");
+	#system("dbcp $monthdb $dir/$monthdb");
+	system("cp $monthdb* $dir/");
+	#system("rm $monthdb*");
 } else { 
 	print "$dir does not exist\n";
 }

@@ -1,3 +1,3 @@
-BIN=daily2totaldb
+#BIN=daily2totaldb
 DIRS=
 include $(AVOSEISMAKE)
