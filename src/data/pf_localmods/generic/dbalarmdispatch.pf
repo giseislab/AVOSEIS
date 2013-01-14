@@ -8,23 +8,22 @@ default	&Arr{
 
 diagnostic &Arr{
 	recipients	&Arr{
+               9076877747@mms.att.net 0 # Glenn Thompson cell phone
 	}
 }
 
 test &Arr{
 	recipients	&Arr{
-		mewest@alaska.edu	0
+               9076877747@mms.att.net 0 # Glenn Thompson cell phone
 	}
 }
 
 swarm &Arr{
 	recipients	&Arr{		# appends to the default
                #seis_alarms@avo.alaska.edu 0 # Seismic Alarms ListServ Subscribers
-               #9076877747@mms.att.net 0 # Glenn Thompson cell phone
+               9076877747@mms.att.net 0 # Glenn Thompson cell phone
                #9076874288@mms.att.net 200 # Mike West cell phone
-               #7865470342@mms.att.net 0 # Ophelia George cell phone
                #9073785996@mms.att.net 200 # Helena Buurman cell phone
-               #9073477788@mms.att.net 300 # Celso Reyes cell phone
                #9075908248@mms.att.net 500 # Duty Seismologist
                #9076322275@msg.acsalaska.com 600 # Duty Scientist cell phone
                #9079785458@mms.att.net 700 # Coordinating Scientist cell
@@ -37,5 +36,10 @@ swarm &Arr{
 
 
 tremor	&Arr{
+	recipients	&Arr{		# appends to the default
+               #seis_alarms@avo.alaska.edu 0 # Seismic Alarms ListServ Subscribers
+               9076877747@mms.att.net 0 # Glenn Thompson cell phone
+               #seis_alarms@email2phone.net 300 # Voice Message to Phone
+	}
 }
 

@@ -11,6 +11,7 @@ import numpy as np
 if 'DISPLAY' in os.environ.keys():
 	mpl.use("Agg")
 import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import host_subplot
 
 # note that global/default mpl settings can be given in config files at the global, user home and pwd levels - see p44
 
@@ -22,6 +23,7 @@ import matplotlib.pyplot as plt
 def dbgetorigins(dborigin, subset_expr):
 	# load origins from database
 	dbptr = dborigin.subset(subset_expr)
+	dbptr = dbptr.sort('time')
 	n = dbptr.nrecs()
 	print "- number of events = {}".format(n)
 
@@ -42,7 +44,7 @@ def plot_time_ml(ax, dictorigin, x_locator, x_formatter, snum, enum):
 	ax.plot_date(dictorigin['time'], dictorigin['ml'], linestyle='.')
 	ax.grid(True)
 	ax.xaxis_date()
-	plt.setp( ax.get_xticklabels(), rotation=90, horizontalalignment='center', fontsize=8 )
+	plt.setp( ax.get_xticklabels(), rotation=90, horizontalalignment='center', fontsize=7 )
 	ax.set_ylabel('Ml')
 	ax.xaxis.set_major_locator(x_locator)
 	ax.xaxis.set_major_formatter(x_formatter)
@@ -57,11 +59,149 @@ def plot_binnedtime_counts(ax, dictorigin, x_locator, x_formatter, binsize, ylab
 	y = ax.hist(dictorigin['time'], bins, cumulative=False, histtype='bar')
 	ax.grid(True)
 	ax.xaxis_date()
-	plt.setp( ax.get_xticklabels(), rotation=90, horizontalalignment='center', fontsize=8 )
+	plt.setp( ax.get_xticklabels(), rotation=45, horizontalalignment='center', fontsize=7 )
 	ax.set_ylabel(ylabel)
 	ax.xaxis.set_major_locator(x_locator)
 	ax.xaxis.set_major_formatter(x_formatter)
 	ax.set_xlim(snum, enum)
+	return
+
+def plot_counts_and_energy(ax, dictorigin, x_locator, x_formatter, binsize, ylabel, snum, enum):
+
+	# bin the data
+	bins = np.arange(snum, enum, binsize)
+	events, edges, patches = ax.hist(dictorigin['time'], bins, cumulative=False, histtype='bar', color='b')
+	ax.grid(True)
+	ax.xaxis_date()
+	plt.setp( ax.get_xticklabels(), rotation=90, horizontalalignment='center', fontsize=7 )
+	ax.set_ylabel(ylabel)
+	ax.set_ylabel("Counts")
+	ax.xaxis.set_major_locator(x_locator)
+	ax.xaxis.set_major_formatter(x_formatter)
+	ax.set_xlim(snum, enum)
+	#ax.yaxis.get_label().set_color(p1.get_color())
+
+	ml = dictorigin['ml']
+	inds = np.digitize(dictorigin['time'], bins)
+	energy = np.empty(len(bins))
+	for count in range(len(bins)):
+		mlsubset = ml[inds==count]
+		energysubset = np.power(10, 1.5 * mlsubset)
+		energy[count] = np.sum(energysubset)
+		
+	#energy = np.power(10, 1.5 * dictorigin['ml']);
+	ax2 = ax.twinx()
+	#ax.hist(dictorigin['time'], bins, cumulative=False, histtype='step', color='g')
+	#p2, = ax2.plot(dictorigin['time'],energy,'g')
+	ax2.plot(edges, energy,'g',lw=3)
+	ax2.set_ylabel("Relative energy")
+	#ax2.yaxis.get_label().set_color(p2.get_color())
+	#ax2.yaxis.get_label().set_color('g')
+	ax2.xaxis.set_major_locator(x_locator)
+	ax2.xaxis.set_major_formatter(x_formatter)
+	ax2.set_xlim(snum, enum)
+
+	return
+
+def plot_counts_and_cumenergy(ax, dictorigin, x_locator, x_formatter, binsize, ylabel, snum, enum, timeperiod):
+
+	# bin the data
+	bins = np.arange(snum, enum, binsize)
+	events, edges, patches = ax.hist(dictorigin['time'], bins, cumulative=False, histtype='bar', color='0.75')
+	ax.grid(True)
+	ax.xaxis_date()
+	plt.setp( ax.get_xticklabels(), rotation=90, horizontalalignment='center', fontsize=7 )
+	ax.set_ylabel(ylabel)
+	ax.set_ylabel("# per " +  timeperiod )
+	ax.xaxis.set_major_locator(x_locator)
+	ax.xaxis.set_major_formatter(x_formatter)
+	ax.set_xlim(snum, enum)
+		
+	time = dictorigin['time']
+	ml = dictorigin['ml']
+	energy = np.power(10, 1.5 * ml)
+	cumenergy = np.cumsum(energy)
+	print time.shape
+	print cumenergy.shape
+	ax2 = ax.twinx()
+	p2, = ax2.plot(time,cumenergy,'g',lw=3)
+	yticklocs1 = ax.get_yticks()
+	yticklocs2 = (yticklocs1 / max(ax.get_ylim())) * max(ax2.get_ylim() )
+	ytickvalues2 = np.log10(yticklocs2) / 1.5
+	yticklabels2 = list()
+	for count in range(len(ytickvalues2)):
+		yticklabels2.append("%.2f" % ytickvalues2[count])
+	ax2.set_yticks(yticklocs2)
+	ax2.set_yticklabels(yticklabels2)
+
+	ax2.yaxis.get_label().set_color(p2.get_color())
+	ax2.set_ylabel("Cum. Mag.")
+	ax2.xaxis.set_major_locator(x_locator)
+	ax2.xaxis.set_major_formatter(x_formatter)
+	ax2.set_xlim(snum, enum)
+
+	return
+
+def plot_cumcounts_and_cumenergy(ax, dictorigin, x_locator, x_formatter, binsize, ylabel, snum, enum):
+
+	# bin the data
+	bins = np.arange(snum, enum, binsize)
+	events, edges, patches = ax.hist(dictorigin['time'], bins, cumulative=False, histtype='bar', color='0.75')
+	ax.grid(True)
+	ax.xaxis_date()
+	plt.setp( ax.get_xticklabels(), rotation=90, horizontalalignment='center', fontsize=7 )
+	ax.set_ylabel(ylabel)
+	ax.set_ylabel("Counts")
+	ax.xaxis.set_major_locator(x_locator)
+	ax.xaxis.set_major_formatter(x_formatter)
+	ax.set_xlim(snum, enum)
+
+	time = dictorigin['time']
+	ml = dictorigin['ml']
+	energy = np.power(10, 1.5 * ml)
+	cumenergy = np.cumsum(energy)
+	print time.shape
+	print cumenergy.shape
+	ax2 = ax.twinx()
+	p2, = ax2.plot(time,cumenergy,'g',lw=3)
+	yticklocs1 = ax.get_yticks()
+	yticklocs2 = (yticklocs1 / max(ax.get_ylim())) * max(ax2.get_ylim() )
+	ytickvalues2 = np.log10(yticklocs2) / 1.5
+	yticklabels2 = list()
+	for count in range(len(ytickvalues2)):
+		yticklabels2.append("%.2f" % ytickvalues2[count])
+	ax2.set_yticks(yticklocs2)
+	ax2.set_yticklabels(yticklabels2)
+
+	ax2.yaxis.get_label().set_color(p2.get_color())
+	ax2.set_ylabel("Cum. Mag.")
+	ax2.xaxis.set_major_locator(x_locator)
+	ax2.xaxis.set_major_formatter(x_formatter)
+	ax2.set_xlim(snum, enum)
+		
+	time = dictorigin['time']
+	ml = dictorigin['ml']
+	energy = np.power(10, 1.5 * ml)
+	cumenergy = np.cumsum(energy)
+	print time.shape
+	print cumenergy.shape
+	ax2 = ax.twinx()
+	p2, = ax2.plot(time,cumenergy,'g',lw=3)
+	yticklocs1 = ax.get_yticks()
+	yticklocs2 = (yticklocs1 / max(ax.get_ylim())) * max(ax2.get_ylim() )
+	ytickvalues2 = np.log10(yticklocs2) / 1.5
+	yticklabels2 = list()
+	for count in range(len(ytickvalues2)):
+		yticklabels2.append("%.2f" % ytickvalues2[count])
+	ax2.set_yticks(yticklocs2)
+	ax2.set_yticklabels(yticklabels2)
+
+	ax2.yaxis.get_label().set_color(p2.get_color())
+	ax2.set_ylabel("Cum. Mag.")
+	ax2.xaxis.set_major_locator(x_locator)
+	ax2.xaxis.set_major_formatter(x_formatter)
+	ax2.set_xlim(snum, enum)
+
 	return
 
 def read_volcanoes():
@@ -77,9 +217,9 @@ def read_volcanoes():
 	dbhandle.close()
 	return dictplaces
 
-def write_counts_to_html(n, catalog_description, timeperiod):
+def write_counts_to_html(n, timeperiod):
 	html_string = ""
-	html_string += "<h3>Earthquake counts for the past %s, from the %s</h3>" % (timeperiod, catalog_description)
+	html_string += "<h3>Earthquake counts for the past %s</h3>" % (timeperiod)
 
 
 	# start table here
@@ -149,13 +289,16 @@ if not(os.path.isdir(htmldir)):
 # open the origin table
 db = datascope.dbopen( dbpath, 'r')
 db = db.lookup( table = 'origin' )
+#db2 = db.lookup( table = 'event') 
+db = db.join('event')
+db = db.subset("orid == prefor")
 
 # read the dict of places
 dictplaces = dict()
 dictplaces = read_volcanoes()
 n_week = dict()
 n_year = dict()
-RADIUS_IN_KM = 25.0
+RADIUS_IN_KM = 20.0 # based on Helena's latest work, this is maximum justifiable radius to use
 
 for index in dictplaces.keys():
 	record = dictplaces[index]
@@ -186,9 +329,10 @@ for index in dictplaces.keys():
 	dictorigin, n_week[record['place']] = dbgetorigins(db, subset_expr)
 	if n_week[record['place']] > 0:
 		ax1 = fig1.add_subplot(221)
-		plot_time_ml(ax1, dictorigin, mpl.dates.DayLocator(), mpl.dates.DateFormatter('%d\n%b'), snum1weekago, enum)
+		plot_time_ml(ax1, dictorigin, mpl.dates.DayLocator(), mpl.dates.DateFormatter('%d-%b'), snum1weekago, enum)
 		ax2 = fig1.add_subplot(222)
-		plot_binnedtime_counts(ax2, dictorigin, mpl.dates.DayLocator(), mpl.dates.DateFormatter('%d\n%b'), 1.0, 'eqs per day', snum1weekago, enum)
+		#plot_binnedtime_counts(ax2, dictorigin, mpl.dates.DayLocator(), mpl.dates.DateFormatter('%d-%b'), 1.0, 'eqs per day', snum1weekago, enum)
+		plot_counts_and_cumenergy(ax2, dictorigin, mpl.dates.DayLocator(), mpl.dates.DateFormatter('%d-%b'), 1.0, 'eqs per day', snum1weekago, enum, "day")
 
 	### Last year plot
 	print "- Last year plot"
@@ -198,9 +342,10 @@ for index in dictplaces.keys():
 	dictorigin, n_year[record['place']] = dbgetorigins(db, subset_expr)
 	if n_year[record['place']] > 0:
 		ax3 = fig1.add_subplot(223)
-		plot_time_ml(ax3, dictorigin, mpl.dates.MonthLocator(), mpl.dates.DateFormatter('%b\n%Y'), snum1yearago, enum)
+		plot_time_ml(ax3, dictorigin, mpl.dates.MonthLocator(), mpl.dates.DateFormatter('%b-%y'), snum1yearago, enum)
 		ax4 = fig1.add_subplot(224)
-		plot_binnedtime_counts(ax4, dictorigin, mpl.dates.MonthLocator(), mpl.dates.DateFormatter('%b\n%Y'), 7.0, 'eqs per week', snum1yearago, enum)
+		#plot_binnedtime_counts(ax4, dictorigin, mpl.dates.MonthLocator(), mpl.dates.DateFormatter('%b-%y'), 7.0, 'eqs per week', snum1yearago, enum)
+		plot_counts_and_cumenergy(ax4, dictorigin, mpl.dates.MonthLocator(), mpl.dates.DateFormatter('%b-%y'), 7.0, 'eqs per week', snum1yearago, enum, "week")
 
 		# save the figure to file
 		supertitle = record['place'] + "(week=" + str(n_week[record['place']]) + ", year=" + str(n_year[record['place']]) + ")" 
@@ -218,13 +363,13 @@ db.close()
 html_string = ""
 html_string += "<html>"
 html_string += "<head>"
-html_string += "<title>Weekly seismicity review page</title>"
+html_string += "<title>Weekly seismicity review page - " + catalog_description + "</title>"
 html_string += "</head>"
 html_string += "<body>"
 
 # write HTML body - the complicated part
-html_string += write_counts_to_html(n_week, catalog_description, "week")
-html_string += write_counts_to_html(n_year, catalog_description, "year")
+html_string += write_counts_to_html(n_week, "week")
+html_string += write_counts_to_html(n_year, "year")
 
 # write HTML footer
 html_string += "<hr/><br/>Counts reported are the number of earthquakes within %.0f km of the coordinates given at <a href=http://www.avo.alaska.edu/volcanoes/latlong.php >http://www.avo.alaska.edu/volcanoes/latlong.php</a>." % RADIUS_IN_KM 
