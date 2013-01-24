@@ -1,0 +1,11 @@
+From chinook at 2010/06/23  6:05 UTC
+Span: 60 minutes
+Evts:  3 (3 located)
+Mean Rate:  2/hr
+Median Rate: NA
+Mags: 0.8/1.0/1.3 (of 2)
+Cum Ml: 1.4
+RDN(3) RDWB(2) RSO(2) DFR(0) NCT(0) RDJH(0) REF(0) RED(0) 
+End.
+
+Confirm at: http://giseis.alaska.edu/AVO/internal/avoseis/chinook/confirm_alarms.php

@@ -1,0 +1,2 @@
+This is a snapshot of the places databases from the AVOSEIS_PYTHON directory of the python_gt repository on 20130124. 
+This was in use on raven from that location, to drive dbploteventratewrapper and probably weeklysummary (now renamed sausageplot when added to AVOSEIS repo today) too

@@ -1,0 +1,16 @@
+prev	&Arr{
+    cum_ml	0.37
+    events_declared	2
+    events_located	2
+    max_ml	0.22
+    mean_ml	0.17
+    mean_rate	2
+    median_rate	0
+    message_type	test_dbdetectswarm
+    min_ml	0.11
+    num_ml	2
+    swarm_end	-1
+    swarm_start	-1
+    timewindow_end	1271711206.31757
+    timewindow_start	1271707606.31757
+}

@@ -1,0 +1,16 @@
+prev	&Arr{
+    cum_ml	1.27
+    events_declared	4
+    events_located	3
+    max_ml	1.18
+    mean_ml	0.67
+    mean_rate	3
+    median_rate	0
+    message_type	end
+    min_ml	-0.06
+    num_ml	3
+    swarm_end	1276959901.24903
+    swarm_start	1276950301.13127
+    timewindow_end	1276959901.24903
+    timewindow_start	1276956301.24903
+}

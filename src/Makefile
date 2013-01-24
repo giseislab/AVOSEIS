@@ -46,10 +46,4 @@ cwd:
 	echo ${PWD}
 
 python_modules:
-	cd ${AVOSEIS}
-	cd bin
-	mv sausageplot sausageplot.py
-	mv modgiseis modgiseis.py
-	mv dbploteventratewrapper dbploteventratewrapper.py
-	mv dbploteventrate dbploteventrate.py
-	mv daily2totaldb daily2totaldb.py
+	cd ${AVOSEIS}/bin; mv sausageplot sausageplot.py; mv modgiseis modgiseis.py; mv dbploteventratewrapper dbploteventratewrapper.py; mv dbploteventrate dbploteventrate.py; mv daily2totaldb daily2totaldb.py
