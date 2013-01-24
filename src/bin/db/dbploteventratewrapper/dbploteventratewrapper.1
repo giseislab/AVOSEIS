@@ -1,0 +1,113 @@
+# This is a template for a standard Antelope man page.  
+# After you've filled in the necessary fields, 
+# delete the lines beginning with "#"
+# with a command like: "sed '/^#/d'". 
+#
+# Look at your formatted man page after installing it, using man
+# or:
+#	 % nroff -man manpage.1 | more
+#
+# The fixman utility can review your manpage and suggest corrections 
+#
+# If you write a man page which describes several routines 
+# or commands, you should have a man "page" named after each routine or 
+# command.  One will have the actual description in it, the others will
+# just include the first with a line like:
+# .so man3/malloc.3v
+#
+# The following line is for man pages which use tbl or eqn; it 
+# causes man to run tbl and/or eqn on the man page.  If the man page
+# doesn't require these, the line should be deleted.
+'\" te
+#
+# Fill in TITLE in all caps -- SECTION# can be 1 3 3F or 5
+#
+.TH DBPLOTEVENTRATEWRAPPER 1
+#
+.SH DBPLOTEVENTRATEWRAPPER
+A Python tool for generating plots of earthquake counts, cumulative counts,
+and cumulative magnitudes.
+#
+.SH SYNOPSIS
+.nf
+#
+# Put the usage line for a command. 
+dbploteventratewrapper eventdb placesdb plots_directory
+# For a library, put the calling sequence and argument declarations for 
+# each subroutine.  Be sure to specify any necessary include files,
+# as well as the actual library name.  
+exact command (bold), options (square brackets bold, use | to separate 
+alternative options), arguments (square brackets italics)
+#
+.fi
+.SH DESCRIPTION
+#
+# Here you put the complete description. Use .SS for subsections, .LP
+# for paragraphs.
+# The names of programs and command options must be in bold. 
+# The names of parameters and arguments should be in italics.
+
+# add references to pdf documents, graphics and web pages using the notation:
+.IP "\fBgraphic:\fP<reference-to-graphic>"
+
+# insert references to pdf documents into man pages like this:
+.IP "\fBdoc:\fP<reference-to-pdf>"
+
+.SH FILES
+#
+# Describe input and output files (but not down to bits).
+#
+.SH ENVIRONMENT
+#
+# Describe any special environment variables
+#
+.SH PARAMETER FILE
+#
+# Describe any parameter file
+# This is not a place to put a copy of the parameter file; it's
+# supposed to be a description of each parameter in the file.
+#
+.SH EXAMPLE
+#
+# This section should contain an example that the user can follow
+# verbatim.  For a command, this should show a sample command line and output.
+# Use the same fonts as in \fBSYNOPSIS\fR. What the user types in should
+# be bold, and program response or output should be roman. All commands 
+# should be preceded by a representative UNIX prompt.
+#
+# For a library, you might show an example program (This is usually only 
+# done for more complex routines or packages.)
+#
+.in 2c
+.ft CW
+.nf
+.fi
+.ft R
+.in
+.SH RETURN VALUES
+#
+# Describe the return values for each subroutine or command.  The usual
+# is to return 0 for normal execution and something else for errors.
+#
+.SH LIBRARY
+#
+# Indicate the libraries which need to be linked in (for library routines only)
+# in the form of the ldlibs Makefile line, eg "-ldb -lstock -lm"
+#
+.SH ATTRIBUTES
+MT-Safe ?
+.SH DIAGNOSTICS
+#
+# Describe error messages and give cautionary advice.
+.SH "SEE ALSO"
+.nf
+#
+# List related manual entries and section (lowercase, bold)., eg "file(1)"
+# or related documents
+.fi
+.SH "BUGS AND CAVEATS"
+#
+# Describe any shortcomings of the programs, known bugs, or surprising 
+# results.
+.SH AUTHOR
+# Put the author's name here (person who wrote the code) (roman).

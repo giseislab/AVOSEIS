@@ -6,9 +6,22 @@ $database = "$datadir/dbalarm/alarm.alarms";
 $username = !isset($_REQUEST['username'])? NULL : $_REQUEST['username'];
 #$passwd = !isset($_REQUEST['passwd'])? NULL : $_REQUEST['passwd'];
 $ackkey = !isset($_REQUEST['ackkey'])? NULL : $_REQUEST['ackkey'];	
-$showall = !isset($_REQUEST['showall'])? 0 : $_REQUEST['showall'];
 $ackauth = !isset($_REQUEST['ackkey'])? NULL : $_REQUEST['ackkey'];	
-$boolShowAll = ($showall == "Show_All") ? 1 : 0;
+$submitButtonShowAcknowledgedAlarms = !isset($_REQUEST['submitButtonShowAcknowledgedAlarms'])? NULL : $_REQUEST['submitButtonShowAcknowledgedAlarms'];
+$submitButtonShowDiagnosticAlarms = !isset($_REQUEST['submitButtonShowDiagnosticAlarms'])? NULL : $_REQUEST['submitButtonShowDiagnosticAlarms'];
+
+# Toggle the choice displayed in the text boxes, else they will never change
+if ($submitButtonShowAcknowledgedAlarms == "Include Acknowledged") {
+	$submitButtonShowAcknowledgedAlarms = "Exclude Acknowledged";
+} else {
+	$submitButtonShowAcknowledgedAlarms = "Include Acknowledged";
+}
+if ($submitButtonShowDiagnosticAlarms == "Include Diagnostic") {
+	$submitButtonShowDiagnosticAlarms = "Exclude Diagnostic";
+} else {
+	$submitButtonShowDiagnosticAlarms = "Include Diagnostic";
+}
+
 $oldestTimeToShow = now() - 7 * 24 * 60 * 60; 
 $oldestTimeToShow = str2epoch('2009/02/22'); 	
 
@@ -55,11 +68,12 @@ restricted, however, alarm acknowledgments are tagged with your name.</p>
 
 	# THIS IS WHERE ALARMS ARE ACKNOWLEDGED
 	# open database
-	print "<p>Trying to open $database</p>\n";
+	#print "<p>Trying to open $database</p>\n";
 	$db = ds_dbopen_table($database, "r+") or die("<p>Could not open $database</p></body></html>");
 
 	if (!is_null($ackkey)) {
 		$db = dbsubset($db, "alarmkey == '$ackkey'") or die("<p>Could not subset $database</p></body></html>");
+
 		$nrecs = dbnrecs($db);
 
 		if ($nrecs > 0) {
@@ -85,14 +99,9 @@ restricted, however, alarm acknowledgments are tagged with your name.</p>
 </div>
 
 <form method="get">
-<hr/>
 <?php
-	$toggleshowall = "Show_All";
-	if ($boolShowAll == 1) {
-		$toggleshowall = "Show Unacknowledged Alarms Only";
-	}
-	echo "<input type=\"submit\" name=\"showall\" value=\"$toggleshowall\">";
-
+	echo "<input type=\"submit\" name=\"submitButtonShowAcknowledgedAlarms\" value=\"$submitButtonShowAcknowledgedAlarms\">";
+	echo "<input type=\"submit\" name=\"submitButtonShowDiagnosticAlarms\" value=\"$submitButtonShowDiagnosticAlarms\">";
 	echo "<input type=\"hidden\" name=\"username\" value=\"$username\" />";
 	try {
 		list ($oyear, $omonth, $oday, $ohour, $ominute) = epoch2YmdHM($oldestTimeToShow);
@@ -100,22 +109,23 @@ restricted, however, alarm acknowledgments are tagged with your name.</p>
 	catch (Exception $e) {
 		echo '<p>Caught exception ',$e->getMessage(), "\n";
 	}
-	print "<p>Showing alarms since $oyear/$omonth/$oday $ohour:$ominute UTC from $database</p>\n";
+	#print "<p>Showing alarms since $oyear/$omonth/$oday $ohour:$ominute UTC from $database</p>\n";
 	$tooOld = 0;
 
 
 ?>
-<hr/>
-<p>Each row in the following table corresponds to a separate alarm that was declared</p>
+<p>Each red row in the following table corresponds to a separate alarm that was declared</p>
 <p><b>Acknowledge alarms by clicking on the button in column 1 (Key)</b></p>
 
 <table border="1">
 
 <?php
 	$db = ds_dbopen_table($database, "r+") or die("<p>Could not open $database</p></body></html>");
-
-	if ($boolShowAll == 0) {
+	if ($_REQUEST['submitButtonShowAcknowledgedAlarms'] != "Include Acknowledged") {
 		$db = dbsubset($db, "acknowledged == 'n'");
+	}
+	if ($_REQUEST['submitButtonShowDiagnosticAlarms'] != "Include Diagnostic") {
+		$db = dbsubset($db, 'alarmclass != "diagnostic"') or die("<p>Could not subset $database</p></body></html>");
 	}
 	printf("<tr><th>Key</th><th>UTC Time</th><th>Alarm Class</th><th>Algorithm Name</th><th>Subject</th><th>Calldown...</th> </tr>\n");
 
