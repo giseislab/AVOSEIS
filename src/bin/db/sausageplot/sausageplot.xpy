@@ -69,7 +69,7 @@ def print_pixels(fighandle, axhandle, number_of_weeks_to_plot, NUMVOLCANOES):
 
 def main(argv=None):
         try:
-                opts, args = getopt.getopt(argv, 'fvh')
+                opts, args = getopt.getopt(argv, 'fvhlpw')
                 if len(args)<6:
                         usage()
                         sys.exit(2)
@@ -89,6 +89,8 @@ def main(argv=None):
 	# Command line switches
         verbose = False
 	fastmode = False
+	plotLegend = False
+	plotPercentiles = False
         for o, a in opts:
                 if o == "-v":
                         verbose = True
@@ -98,12 +100,21 @@ def main(argv=None):
 		elif o in ("-f"):
 			fastmode = True 
 			# fastmode will only base percentiles on the reporting period, not the full history
+		elif o in ("-l"):
+			plotLegend = True 
+			# plots the colorbar legend
+		elif o in ("-p"):
+			plotPercentiles = True 
+			# plots the percentiles figure
+		elif o in ("-w"):
+			addWatermark = True 
+			# add a watermark to the sausage plot
                 else:
                         assert False, "unhandled option"
 
 	# Will percentiles figures be plotted?
 	bool_plot_percentiles_figure = False
-	if (number_of_weeks_to_plot == weeksagofilter) and not (fastmode):
+	if (number_of_weeks_to_plot == weeksagofilter) and (plotPercentiles) and not (fastmode):
 		bool_plot_percentiles_figure = True 
 		print "Percentiles figure will be produced"
 
@@ -332,12 +343,15 @@ def main(argv=None):
 	fig2ax1.set_ylim([-number_of_weeks_to_plot - 0.5, -0.5])
 	plt.setp( fig2ax1.get_yticklabels(), fontsize=10*SCALEFACTOR )
 
-	print "Adding watermark"
-	fig2ax1.text(NUMVOLCANOES/2, -number_of_weeks_to_plot/2, 'PROTOTYPE', fontsize=75*SCALEFACTOR, color='gray', ha='center', va='center', rotation=60, alpha=0.5)
+	if (addWatermark):
+		print "Adding watermark"
+		fig2ax1.text(NUMVOLCANOES/2, -number_of_weeks_to_plot/2, 'PROTOTYPE', fontsize=75*SCALEFACTOR, color='gray', ha='center', va='center', rotation=60, alpha=0.5)
 
 	print "Saving figure"
 	outfile = "%s/%s" % (outdir, pngfile)
 	fig2.savefig(outfile, dpi=dpi)
+	pdffile = "%s/%s" % (outdir, pngfile + ".pdf")
+	fig2.savefig(pdffile, dpi=dpi)
 
 	print "Removing whitespace"
 	im = Image.open(outfile)
@@ -345,30 +359,31 @@ def main(argv=None):
 	im.save(outfile) 
 	
 	# Legend
-	print "\nPlotting legend"
-	fig3 = plt.figure()
-	fig3.set_dpi(dpi)
-	fig3.set_size_inches((10.0,10.0),forward=True)
-	fig3ax2 = fig3.add_axes([0.1, 0.85-axes_height/2, axes_width/20, axes_height/2])
-	a = np.linspace(0, 1, 256).reshape(-1,1)
-	fig3ax2.imshow(a, aspect='auto', cmap=plt.get_cmap(colormapname), origin='lower')
-	fig3ax2.set_xticks([])
-	fig3ax2.set_yticks(np.arange(0,256+1,256/(2*(MAXMAGCOLORBAR-MINMAGCOLORBAR)))) # the +1 is to label the top of the range since arange stops at 256-51.2 otherwise
-	ytl = np.arange(MINMAGCOLORBAR, MAXMAGCOLORBAR+0.1, 0.5)
-	ytl_list = list()
-	for index in range(len(ytl)):
-		ytl_list.append("%.1f" % ytl[index])
-	fig3ax2.set_yticklabels(ytl_list)
-	fig3ax2.set_ylabel('Cumulative\nMagnitude')
+	if (plotLegend):
+		print "\nPlotting legend"
+		fig3 = plt.figure()
+		fig3.set_dpi(dpi)
+		fig3.set_size_inches((10.0,10.0),forward=True)
+		fig3ax2 = fig3.add_axes([0.1, 0.85-axes_height/2, axes_width/20, axes_height/2])
+		a = np.linspace(0, 1, 256).reshape(-1,1)
+		fig3ax2.imshow(a, aspect='auto', cmap=plt.get_cmap(colormapname), origin='lower')
+		fig3ax2.set_xticks([])
+		fig3ax2.set_yticks(np.arange(0,256+1,256/(2*(MAXMAGCOLORBAR-MINMAGCOLORBAR)))) # the +1 is to label the top of the range since arange stops at 256-51.2 otherwise
+		ytl = np.arange(MINMAGCOLORBAR, MAXMAGCOLORBAR+0.1, 0.5)
+		ytl_list = list()
+		for index in range(len(ytl)):
+			ytl_list.append("%.1f" % ytl[index])
+		fig3ax2.set_yticklabels(ytl_list)
+		fig3ax2.set_ylabel('Cumulative\nMagnitude')
 
-	print "Saving legend"
-	colorbarfile = "%s/colorbar.png" % (outdir)
-	fig3.savefig(colorbarfile, dpi=dpi)
+		print "Saving legend"
+		colorbarfile = "%s/colorbar.png" % (outdir)
+		fig3.savefig(colorbarfile, dpi=dpi)
 
-	print "Removing whitespace from legend"
-	im = Image.open(colorbarfile)
-	im = modgiseis.trim(im)
-	im.save(colorbarfile) 
+		print "Removing whitespace from legend"
+		im = Image.open(colorbarfile)
+		im = modgiseis.trim(im)
+		im.save(colorbarfile) 
 
 	# Clean up	
 	print "Cleaning up"
