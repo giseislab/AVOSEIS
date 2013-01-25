@@ -20,8 +20,6 @@ Pf_restart      &Tbl{
 
 Defines &Arr{
 ANTELOPE	PRESERVE
-ORBWF      	:6510  
-ORB_AEIC         kobuk:6517
 DB		db/archive
 DBALARM         dbalarm/alarm
 SITE_DB		PRESERVE
@@ -32,8 +30,6 @@ PUBLICWEBPRODUCTS  	PRESERVE
 TOTALDB         /Seis/Kiska4/picks/Total/Total
 }
 
-# /usr/sfw/bin			required for convert and ps2pdf called by make_recent_event_list
-# /opt/free/gmt/bin		required for images in make_recent_event_list
 Env     &Arr{
 HOST			PRESERVE
 ANTELOPE		$ANTELOPE
@@ -50,7 +46,6 @@ SCHEMA_DIR		PRESERVE
 SHELL			PRESERVE
 PERL5LIB                PRESERVE
 DB               	$DB
-#ORBWF              	$ORBWF
 SITE_DB     		$SITE_DB
 EDITOR			PRESERVE
 DBALARM                 $DBALARM
@@ -74,14 +69,6 @@ Failure_retry_period    	3600    # 1 hour
 
 Shutdown_order &Tbl{
 dbwatchtable
-dbt2orbpf
-orb2dbt
-orbevproc
-orbgenloc
-orbassoc
-orbdetect
-orb2ew
-orb2orb
 orbserver
 }
 
@@ -115,45 +102,24 @@ cleanlogs LOCAL 5,17,29,41,53 * * * * truncate_log -m 200 -r logs/*
 # Show a list of needed patches
 patches LOCAL 4 3 * * 0  antelope_update -l -n -v -m $LOGNAME 
 
-copy_Pffiles UTC 37 * * * * rsync pf/* $INTERNALWEBPRODUCTS/pf 
-
-######################## XML PRODUCTS FOR GOOGLE MAPS ###################################
-# Seth's admin/map 
-xml_total UTC 6,21,36,51 * * * * db2googlemaps -o -f -e 'time>(now()-7*86400)' $TOTALDB > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_avo.xml
-xml_stations UTC 9 * * * * db2googlemaps -s -f $SITE_DB > $PUBLICWEBPRODUCTS/kml/stations_lastweek.xml
+#copy_Pffiles UTC 37 * * * * rsync pf/* $INTERNALWEBPRODUCTS/pf 
 
 ########################## MIKE'S WEB PRODUCTS ######################################################
-# Extract recently located AVO events & make the following products:
-# Public - Google Earth and Google Maps + event histogram:
-# - kml/AVO_recentEQ.kml - kml file of origins & stations
-# - kml/AVO_recentEQ.xml - xml file of origins
-# - kml/AVO_recentEQ_sites.xml - xml file of station coordinates
-# - images/AVO_recentEQ_histogram 
-# Internal - these appear to be for VALVE (IF SO, DROP THEM!!!):
-# - AVOEQ/db_AVO_recentEQ - the output database of last 31 days of events
-# - AVOEQ/AVO_recentEQ_origins.txt - Mike's text list of recent origins
-# - AVOEQ/AVO_recentEQ_arrivals.txt - Mike's text list of recent arrivals
-# - AVOEQ/update_time.txt - when it last ran?
-# - AVOEQ/responses.html - list of stations and links to their response files
-make_recent_event_list LOCAL 30 * * * * make_recent_event_list
+updatepublicmaps LOCAL 30 * * * * updatepublicmaps
+avo_event_histogram LOCAL 35 * * * * avo_hist
 
 # Summarise this database
-summarise_counts_analystdb UTC 25 0,4,8,12,16,20 * * * weeklysummarycounts2html $TOTALDB 'AVO analyst-reviewed catalog'
+#summarise_counts_analystdb UTC 25 0,4,8,12,16,20 * * * weeklysummarycounts2html $TOTALDB 'AVO analyst-reviewed catalog'
 
 # Diagnostic monitoring - check databases, processes, connectivity etc
-diagnostics UTC 15 * * * * diagnosticMonitoring
-diagnostics_backup UTC 19 * * * * diagnosticMonitoring_backup
-
-################ CHINOOK ONLY
+#diagnostics UTC 15 * * * * diagnosticMonitoring
+#diagnostics_backup UTC 19 * * * * diagnosticMonitoring_backup
 
 # Re-create the complete AVO catalog in Datascope CSS3.0, and update the Datascope derived VOLC2 XML Files
 aqms2totaldb UTC 5 * * * * aqms2totaldb
 
 # Create a separate version of VOLC2 XML files from VALVE
 valve2volc2 UTC 6 * * * * volcanoviews2volc2
-
-# GMT is not installed on raven, so this will fail
-avo_event_histogram LOCAL 35 * * * * avo_hist
 
 # THE SAUSAGE DIAGRAM
 sausageplot_few LOCAL 55 9,18 * * * sausageplot.py $TOTALDB ~/src/AVOSEIS/src/data/databases/places/volcanoes_avo /usr/local/mosaic/AVO/avoseis/counts weekly_report.png 13 1 
@@ -208,8 +174,6 @@ Buttons &Tbl{         # Use {} instead of '' to conform to tcl's quoting
 dbe_archive	dbe $DB 
 dbe_site	dbe $SITE_DB
 dbe_alarm  	dbe $DBALARM
-ORB_Clients  	xterm -geometry 132x25 -e orbstat -c $ORBWF 30
-ORB_Sources  	xterm -geometry 132x60 -e orbstat -s $ORBWF 30
 }
 
 # Other files to add to edit menu
@@ -228,7 +192,7 @@ Parameter_files &Arr{   # if the parameter file doesn't follow the convention
 orbtasks &Arr{
 }
 
-title		AVO Real-Time Products on $HOST   # alternate location to specify rtm title
+title		AVO Real-Time Products on chinook   # alternate location to specify rtm title
 network_code    AV		# network code for rtreport and rtsys
 
 # following are used by rtreport
