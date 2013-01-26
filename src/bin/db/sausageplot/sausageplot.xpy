@@ -91,6 +91,7 @@ def main(argv=None):
 	fastmode = False
 	plotLegend = False
 	plotPercentiles = False
+	addWatermark = False
         for o, a in opts:
                 if o == "-v":
                         verbose = True

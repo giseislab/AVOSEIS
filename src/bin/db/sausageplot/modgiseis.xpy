@@ -52,7 +52,7 @@ def dbsubset2db(dbpath, subset_expr, subsetdbpath):
 	n = dborigin.nrecs()
 	if n>0:	
 		# ask to remove database if it already exists
-		remove_database(subsetdbpath)
+		remove_database(subsetdbpath, False)
 		print "unjoin to %s" % subsetdbpath
 		dborigin.unjoin(subsetdbpath)
 	else:
