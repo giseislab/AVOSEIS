@@ -15,11 +15,14 @@ from PIL import Image
 ######################################################
 
 def usage():
-        print 'Usage: '+sys.argv[0]+' [-fhv] <catalogpath> <dbplacespath> <outputdir> <pngfile> <number_of_weeks_to_plot> <weeksagofilter>'
+        print 'Usage: '+sys.argv[0]+' [-fhvlpw] <catalogpath> <dbplacespath> <outputdir> <pngfile> <number_of_weeks_to_plot> <weeksagofilter>'
         print """
 	[-f] fast mode - bases percentiles on reporting period only, not full history
 	[-h] help
 	[-v] verbose mode
+	[-l] add legend
+	[-p] plot percentiles
+	[-w] add watermark
         <catalogpath> must have an origin and event table present
         <dbplacespath> is a list of volcanoes and their lat, lon, elev and radii in places_avo_1.3 schema format
 	<outputdir> is the directory to save <pngfile> to
@@ -159,7 +162,7 @@ def main(argv=None):
 	# we will create a temporary subset database with just the last number_of_weeks_to_plot weeks
 	# This will be used to see if the volcano will appear in the final plot
 	# (In fast mode, it will also be used to compute percentiles - but they will be a bit meaningless)
-	fastcatalogpath = "/tmp/weeklysummary_fastdb";
+	fastcatalogpath = "/tmp/weeklysummary_fastdb%f" % time.time();
 	modgiseis.dbsubset2db(catalogpath, "time >= %f" % epoch_startOfReportingPeriod, fastcatalogpath)
 	if fastmode:
 		catalogpath = fastcatalogpath

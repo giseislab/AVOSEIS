@@ -123,7 +123,7 @@ valve2volc2 UTC 6 * * * * volcanoviews2volc2
 
 # THE SAUSAGE DIAGRAM
 sausageplot_few LOCAL 55 9,18 * * * sausageplot.py $TOTALDB ~/src/AVOSEIS/src/databases/places/volcanoes_avo /usr/local/mosaic/AVO/avoseis/counts weekly_report.png 13 1 
-sausageplot_all LOCAL 57 9,18 * * * sausageplot.py $TOTALDB ~/src/AVOSEIS/src/databases/places/volcanoes_avo /usr/local/mosaic/AVO/avoseis/counts weekly_report_alt.png 13 13 
+sausageplot_all LOCAL 25 9,18 * * * sausageplot.py $TOTALDB ~/src/AVOSEIS/src/databases/places/volcanoes_avo /usr/local/mosaic/AVO/avoseis/counts weekly_report_alt.png 13 13 
 
 # COUNTS / EVENTRATE  PLOTS
 counts_plots LOCAL 35 12,18 * * * dbploteventratewrapper.py $TOTALDB ~/src/AVOSEIS/src/databases/places/volcanoes_avo /usr/local/mosaic/AVO/avoseis/counts
