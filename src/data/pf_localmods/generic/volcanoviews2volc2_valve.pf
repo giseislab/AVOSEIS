@@ -1,0 +1,44 @@
+volcanoviews &Tbl{
+Wrangell 62.0057 -144.0194 8 
+COOK_INLET 60.0 -152.5 7 
+Spurr 61.2989 -152.2539 9 
+Redoubt 60.4852 -152.7438 10 
+Iliamna 60.0319 -153.0918 10 
+Augustine 59.3626 -153.435 11 
+Fourpeaked 58.7703 -153.6738 10 
+KATMAI_REGION 58.3 -154.8 8 
+Snowy 58.3336 -154.6859 10 
+Griggs 58.3572 -155.1037 11 
+Katmai 58.279 -154.9533 11 
+Novarupta 58.2654 -155.1591 11 
+Trident 58.235 -155.104 11 
+Martin 58.1692 -155.3566 11 
+Mageik 58.1946 -155.2544 11 
+Ugashik-Peulik 57.7503 -156.37 10 
+Aniakchak 56.88149 -158.15456 10 
+Veniaminof 56.1979 -159.3931 9 
+COLD_BAY 55.4 -161.5 8 
+Pavlof 55.4173 -161.8937 10 
+Dutton 55.1867 -162.2744 10 
+UNIMAK_ISLAND 54.7 -163.9 9 
+Shishaldin 54.7554 -163.9711 10 
+Westdahl 54.5171 -164.6476 10 
+Akutan 54.1331 -165.9856 10 
+Makushin 53.8899 -166.925 10 
+Okmok 53.397 -168.166 10 
+Cleveland 52.8222 -169.945 8 
+Korovin 52.3817 -174.1653 10 
+Great_Sitkin 52.0765 -176.1109 10 
+Kanaga 51.9242 -177.1623 10 
+Tanaga 51.884 -178.143 10 
+Gareloi 51.7892 -178.796 10 
+Semisopochnoi 51.9288 179.5977 10 
+Little_Sitkin 51.9531 178.5356 10 
+All 55.5 -164.0 5 
+}
+source	Datascope
+valvejsp	http://avosouth.wr.usgs.gov/valve3.4/valve3.jsp
+hypocentersDatabaseName	avo_seismic_hypocenters
+eventdb	/Seis/Kiska4/picks/Total/Total
+stationdb	/avort/oprun/dbmaster/master_stations
+xmldir	internalwebproducts/volc2/xmlfiles/avo_datascope
