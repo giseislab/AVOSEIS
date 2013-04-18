@@ -39,6 +39,9 @@ Little_Sitkin 51.9531 178.5356 10
 source	VALVE
 valvejsp	http://avosouth.wr.usgs.gov/valve3.4/valve3.jsp
 hypocentersDatabaseName	avo_seismic_hypocenters
-eventdb	/Seis/Kiska4/picks/Total/Total
+#eventdb	/Seis/Kiska4/picks/Total/Total
+eventdb	/Seis/catalogs/avo/Total/Total
 stationdb	/avort/oprun/dbmaster/master_stations
 xmldir	internalwebproducts/volc2/xmlfiles/avo_valve
+
+pf_revision_time 1359039397
