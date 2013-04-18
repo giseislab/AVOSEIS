@@ -1,0 +1,3 @@
+ttgridwrapper -p ttgrid_cwake.pf
+# This will create orbassoc_cwake.pf, orbdetect_volcano_stations.pf, dbmaster/volcano_stations, grids/*, 
+# orbdetect_volcano_stations should be pasted into orbdetect_optimised.pf

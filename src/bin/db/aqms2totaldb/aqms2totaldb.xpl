@@ -9,13 +9,16 @@
 use strict;
 use warnings;
 use Datascope;
+use Env;
 
 # Get the program name
 our $PROG_NAME;
 ($PROG_NAME = $0) =~ s(.*/)();  # PROG_NAME becomes $0 minus any path
-
+my $monthlydb = $ENV{'MONTHLYDB');
+die("Cannot write to $monthlydb\n") unless (-w $monthlydb);
 my $yyyy = epoch2str(now(), "%Y");
-my $dir = "/Seis/Kiska4/picks/$yyyy/database";
+my $dir = "$monthlydb/$yyyy";
+mkdir $dir unless (-d $dir);
 my $mm = epoch2str(now(), "%m");
 my $monthdb = "db$yyyy"."_$mm";
 my $startdate = "$yyyy/$mm/01";
@@ -33,6 +36,6 @@ if (-e $dir) {
 } else { 
 	print "$dir does not exist\n";
 }
-print("make_total_database\n");
+print("Calling make_total_database.\n");
 system("make_total_database");
 system("volcanoviews2volc2 -p pf/volcanoviews2volc2_datascope.pf");

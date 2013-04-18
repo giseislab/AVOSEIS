@@ -1,0 +1,260 @@
+#################
+# AVOSEIS RTEXEC.PF
+#################
+
+Processes &Tbl{
+
+# Alarms
+watchalarmstable	dbwatchtable -v -p pf/dbwatchtable_newalarm.pf $DBALARM alarms
+
+}
+
+Run     &Arr{
+
+# Alarms
+watchalarmstable       			yes 
+}
+
+Pf_restart      &Tbl{
+}
+
+Defines &Arr{
+ANTELOPE	PRESERVE
+ORBWF      	:6510  
+ORB_AEIC         kobuk:6517
+DB		db/archive
+DBALARM         dbalarm/alarm
+SITE_DB		dbmaster/master_stations
+ELOG_MAXMSG 	0
+WARNINGLOG      logs/warnings.log       # This is for diagnostic messages for email, alarms, webpage etc. See carlstatrig2antelope.
+PUBLICWEBPRODUCTS	/usr/local/mosaic/AVO/avoseis/public
+INTERNALWEBPRODUCTS	/usr/local/mosaic/AVO/avoseis/private
+TOTALDB         /Seis/catalogs/avo/Total/Total
+MONTHLYDB         /Seis/catalogs/avo/monthly
+}
+
+Env     &Arr{
+HOST			PRESERVE
+ANTELOPE		$ANTELOPE
+AVOSEIS                 PRESERVE
+PATH                    PRESERVE
+PFPATH			PRESERVE
+HOME                    PRESERVE
+TZ                      PRESERVE
+PWD                     PRESERVE
+LOGNAME                 PRESERVE
+TERM                    PRESERVE || xterm
+DISPLAY                 PRESERVE || :0
+SCHEMA_DEFAULT          css3.0
+SCHEMA_DIR		PRESERVE
+SHELL			PRESERVE
+PERL5LIB                PRESERVE
+DB               	$DB
+ORBWF              	$ORBWF
+SITE_DB     		$SITE_DB
+EDITOR			PRESERVE
+TOTALDB         	$TOTALDB
+MONTHLYDB         	$MONTHLYDB
+INTERNALWEBPRODUCTSURL	http://giseis.alaska.edu/AVO/avoseis/private
+PUBLICWEBPRODUCTSURL	http://giseis.alaska.edu/AVO/avoseis/public
+PUBLICWEBPRODUCTS	$PUBLICWEBPRODUCTS
+INTERNALWEBPRODUCTS	$INTERNALWEBPRODUCTS
+#
+# Soon to become obsolete
+KMLDIR  		$PUBLICWEBPRODUCTS/kml
+DBALARM                 $DBALARM
+#
+# Obsolete
+#DBT_OPTIMISED		events/optimised/events
+#TOTAL_RTDB         	$TOTAL_RTDB
+#DATAPATH		$ANTELOPE/data:$AVOSEIS/data:/home/iceweb/src/cwake
+#VELOCITY_MODEL_DATABASE vmodel_avo
+#DBSWARM		dbswarm/swarm_tracking
+#
+# Needed for spectrograms
+MATLAB_ANTELOPE		/opt/antelope/5.2-64/local/data/matlab/2010a/antelope/
+}
+
+# Start/restart parameters
+Start_period			10      
+Minimum_period_between_starts   10      
+Failure_threshold       	300     # 5 minutes
+Failure_repetitions     	5       
+Failure_retry_period    	3600    # 1 hour
+
+Shutdown_order &Tbl{
+dbwatchtable
+dbt2orbpf
+orb2dbt
+orbevproc
+orbgenloc
+orbassoc
+orbdetect
+orb2ew
+orb2orb
+orbserver
+}
+
+Shutdown_when_task_dies	&Arr{
+}
+
+startup_shutdown_email	mitch@giseis.alaska.edu, glenn@giseis.alaska.edu
+
+# resource problems
+status_email		glenn@giseis.alaska.edu
+
+Startup_tasks   &Tbl{
+}
+
+Shutdown_tasks  &Tbl{
+}
+
+max_cron_gap    3600 
+
+crontab &Arr{
+#  task    UTC/LOCAL Min Hr Day Month DayOfWeek  Command
+##################### GENERAL ADMIN ###############################
+# report on rt system status and data return
+## sysreport UTC 0 3 * * * rtsys -v -m "glenn@giseis.alaska.edu" -p
+## datareport UTC 30 3 * * * rtreport -z -v -m "glenn@giseis.alaska.edu"
+# remove files which have been idle for 7 days (-n option mentions but does not remove)
+cleartmp LOCAL 5 1 * * * cleartmp -n -v $PWD/logs 7
+
+# keep all files in logs directory to less than 200 kB
+cleanlogs LOCAL 5,17,29,41,53 * * * * truncate_log -m 200 -r logs/*
+# Show a list of needed patches
+patches LOCAL 4 3 * * 0  antelope_update -l -n -v -m $LOGNAME 
+
+copy_Pffiles UTC 37 * * * * rsync pf/* $INTERNALWEBPRODUCTS/pf 
+
+######################## XML PRODUCTS FOR GOOGLE MAPS ###################################
+# Seth's admin/map 
+xml_total UTC 6,21,36,51 * * * * db2googlemaps -o -f -e 'time>(now()-7*86400)' $TOTALDB > $PUBLICWEBPRODUCTS/kml/seismicity_reviewed_avo.xml
+xml_stations UTC 9 * * * * db2googlemaps -s -f $SITE_DB > $PUBLICWEBPRODUCTS/kml/stations_lastweek.xml
+
+########################## MIKE'S WEB PRODUCTS ######################################################
+# Extract recently located AVO events & make the following products:
+# Public - Google Earth and Google Maps + event histogram:
+# - kml/AVO_recentEQ.kml - kml file of origins & stations
+# - kml/AVO_recentEQ.xml - xml file of origins
+# - kml/AVO_recentEQ_sites.xml - xml file of station coordinates
+# - images/AVO_recentEQ_histogram 
+# Internal - these appear to be for VALVE (IF SO, DROP THEM!!!):
+# - AVOEQ/db_AVO_recentEQ - the output database of last 31 days of events
+# - AVOEQ/AVO_recentEQ_origins.txt - Mike's text list of recent origins
+# - AVOEQ/AVO_recentEQ_arrivals.txt - Mike's text list of recent arrivals
+# - AVOEQ/update_time.txt - when it last ran?
+# - AVOEQ/responses.html - list of stations and links to their response files
+make_recent_event_list LOCAL 30 * * * * make_recent_event_list
+
+# Summarise this database
+summarise_counts_analystdb UTC 25 0,4,8,12,16,20 * * * weeklysummarycounts2html $TOTALDB 'AVO analyst-reviewed catalog'
+
+# Diagnostic monitoring - check databases, processes, connectivity etc
+diagnostics UTC 15 * * * * diagnosticMonitoring
+diagnostics_backup UTC 19 * * * * diagnosticMonitoring_backup
+
+################ CHINOOK ONLY
+
+# Re-create the complete AVO catalog in Datascope CSS3.0, and update the Datascope derived VOLC2 XML Files
+aqms2totaldb UTC 5 * * * * aqms2totaldb
+
+# Create a separate version of VOLC2 XML files from VALVE
+valve2volc2 UTC 6 * * * * volcanoviews2volc2
+
+# GMT is not installed on raven, so this will fail
+avo_event_histogram LOCAL 35 * * * * avo_hist
+
+############### RAVEN ONLY - ALL PYTHON
+
+## THE SAUSAGE DIAGRAM
+
+## weekly_report LOCAL 55 9,18 * * * ~/src/python_gt/AVOSEIS_PYTHON/weeklysummary.py $TOTALDB ~/src/python_gt/AVOSEIS_PYTHON/volcanoes_avo /usr/local/mosaic/AVO/avoseis/counts weekly_report.png 13 1 
+
+## weekly_report_alt LOCAL 57 9,18 * * * ~/src/python_gt/AVOSEIS_PYTHON/weeklysummary.py $TOTALDB ~/src/python_gt/AVOSEIS_PYTHON/volcanoes_avo /usr/local/mosaic/AVO/avoseis/counts weekly_report_alt.png 13 13 
+
+# COUNTS / EVENTRATE  PLOTS
+
+## counts_plots LOCAL 35 12,18 * * * ~/src/python_gt/AVOSEIS_PYTHON/dbploteventratewrapper.py $TOTALDB ~/src/python_gt/AVOSEIS_PYTHON/volcanoes_avo /usr/local/mosaic/AVO/avoseis/counts
+
+#############################################################################################
+}
+
+Time_to_die     30
+
+Limit   &Arr{
+cputime         unlimited
+filesize        unlimited
+descriptors     unlimited       # large for orb2db
+stacksize       8388608         # unlimited is too big: can't have larger orbs
+datasize        unlimited
+coredumpsize    unlimited       # so that we may get a core dump
+vmemoryuse      unlimited
+}
+
+umask	002
+
+Database        rtsys/rtsys
+
+email_incident_reports  mitch@giseis.alaska.edu,glenn@giseis.alaska.edu
+
+include_corefile        no
+
+Chatter_limit   7200    # minimum gap between messages
+Min_vmfree        50    # Mbytes
+
+
+####################################################################
+# rtm Parameters
+# The following parameters are not used directly by rtexec, but
+# are instead read and used by rtm.
+####################################################################
+
+disks   &Tbl{
+# name    file  minfree_Mbytes min_kinodes description
+root      /     20   1  root partition: required by many unix tasks
+waveforms db/   3000  1   waveform files
+orb 	  orb/  3000  1   orb files
+tmp       /tmp  20   1  tmp = swap: indicates memory usage
+run      .     20   1  log files,dbquakes database
+}
+
+Buttons &Tbl{         # Use {} instead of '' to conform to tcl's quoting
+dbe_archive	dbe $DB 
+dbe_site	dbe $SITE_DB
+dbe_alarm  	dbe $DBALARM
+ORB_Clients  	xterm -geometry 132x25 -e orbstat -c $ORBWF 30
+ORB_Sources  	xterm -geometry 132x60 -e orbstat -s $ORBWF 30
+}
+
+# Other files to add to edit menu
+Edit_files &Tbl{
+}
+
+Parameter_files &Arr{   # if the parameter file doesn't follow the convention
+                        # of being named after either the task name or 
+                        # the program name, it should be specified here, so
+                        # that rtm can allow editing it.
+}
+
+# The following are tasks which talk to the data orbserver, and
+# which therefore should have an input and output bar on the 
+# Processing Tasks panel of rtm.
+orbtasks &Arr{
+}
+
+title		AVO Real-Time Products on $HOST   # alternate location to specify rtm title
+network_code    AV		# network code for rtreport and rtsys
+
+# following are used by rtreport
+
+minimum_days_data_space_left		3
+minimum_Mbytes_database_space_left	2000
+maximum_Mbytes_logs_space_used		100
+minimum_Mbytes_root_space_left		100
+
+
+pf_revision_time 1180591796
+
+
+
