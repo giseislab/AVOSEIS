@@ -51,8 +51,19 @@ our $subset_expression = "";
 $subset_expression = $ARGV[3] if ($#ARGV>2);
 
 # INPUT DATABASE
-our $dbin = "/Seis/Kiska4/picks/Total/Total";
-$dbin = $opt_i if $opt_i;
+our $dbin;
+use Env;
+if (exists $ENV{'TOTALDB')) {
+
+};
+if ($opt_i) {
+	$dbin = $opt_i;
+} elsif (exists $ENV{'TOTALDB'}) {
+	$dbin = $ENV{'TOTALDB'};
+} else {
+	die("Input database not defined\n"); 
+}
+die("Cannot find $dbin\n") unless (-e $dbin);
 
 # SWITCH START AND END DATE IF NECESSARY
 my $dt = str2epoch($end_date)-str2epoch($start_date);
