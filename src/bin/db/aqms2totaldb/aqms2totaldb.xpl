@@ -14,7 +14,7 @@ use Env;
 # Get the program name
 our $PROG_NAME;
 ($PROG_NAME = $0) =~ s(.*/)();  # PROG_NAME becomes $0 minus any path
-my $monthlydb = $ENV{'MONTHLYDB');
+my $monthlydb = $ENV{MONTHLYDB};
 die("Cannot write to $monthlydb\n") unless (-w $monthlydb);
 my $yyyy = epoch2str(now(), "%Y");
 my $dir = "$monthlydb/$yyyy";
@@ -38,4 +38,4 @@ if (-e $dir) {
 }
 print("Calling make_total_database.\n");
 system("make_total_database");
-system("volcanoviews2volc2 -p pf/volcanoviews2volc2_datascope.pf");
+#system("volcanoviews2volc2 -p pf/volcanoviews2volc2_datascope.pf");

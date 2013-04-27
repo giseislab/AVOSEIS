@@ -15,14 +15,11 @@ from PIL import Image
 ######################################################
 
 def usage():
-        print 'Usage: '+sys.argv[0]+' [-fhvlpw] <catalogpath> <dbplacespath> <outputdir> <pngfile> <number_of_weeks_to_plot> <weeksagofilter>'
+        print 'Usage: '+sys.argv[0]+' [-fhv] <catalogpath> <dbplacespath> <outputdir> <pngfile> <number_of_weeks_to_plot> <weeksagofilter>'
         print """
 	[-f] fast mode - bases percentiles on reporting period only, not full history
 	[-h] help
 	[-v] verbose mode
-	[-l] add legend
-	[-p] plot percentiles
-	[-w] add watermark
         <catalogpath> must have an origin and event table present
         <dbplacespath> is a list of volcanoes and their lat, lon, elev and radii in places_avo_1.3 schema format
 	<outputdir> is the directory to save <pngfile> to
@@ -72,8 +69,10 @@ def print_pixels(fighandle, axhandle, number_of_weeks_to_plot, NUMVOLCANOES):
 
 def main(argv=None):
         try:
-                opts, args = getopt.getopt(argv, 'fvhlpw')
+                opts, args = getopt.getopt(argv, 'fvh')
                 if len(args)<6:
+			print "only got %d command line arguments, expected 6" % (len(args))
+			print argv
                         usage()
                         sys.exit(2)
         except getopt.GetoptError,e:
@@ -83,18 +82,23 @@ def main(argv=None):
 
 	# Command line arguments
         catalogpath = args[0]
+	if not os.path.exists(catalogpath):
+		sys.exit("catalogpath does not exist")
         dbplacespath = args[1]
+	if not os.path.exists(dbplacespath):
+		sys.exit("dbplacespath does not exist")
         outdir = args[2]
+	if not os.path.exists(outdir):
+		sys.exit("outdir does not exist")
 	pngfile = args[3]
 	number_of_weeks_to_plot = int(args[4])
 	weeksagofilter = int(args[5])
+	if (number_of_weeks_to_plot < weeksagofilter):
+		sys.exit("weeksagofilter should be <= number_of_weeks_to_plot")
 
 	# Command line switches
         verbose = False
 	fastmode = False
-	plotLegend = False
-	plotPercentiles = False
-	addWatermark = False
         for o, a in opts:
                 if o == "-v":
                         verbose = True
@@ -104,21 +108,12 @@ def main(argv=None):
 		elif o in ("-f"):
 			fastmode = True 
 			# fastmode will only base percentiles on the reporting period, not the full history
-		elif o in ("-l"):
-			plotLegend = True 
-			# plots the colorbar legend
-		elif o in ("-p"):
-			plotPercentiles = True 
-			# plots the percentiles figure
-		elif o in ("-w"):
-			addWatermark = True 
-			# add a watermark to the sausage plot
                 else:
                         assert False, "unhandled option"
 
 	# Will percentiles figures be plotted?
 	bool_plot_percentiles_figure = False
-	if (number_of_weeks_to_plot == weeksagofilter) and (plotPercentiles) and not (fastmode):
+	if (number_of_weeks_to_plot == weeksagofilter) and not (fastmode):
 		bool_plot_percentiles_figure = True 
 		print "Percentiles figure will be produced"
 
@@ -143,8 +138,8 @@ def main(argv=None):
 	dnum_startOfReportingPeriod = datenumnow - (7 * weeksagofilter)
 	epoch1989 = 599616000
 	if verbose:
-		print timenowstr
-		print epoch_startOfReportingPeriod
+		print "timenowstr = " + timenowstr
+		print "epoch_startOfReportingPeriod = %f " % epoch_startOfReportingPeriod
 
 	# Load the list of volcano data
 	dictplaces = modgiseis.readplacesdb(dbplacespath)
@@ -153,6 +148,10 @@ def main(argv=None):
 	lon = dictplaces['lon']
 	radius = dictplaces['radius']
 	n = place.__len__()
+	if verbose:
+		print "number of places = {}".format(n)
+	
+	# Initialize variables
 	VOLCANO = list()
 	BIN_EDGES = list()
 	COUNTS = list()
@@ -162,8 +161,14 @@ def main(argv=None):
 	# we will create a temporary subset database with just the last number_of_weeks_to_plot weeks
 	# This will be used to see if the volcano will appear in the final plot
 	# (In fast mode, it will also be used to compute percentiles - but they will be a bit meaningless)
-	fastcatalogpath = "/tmp/weeklysummary_fastdb%f" % time.time();
+	fastcatalogpath = "/tmp/weeklysummary_fastdb";
 	modgiseis.dbsubset2db(catalogpath, "time >= %f" % epoch_startOfReportingPeriod, fastcatalogpath)
+	if os.path.exists(fastcatalogpath):
+		print "%s created successfully" % (fastcatalogpath)
+	else:
+		print "%s not created: this is usually because there were no earthquakes in the past %d weeks in %s" % (fastcatalogpath, weeksagofilter, catalogpath)
+		print "%s was last updated at %s" % (catalogpath, time.ctime(os.path.getmtime(catalogpath)))
+		sys.exit()
 	if fastmode:
 		catalogpath = fastcatalogpath
 		print "catalogpath now = %s" % catalogpath
@@ -190,34 +195,38 @@ def main(argv=None):
 				#print "'%s'" % subset_expr
 	                	dictorigin, n = modgiseis.dbgetorigins(catalogpath, subset_expr)
 				print "- number of events in all-time = {}".format(n)
-				timearray = dictorigin['time']
-				time_firstevent = timearray[0] # assuming they are sorted
-				bin_edges, snum, enum = modgiseis.compute_bins(dictorigin, np.min([time_firstevent, dnum_startOfReportingPeriod]), datenumnow, 7.0) # function name is a misnomer - we are computing bin_edges
+				if n>0:
+					timearray = dictorigin['time']
+					time_firstevent = timearray[0] # assuming they are sorted
+					bin_edges, snum, enum = modgiseis.compute_bins(dictorigin, np.min([time_firstevent, dnum_startOfReportingPeriod]), datenumnow, 7.0) # function name is a misnomer - we are computing bin_edges
 
-				# now we get our array of counts per week
-				counts = modgiseis.bin_counts(timearray, bin_edges)
-
-				# cumulative magnitude
-	        		energy = modgiseis.ml2energy(dictorigin['ml'])
-	        		binned_energy = modgiseis.bin_irregular(timearray, energy, bin_edges)
-				binned_ml = modgiseis.energy2ml(binned_energy)
-
-				# summarise
-				if verbose:	
-					print 'firstevent: %s' % modgiseis.datenum2datestr(time_firstevent)
-					print 'lastevent: %s' % modgiseis.datenum2datestr(timearray[-1])
-					print "bin edges (length=%d): %s to %s " % (len(bin_edges), modgiseis.datenum2datestr(bin_edges[0]), modgiseis.datenum2datestr(bin_edges[-1]))
-					print "counts length=%d " % len(counts)
-					print "binned_ml length=%d " % len(binned_ml)
-				if len(bin_edges)<(number_of_weeks_to_plot+1):
-					print "Houston we have a problem!"
-					sys.exit()
-
-				# append to lists to save for plotting	
-				VOLCANO.append(place[c])
-				BIN_EDGES.append(bin_edges)
-				COUNTS.append(counts)
-				CUMML.append(binned_ml)
+					# now we get our array of counts per week
+					counts = modgiseis.bin_counts(timearray, bin_edges)
+	
+					# cumulative magnitude
+		        		energy = modgiseis.ml2energy(dictorigin['ml'])
+		        		binned_energy = modgiseis.bin_irregular(timearray, energy, bin_edges)
+					binned_ml = modgiseis.energy2ml(binned_energy)
+	
+					# summarise
+					if verbose:	
+						print 'firstevent: %s' % modgiseis.datenum2datestr(time_firstevent)
+						print 'lastevent: %s' % modgiseis.datenum2datestr(timearray[-1])
+						print "bin edges (length=%d): %s to %s " % (len(bin_edges), modgiseis.datenum2datestr(bin_edges[0]), modgiseis.datenum2datestr(bin_edges[-1]))
+						print "counts length=%d " % len(counts)
+						print "binned_ml length=%d " % len(binned_ml)
+					if len(bin_edges)<(number_of_weeks_to_plot+1):
+						sys.exit("bin_edges < number_of_weeks_to_plot+1")
+	
+					# append to lists to save for plotting	
+					VOLCANO.append(place[c])
+					BIN_EDGES.append(bin_edges)
+					COUNTS.append(counts)
+					CUMML.append(binned_ml)
+				else:
+					print "WARNING: Got some events from the fastcatalog, but not the total catalog"
+			else:
+				print "- 0 events in %s for %s" % (fastcatalogpath, place[c]) 	
 	
 	NUMVOLCANOES = len(VOLCANO)
 
@@ -303,7 +312,14 @@ def main(argv=None):
 
 	# set up weekending list for yticklabels
 	weekending = list()
-	for week in np.arange(-number_of_weeks_to_plot-1, 0, 1):
+	print ">SCAFFOLD"
+	print number_of_weeks_to_plot
+	print "<SCAFFOLD"
+	for week in np.arange(-number_of_weeks_to_plot-1, 0, 1): # SCAFFOLD: GETTING ERROR HERE
+		print ">SCAFFOLD"
+		print week
+		print bin_edges
+		print "<SCAFFOLD"
 		dstr = modgiseis.datenum2datestr(bin_edges[week]) # bin_edges is still set to BIN_EDGES for last element i
 		weekending.append(dstr[5:10])
 		print week, dstr
@@ -347,15 +363,12 @@ def main(argv=None):
 	fig2ax1.set_ylim([-number_of_weeks_to_plot - 0.5, -0.5])
 	plt.setp( fig2ax1.get_yticklabels(), fontsize=10*SCALEFACTOR )
 
-	if (addWatermark):
-		print "Adding watermark"
-		fig2ax1.text(NUMVOLCANOES/2, -number_of_weeks_to_plot/2, 'PROTOTYPE', fontsize=75*SCALEFACTOR, color='gray', ha='center', va='center', rotation=60, alpha=0.5)
+	print "Adding watermark"
+	fig2ax1.text(NUMVOLCANOES/2, -number_of_weeks_to_plot/2, 'PROTOTYPE', fontsize=75*SCALEFACTOR, color='gray', ha='center', va='center', rotation=60, alpha=0.5)
 
 	print "Saving figure"
 	outfile = "%s/%s" % (outdir, pngfile)
 	fig2.savefig(outfile, dpi=dpi)
-	pdffile = "%s/%s" % (outdir, pngfile + ".pdf")
-	fig2.savefig(pdffile, dpi=dpi)
 
 	print "Removing whitespace"
 	im = Image.open(outfile)
@@ -363,31 +376,30 @@ def main(argv=None):
 	im.save(outfile) 
 	
 	# Legend
-	if (plotLegend):
-		print "\nPlotting legend"
-		fig3 = plt.figure()
-		fig3.set_dpi(dpi)
-		fig3.set_size_inches((10.0,10.0),forward=True)
-		fig3ax2 = fig3.add_axes([0.1, 0.85-axes_height/2, axes_width/20, axes_height/2])
-		a = np.linspace(0, 1, 256).reshape(-1,1)
-		fig3ax2.imshow(a, aspect='auto', cmap=plt.get_cmap(colormapname), origin='lower')
-		fig3ax2.set_xticks([])
-		fig3ax2.set_yticks(np.arange(0,256+1,256/(2*(MAXMAGCOLORBAR-MINMAGCOLORBAR)))) # the +1 is to label the top of the range since arange stops at 256-51.2 otherwise
-		ytl = np.arange(MINMAGCOLORBAR, MAXMAGCOLORBAR+0.1, 0.5)
-		ytl_list = list()
-		for index in range(len(ytl)):
-			ytl_list.append("%.1f" % ytl[index])
-		fig3ax2.set_yticklabels(ytl_list)
-		fig3ax2.set_ylabel('Cumulative\nMagnitude')
+	print "\nPlotting legend"
+	fig3 = plt.figure()
+	fig3.set_dpi(dpi)
+	fig3.set_size_inches((10.0,10.0),forward=True)
+	fig3ax2 = fig3.add_axes([0.1, 0.85-axes_height/2, axes_width/20, axes_height/2])
+	a = np.linspace(0, 1, 256).reshape(-1,1)
+	fig3ax2.imshow(a, aspect='auto', cmap=plt.get_cmap(colormapname), origin='lower')
+	fig3ax2.set_xticks([])
+	fig3ax2.set_yticks(np.arange(0,256+1,256/(2*(MAXMAGCOLORBAR-MINMAGCOLORBAR)))) # the +1 is to label the top of the range since arange stops at 256-51.2 otherwise
+	ytl = np.arange(MINMAGCOLORBAR, MAXMAGCOLORBAR+0.1, 0.5)
+	ytl_list = list()
+	for index in range(len(ytl)):
+		ytl_list.append("%.1f" % ytl[index])
+	fig3ax2.set_yticklabels(ytl_list)
+	fig3ax2.set_ylabel('Cumulative\nMagnitude')
 
-		print "Saving legend"
-		colorbarfile = "%s/colorbar.png" % (outdir)
-		fig3.savefig(colorbarfile, dpi=dpi)
+	print "Saving legend"
+	colorbarfile = "%s/colorbar.png" % (outdir)
+	fig3.savefig(colorbarfile, dpi=dpi)
 
-		print "Removing whitespace from legend"
-		im = Image.open(colorbarfile)
-		im = modgiseis.trim(im)
-		im.save(colorbarfile) 
+	print "Removing whitespace from legend"
+	im = Image.open(colorbarfile)
+	im = modgiseis.trim(im)
+	im.save(colorbarfile) 
 
 	# Clean up	
 	print "Cleaning up"
