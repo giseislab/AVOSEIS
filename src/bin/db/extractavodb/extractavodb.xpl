@@ -53,15 +53,12 @@ $subset_expression = $ARGV[3] if ($#ARGV>2);
 # INPUT DATABASE
 our $dbin;
 use Env;
-if (exists $ENV{'TOTALDB')) {
-
-};
 if ($opt_i) {
 	$dbin = $opt_i;
 } elsif (exists $ENV{'TOTALDB'}) {
 	$dbin = $ENV{'TOTALDB'};
 } else {
-	die("Input database not defined\n"); 
+	$dbin = "/Seis/catalogs/avo/Total/Total";
 }
 die("Cannot find $dbin\n") unless (-e $dbin);
 

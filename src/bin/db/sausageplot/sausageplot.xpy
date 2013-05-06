@@ -363,8 +363,8 @@ def main(argv=None):
 	fig2ax1.set_ylim([-number_of_weeks_to_plot - 0.5, -0.5])
 	plt.setp( fig2ax1.get_yticklabels(), fontsize=10*SCALEFACTOR )
 
-	print "Adding watermark"
-	fig2ax1.text(NUMVOLCANOES/2, -number_of_weeks_to_plot/2, 'PROTOTYPE', fontsize=75*SCALEFACTOR, color='gray', ha='center', va='center', rotation=60, alpha=0.5)
+	#print "Adding watermark"
+	#fig2ax1.text(NUMVOLCANOES/2, -number_of_weeks_to_plot/2, 'PROTOTYPE', fontsize=75*SCALEFACTOR, color='gray', ha='center', va='center', rotation=60, alpha=0.5)
 
 	print "Saving figure"
 	outfile = "%s/%s" % (outdir, pngfile)
