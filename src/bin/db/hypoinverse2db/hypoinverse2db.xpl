@@ -616,10 +616,12 @@ sub extract_HYPOSHA	{	# BK and CI HYPO2000 versions mostly the same
 		my $auth= "hypo2000";
 
 		# Create arrival line
-		if (defined($premark)) { # P
+		if (length($premark)>0) { # P
+		#if (defined($premark)) { # P
 			push (@saved, join(',', ("P_arrival", $sta, $chan, $net, $p_ar_time, $piphase, $azimuth, $ema, $amp, $per, $auth)));
 		}
-		if (defined($sremark)) { # S
+		if (length($sremark)>0) { # S
+		#if (defined($sremark)) { # S
 			push (@saved, join(',', ("S_arrival", $sta, $chan, $net, $s_ar_time, $siphase, $azimuth, $ema, $amp, $per, $auth)));
 		}
 
