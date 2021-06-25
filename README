@@ -1,3 +1,57 @@
-This repository holds codes used in the GI/AVO Seismology group at the University of Alaska Fairbanks. 
+This repository holds codes I developed while working for the AVO at the Seismic Lab at the University of Alaska Fairbanks from 11/2008-09/2012
+
+## Update 2021/06
+It would be good to reorganize these codes by project into their own repositories, so that they can be documented with wikis and have DOIs attached.
+Most operate at the database level, so do not require a real-time Antelope license.
+
+Examples:
+
+AQMS catalog -> Antelope catalog
+- aqms2db
+- aqms2totaldb
+- hypoinverse2db
+- aqms2hypoinverse
+
+FEAST
+- carlstatrig2antelope
+- carlsubtrig2antelope
+
+VOLC2 (I think there is a separate repo)
+- db2googlemaps
+
+SWARM ALARM
+- dbalarmdispatch
+- dbdetectswarm/*
+- replaydbdetectswarm
+- diagnosticMonitoring (although used for other things too)
+- Avoseis-AlarmManager/lib/Avoseis/AlarmManager.pm
+- Avoseis-SwarmAlarm/lib/Avoseis/SwarmAlarm.pm
+- Avoseis-SwarmTracker/lib/Avoseis/SwarmTracker.pm
+- alarminfo.php
+- confirm_alarms.php
+
+COUNTING EVENTS, ARRIVALS, DETECTIONS etc
+- dbcountdetections
+- dbcounthourlydetections
+- dbploteventratewrapper (Python)
+- weeklysummarycounts2html
+
+DATA MANAGEMENT
+- dbsplit2dayvolumes (split Antelope db into day volumes)
+- subset the AVO totaldb
+
+LIBRARIES
+- https://github.com/giseislab/AVOSEIS/blob/master/src/data/perl/Avoseis-Utils/lib/Avoseis/Utils.pm
 
 
+REAL-TIME STUFF
+- dbt2orbpf (rebroadcast db rows as pf packets)
+- dbwatchtable (run command when a watched table changes)
+
+SAUSAGEPLOT (python)
+- sausageplot
+
+ICEWEB/DATA QC
+- soh.php
+
+- Glenn Thompson
